@@ -1,0 +1,27 @@
+# Dependencies
+**/node_modules/
+node_modules/
+
+# Next.js build
+**/.next/
+.next/
+out/
+build/
+
+# Testing & Playwright artifacts
+**/.playwright-cli/
+.playwright-cli/
+test-results/
+
+# OS & Logs
+.DS_Store
+**/.DS_Store
+*.log
+**/*.log
+
+# TypeScript build info
+*.tsbuildinfo
+**/*.tsbuildinfo
+
+# Local environment variables
+.env*.local
