@@ -131,7 +131,10 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
           <img
             src="/buildlink.png"
             alt="Buildlink"
-            className="h-9 sm:h-10 w-auto max-w-[185px] object-contain object-left transition-transform duration-200 group-hover:scale-[1.02]"
+            width={180}
+            height={40}
+            style={{ maxWidth: "180px", maxHeight: "40px", objectFit: "contain" }}
+            className="h-9 sm:h-10 w-auto max-w-[180px] object-contain object-left transition-transform duration-200 group-hover:scale-[1.02]"
           />
         </Link>
         <button
