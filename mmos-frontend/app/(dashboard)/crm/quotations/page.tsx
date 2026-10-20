@@ -1,6 +1,6 @@
 "use client";
 import { useState, useMemo } from "react";
-import { quotations as initialData, customers } from "@/lib/dummy-data";
+import { quotations as initialData, customers, products } from "@/lib/dummy-data";
 import { formatCurrency } from "@/lib/utils";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { StatusBadge } from "@/components/ui/Badge";
@@ -9,11 +9,12 @@ import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { toast } from "@/components/ui/Toast";
 import { 
   Plus, Pencil, Trash2, Search, FileText, Eye, Printer, 
-  ArrowUpDown, Calendar, CheckCircle2, Send, Download 
+  ArrowUpDown, Calendar, CheckCircle2, Send, Download, Tag
 } from "lucide-react";
 
 type Quotation = typeof initialData[0];
 const STATUSES = ["Draft", "Sent", "Approved", "Rejected", "Expired"];
+const UNIT_OPTIONS = ["Unit", "Set", "Pcs", "Lot", "Job", "Meter", "Kg", "Bln"];
 
 export default function QuotationsPage() {
   const [data, setData] = useState(initialData);
@@ -81,19 +82,58 @@ export default function QuotationsPage() {
     }
   };
 
+  // Helper multi-item management
+  const addItem = () => {
+    const currentItems = form.items ? [...form.items] : [];
+    const updated = [
+      ...currentItems,
+      { product: "", qty: 1, unit: "Unit", unitPrice: 0, total: 0 }
+    ];
+    const newTotal = updated.reduce((s, it) => s + (it.total || 0), 0);
+    setForm(prev => ({ ...prev, items: updated, total: newTotal }));
+  };
+
+  const updateItem = (index: number, field: string, val: any) => {
+    const currentItems = form.items ? [...form.items] : [];
+    const item = { ...currentItems[index], [field]: val };
+    if (field === "qty" || field === "unitPrice") {
+      const q = field === "qty" ? Math.max(0, Number(val) || 0) : item.qty;
+      const p = field === "unitPrice" ? Math.max(0, Number(val) || 0) : item.unitPrice;
+      item.total = q * p;
+    }
+    currentItems[index] = item;
+    const newTotal = currentItems.reduce((s, it) => s + (it.total || 0), 0);
+    setForm(prev => ({ ...prev, items: currentItems, total: newTotal }));
+  };
+
+  const removeItem = (index: number) => {
+    const currentItems = form.items ? [...form.items] : [];
+    currentItems.splice(index, 1);
+    const newTotal = currentItems.reduce((s, it) => s + (it.total || 0), 0);
+    setForm(prev => ({ ...prev, items: currentItems, total: newTotal }));
+  };
+
   const openAdd = () => { 
     setForm({ 
       status: "Draft", 
       revision: 1, 
       date: new Date().toISOString().split("T")[0],
       validUntil: new Date(Date.now() + 30 * 86400000).toISOString().split("T")[0],
-      items: [] 
+      total: 0,
+      items: [
+        { product: "", qty: 1, unit: "Unit", unitPrice: 0, total: 0 }
+      ] 
     }); 
     setModal({ type: "add" }); 
   };
   
   const openEdit = (item: Quotation) => { 
-    setForm({ ...item }); 
+    setForm({ 
+      ...item,
+      items: item.items && item.items.length > 0 
+        ? item.items.map(it => ({ ...it }))
+        : [{ product: "Custom Fabrication / Standard Work", qty: 1, unit: "Set", unitPrice: item.total, total: item.total }]
+    }); 
     setModal({ type: "edit", item }); 
   };
 
@@ -102,13 +142,25 @@ export default function QuotationsPage() {
       toast.error("Peringatan Validasi", "Nama pelanggan wajib dipilih.");
       return;
     }
+
+    if (!form.items || form.items.length === 0 || !form.items.some(i => i.product.trim())) {
+      toast.error("Peringatan Validasi", "Minimal 1 baris item barang/jasa harus diisi.");
+      return;
+    }
+
+    const calculatedTotal = form.items.reduce((s, it) => s + (it.total || 0), 0);
+    if (calculatedTotal <= 0) {
+      toast.error("Peringatan Validasi", "Total nilai penawaran harus lebih besar dari Rp 0.");
+      return;
+    }
+
     const isEdit = modal?.type === "edit";
     setConfirmConfig({
       open: true,
       title: isEdit ? "Konfirmasi Perubahan Quotation" : "Konfirmasi Buat Quotation Baru",
       description: isEdit 
         ? `Apakah Anda yakin ingin menyimpan perubahan pada quotation ${modal?.item?.code}? Revisi akan dicatat.`
-        : `Apakah Anda yakin ingin menerbitkan draft quotation baru untuk ${form.customer}?`,
+        : `Apakah Anda yakin ingin menerbitkan draft quotation baru untuk ${form.customer}? Total: ${formatCurrency(calculatedTotal)}`,
       confirmText: isEdit ? "Ya, Simpan Perubahan" : "Ya, Terbitkan Quotation",
       variant: "info",
       onConfirm: () => {
@@ -121,16 +173,20 @@ export default function QuotationsPage() {
             date: form.date ?? new Date().toISOString().split("T")[0],
             validUntil: form.validUntil ?? "",
             status: form.status ?? "Draft",
-            total: Number(form.total) || 0,
+            total: calculatedTotal,
             revision: 1,
-            items: form.items?.length ? form.items : [
-              { product: "Custom Fabrication / Standard Work", qty: 1, unit: "Set", unitPrice: Number(form.total) || 0, total: Number(form.total) || 0 }
-            ],
+            items: form.items?.filter(it => it.product.trim()) || [],
           };
           setData([newQuo, ...data]);
-          toast.success("Quotation Berhasil Dibuat", `${newQuo.code} untuk ${newQuo.customer} telah tersimpan.`);
+          toast.success("Quotation Berhasil Dibuat", `${newQuo.code} (${formatCurrency(calculatedTotal)}) telah tersimpan.`);
         } else if (modal?.type === "edit" && modal.item) {
-          setData(data.map(q => q.id === modal.item!.id ? { ...q, ...form, revision: q.revision + 1 } as Quotation : q));
+          setData(data.map(q => q.id === modal.item!.id ? { 
+            ...q, 
+            ...form, 
+            total: calculatedTotal,
+            items: form.items?.filter(it => it.product.trim()) || [],
+            revision: q.revision + 1 
+          } as Quotation : q));
           toast.success("Quotation Diperbarui", `${modal.item.code} revisi ${modal.item.revision + 1} berhasil disimpan.`);
         }
         setModal(null);
@@ -615,70 +671,215 @@ export default function QuotationsPage() {
       {(modal?.type === "add" || modal?.type === "edit") && (
         <Modal 
           open 
-          title={modal.type === "add" ? "Buat Quotation Baru" : `Edit Quotation — ${modal.item?.code}`} 
+          title={modal.type === "add" ? "Buat Quotation Baru (Multi-Item)" : `Edit Quotation — ${modal.item?.code}`} 
           onClose={() => setModal(null)}
+          size="xl"
         >
-          <div className="space-y-4">
-            <div>
-              <label className="text-text-secondary text-xs mb-1.5 block font-medium">Pelanggan / Klien *</label>
-              <select 
-                className="select text-sm" 
-                value={form.customer ?? ""} 
-                onChange={e => setForm({ ...form, customer: e.target.value })}
-              >
-                <option value="">Pilih pelanggan...</option>
-                {customers.map(c => <option key={c.id} value={c.name}>{c.name}</option>)}
-              </select>
-            </div>
+          <div className="space-y-5">
+            {/* General Info */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 bg-surface-2/60 p-3.5 rounded-xl border border-border">
+              <div className="lg:col-span-2">
+                <label className="text-text-secondary text-xs mb-1.5 block font-medium">Pelanggan / Klien *</label>
+                <select 
+                  className="select text-sm w-full" 
+                  value={form.customer ?? ""} 
+                  onChange={e => setForm({ ...form, customer: e.target.value })}
+                >
+                  <option value="">Pilih pelanggan...</option>
+                  {customers.map(c => <option key={c.id} value={c.name}>{c.name}</option>)}
+                </select>
+              </div>
 
-            <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className="text-text-secondary text-xs mb-1.5 block font-medium">Tanggal Diterbitkan</label>
                 <input 
                   type="date" 
-                  className="input text-sm" 
+                  className="input text-sm w-full" 
                   value={form.date ?? ""} 
                   onChange={e => setForm({ ...form, date: e.target.value })} 
                 />
               </div>
+
               <div>
                 <label className="text-text-secondary text-xs mb-1.5 block font-medium">Batas Waktu Berlaku</label>
                 <input 
                   type="date" 
-                  className="input text-sm" 
+                  className="input text-sm w-full" 
                   value={form.validUntil ?? ""} 
                   onChange={e => setForm({ ...form, validUntil: e.target.value })} 
                 />
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label className="text-text-secondary text-xs mb-1.5 block font-medium">Total Nilai Penawaran (IDR) *</label>
-                <input 
-                  type="number" 
-                  className="input text-sm font-mono" 
-                  placeholder="Contoh: 150000000"
-                  value={form.total ?? ""} 
-                  onChange={e => setForm({ ...form, total: Number(e.target.value) })} 
-                />
+            {/* Dynamic Multi-Item Section */}
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2">
+                  <FileText size={16} className="text-accent" />
+                  <span className="text-sm font-bold text-text-primary">Daftar Item Barang & Jasa Penawaran</span>
+                  <span className="text-xs text-text-secondary bg-surface-2 px-2 py-0.5 rounded-full border border-border">
+                    {form.items?.length || 0} Item
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={addItem}
+                  className="btn-secondary flex items-center gap-1.5 text-xs py-1 px-3"
+                >
+                  <Plus size={13} /> Tambah Baris Item
+                </button>
               </div>
+
+              <div className="overflow-x-auto border border-border rounded-xl">
+                <table className="w-full text-xs">
+                  <thead>
+                    <tr className="bg-surface-2 text-text-secondary border-b border-border">
+                      <th className="py-2.5 px-3 text-center w-10">No</th>
+                      <th className="py-2.5 px-3 text-left min-w-[240px]">Deskripsi Produk / Jasa Manufaktur *</th>
+                      <th className="py-2.5 px-3 text-center w-24">Qty *</th>
+                      <th className="py-2.5 px-3 text-center w-28">Satuan</th>
+                      <th className="py-2.5 px-3 text-right w-40">Harga Satuan (IDR) *</th>
+                      <th className="py-2.5 px-3 text-right w-40">Subtotal (IDR)</th>
+                      <th className="py-2.5 px-3 text-center w-12">Hapus</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-border">
+                    {form.items && form.items.length > 0 ? (
+                      form.items.map((it, idx) => (
+                        <tr key={idx} className="hover:bg-surface-2/30">
+                          <td className="py-2 px-3 text-center font-mono text-text-secondary">{idx + 1}</td>
+                          <td className="py-2 px-3">
+                            <div className="space-y-1">
+                              <input
+                                type="text"
+                                className="input text-xs w-full py-1.5 px-2"
+                                placeholder="Misal: Tangki BBM 16KL / Jasa Fabrikasi..."
+                                value={it.product}
+                                onChange={e => updateItem(idx, "product", e.target.value)}
+                              />
+                              <div className="flex items-center gap-1 text-[10px] text-text-secondary">
+                                <span>Pilihan cepat:</span>
+                                {products.slice(0, 3).map(p => (
+                                  <button
+                                    key={p.id}
+                                    type="button"
+                                    onClick={() => updateItem(idx, "product", p.name)}
+                                    className="hover:text-accent underline cursor-pointer truncate max-w-[120px]"
+                                    title={p.name}
+                                  >
+                                    {p.name.split(" ")[0]} {p.name.split(" ")[1]}
+                                  </button>
+                                ))}
+                              </div>
+                            </div>
+                          </td>
+                          <td className="py-2 px-3">
+                            <input
+                              type="number"
+                              min="1"
+                              className="input text-xs text-center font-mono py-1.5 px-2 w-full"
+                              value={it.qty || ""}
+                              onChange={e => updateItem(idx, "qty", e.target.value)}
+                            />
+                          </td>
+                          <td className="py-2 px-3">
+                            <select
+                              className="select text-xs py-1.5 px-2 w-full text-center"
+                              value={it.unit || "Unit"}
+                              onChange={e => updateItem(idx, "unit", e.target.value)}
+                            >
+                              {UNIT_OPTIONS.map(u => (
+                                <option key={u} value={u}>{u}</option>
+                              ))}
+                            </select>
+                          </td>
+                          <td className="py-2 px-3">
+                            <input
+                              type="number"
+                              min="0"
+                              step="50000"
+                              className="input text-xs text-right font-mono py-1.5 px-2 w-full"
+                              placeholder="0"
+                              value={it.unitPrice || ""}
+                              onChange={e => updateItem(idx, "unitPrice", e.target.value)}
+                            />
+                            {it.unitPrice > 0 && (
+                              <p className="text-[10px] text-text-secondary text-right mt-0.5 font-mono">
+                                {formatCurrency(it.unitPrice)}
+                              </p>
+                            )}
+                          </td>
+                          <td className="py-2 px-3 text-right font-mono font-bold text-accent text-xs">
+                            {formatCurrency(it.total || 0)}
+                          </td>
+                          <td className="py-2 px-3 text-center">
+                            <button
+                              type="button"
+                              onClick={() => removeItem(idx)}
+                              disabled={form.items && form.items.length <= 1}
+                              className="p-1.5 rounded-lg text-text-secondary hover:text-accent-alert hover:bg-surface-2 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                              title="Hapus baris item"
+                            >
+                              <Trash2 size={13} />
+                            </button>
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan={7} className="py-6 text-center text-text-secondary">
+                          Belum ada item barang/jasa. Klik tombol <strong>+ Tambah Baris Item</strong>.
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            {/* Financial Totals & Status */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-3 border-t border-border">
               <div>
                 <label className="text-text-secondary text-xs mb-1.5 block font-medium">Status Penawaran</label>
                 <select 
-                  className="select text-sm" 
+                  className="select text-sm w-full max-w-xs" 
                   value={form.status ?? "Draft"} 
                   onChange={e => setForm({ ...form, status: e.target.value })}
                 >
                   {STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
                 </select>
+                <p className="text-[11px] text-text-secondary mt-1">
+                  Draft dapat diedit sewaktu-waktu sebelum dikirim secara resmi ke klien.
+                </p>
+              </div>
+
+              {/* Calculated Totals Box */}
+              <div className="bg-surface-2 rounded-xl p-3.5 border border-border space-y-1.5 text-xs">
+                <div className="flex items-center justify-between text-text-secondary">
+                  <span>Subtotal Nilai Barang (DPP):</span>
+                  <span className="font-mono font-bold text-text-primary text-sm">
+                    {formatCurrency(form.total || 0)}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between text-text-secondary">
+                  <span>Estimasi PPN 11%:</span>
+                  <span className="font-mono text-text-secondary">
+                    {formatCurrency(Math.round((form.total || 0) * 0.11))}
+                  </span>
+                </div>
+                <div className="pt-2 border-t border-border flex items-center justify-between">
+                  <span className="font-bold text-text-primary text-sm">Total Penawaran Resmi:</span>
+                  <span className="font-mono font-black text-accent text-base">
+                    {formatCurrency(Math.round((form.total || 0) * 1.11))}
+                  </span>
+                </div>
               </div>
             </div>
 
             <div className="flex justify-end gap-2 pt-4 border-t border-border">
               <button className="btn-secondary text-xs" onClick={() => setModal(null)}>Batal</button>
               <button className="btn-primary text-xs" onClick={requestSave}>
-                Simpan Penawaran
+                Simpan Penawaran Harga
               </button>
             </div>
           </div>

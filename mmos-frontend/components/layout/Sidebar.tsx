@@ -12,6 +12,7 @@ import { useState } from "react";
 import { notifications } from "@/lib/dummy-data";
 import { useAuth } from "@/contexts/AuthContext";
 import { navLabelToModule } from "@/lib/roles";
+import { RoleIcon } from "@/components/ui/RoleIcon";
 
 const nav = [
   { label: "Dasbor", href: "/", icon: LayoutDashboard },
@@ -228,7 +229,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
             background: user.roleDefinition.bgColor,
           }}
         >
-          <span className="text-sm shrink-0">{user.roleDefinition.icon}</span>
+          <RoleIcon roleKey={user.role} size={15} style={{ color: user.roleDefinition.color }} className="shrink-0" />
           <div className="min-w-0 flex-1">
             <p className="text-[11px] font-bold truncate text-[#0F172A]">{user.name}</p>
             <p

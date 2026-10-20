@@ -8,6 +8,7 @@ import { notifications as initialNotifications } from "@/lib/dummy-data";
 import { ChatDrawer } from "@/components/chat/ChatDrawer";
 import { useAuth } from "@/contexts/AuthContext";
 import { RoleSwitcher } from "@/components/layout/RoleSwitcher";
+import { RoleIcon } from "@/components/ui/RoleIcon";
 
 interface TopBarProps {
   onToggleSidebar?: () => void;
@@ -70,26 +71,18 @@ export function TopBar({ onToggleSidebar, sidebarCollapsed }: TopBarProps) {
       <header className="h-16 border-b border-[#E2E8F0] bg-white flex items-center justify-between px-4 lg:px-6 shrink-0 sticky top-0 z-30 gap-3 select-none">
         {/* Left section: Sidebar toggle & Search */}
         <div className="flex items-center gap-3 flex-1 min-w-0 max-w-xl">
-          {onToggleSidebar && (
+          {/* Sidebar toggle button (shown only when sidebar is collapsed, preventing duplicate buttons) */}
+          {onToggleSidebar && sidebarCollapsed && (
             <button
               onClick={onToggleSidebar}
-              className={`flex items-center gap-2 px-2.5 py-1.5 rounded-lg border text-xs font-semibold
-                transition-all duration-200 shrink-0 shadow-xs cursor-pointer group
-                ${sidebarCollapsed
-                  ? "bg-[#EFF6FF] border-[#2563EB]/30 text-[#2563EB] hover:bg-[#DBEAFE] hover:border-[#2563EB]"
-                  : "bg-white border-[#E2E8F0] text-[#4B5563] hover:bg-[#F8FAFC] hover:text-[#111827] hover:border-[#CBD5E1]"
-                }`}
-              title={sidebarCollapsed ? "Buka sidebar (Ctrl+B)" : "Sembunyikan sidebar (Ctrl+B)"}
-              aria-label="Toggle Sidebar"
+              className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg border text-xs font-semibold
+                bg-[#EFF6FF] border-[#2563EB]/30 text-[#2563EB] hover:bg-[#DBEAFE] hover:border-[#2563EB]
+                transition-all duration-200 shrink-0 shadow-xs cursor-pointer group"
+              title="Buka sidebar (Ctrl+B)"
+              aria-label="Buka Sidebar"
             >
-              {sidebarCollapsed ? (
-                <>
-                  <PanelLeftOpen size={16} className="transition-transform duration-200 group-hover:scale-110" />
-                  <span className="hidden sm:inline">Buka Sidebar</span>
-                </>
-              ) : (
-                <PanelLeftClose size={16} className="transition-transform duration-200 group-hover:scale-110" />
-              )}
+              <PanelLeftOpen size={16} className="transition-transform duration-200 group-hover:scale-110" />
+              <span className="hidden sm:inline">Buka Sidebar</span>
             </button>
           )}
 
@@ -227,7 +220,7 @@ export function TopBar({ onToggleSidebar, sidebarCollapsed }: TopBarProps) {
               <div className="absolute right-0 top-full mt-2 w-60 bg-white rounded-2xl border border-[#CBD5E1]/80 shadow-2xl z-50 animate-slide-down py-1 overflow-hidden">
                 <div className="px-4 py-3 border-b border-[#F1F5F9] bg-[#F8FAFC]/50">
                   <div className="flex items-center gap-2">
-                    <span className="text-sm">{user.roleDefinition.icon}</span>
+                    <RoleIcon roleKey={user.role} size={15} style={{ color: user.roleDefinition.color }} />
                     <p className="text-xs font-bold text-[#0F172A] truncate">{user.name}</p>
                   </div>
                   <p className="text-[11px] text-[#64748B] mt-0.5 truncate">{user.email}</p>

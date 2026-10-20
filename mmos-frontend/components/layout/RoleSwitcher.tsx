@@ -3,6 +3,7 @@ import { useState, useRef, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { ROLES, RoleKey, roleLabelToKey } from "@/lib/roles";
 import { Users, ChevronDown, Check, ArrowLeftRight } from "lucide-react";
+import { RoleIcon } from "@/components/ui/RoleIcon";
 
 export function RoleSwitcher() {
   const { user, switchUser, allUsers } = useAuth();
@@ -35,7 +36,10 @@ export function RoleSwitcher() {
         title="Ganti Role / User (Demo)"
       >
         <ArrowLeftRight size={13} className="transition-transform duration-200 group-hover:rotate-180" />
-        <span className="hidden sm:inline">{roleDef.icon} {roleDef.shortLabel}</span>
+        <span className="hidden sm:inline-flex items-center gap-1.5">
+          <RoleIcon roleKey={roleDef.key} size={13} />
+          {roleDef.shortLabel}
+        </span>
         <ChevronDown size={12} className={`transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
       </button>
 
@@ -80,11 +84,11 @@ export function RoleSwitcher() {
                   <div className="flex-1 min-w-0">
                     <p className="text-xs font-semibold text-[#0F172A] truncate">{u.name}</p>
                     <div className="flex items-center gap-1.5 mt-0.5">
-                      <span className="text-[10px]">{rDef.icon}</span>
                       <span
-                        className="text-[10px] font-medium px-1.5 py-0.5 rounded-md border"
+                        className="inline-flex items-center gap-1 text-[10px] font-medium px-1.5 py-0.5 rounded-md border"
                         style={{ color: rDef.color, background: rDef.bgColor, borderColor: rDef.borderColor }}
                       >
+                        <RoleIcon roleKey={rDef.key} size={11} />
                         {rDef.shortLabel}
                       </span>
                       <span className="text-[10px] text-[#94A3B8]">·</span>

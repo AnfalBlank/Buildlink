@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { DashboardType } from "@/lib/roles";
 import { RoleSwitcher } from "@/components/layout/RoleSwitcher";
+import { RoleIcon } from "@/components/ui/RoleIcon";
 import { ExecutiveDashboard } from "@/components/dashboards/ExecutiveDashboard";
 import { SalesDashboard } from "@/components/dashboards/SalesDashboard";
 import { ProjectDashboard } from "@/components/dashboards/ProjectDashboard";
@@ -59,7 +60,7 @@ export default function DashboardPage() {
                 border: `1.5px solid ${roleDef.borderColor}`,
               }}
             >
-              {roleDef.icon}
+              <RoleIcon roleKey={roleDef.key} size={20} style={{ color: roleDef.color }} />
             </div>
             <div>
               <div className="flex items-center gap-2 flex-wrap">
