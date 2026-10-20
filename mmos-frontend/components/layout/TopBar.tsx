@@ -6,6 +6,8 @@ import {
 } from "lucide-react";
 import { notifications as initialNotifications } from "@/lib/dummy-data";
 import { ChatDrawer } from "@/components/chat/ChatDrawer";
+import { useAuth } from "@/contexts/AuthContext";
+import { RoleSwitcher } from "@/components/layout/RoleSwitcher";
 
 interface TopBarProps {
   onToggleSidebar?: () => void;
@@ -13,6 +15,7 @@ interface TopBarProps {
 }
 
 export function TopBar({ onToggleSidebar, sidebarCollapsed }: TopBarProps) {
+  const { user } = useAuth();
   const [notifications, setNotifications] = useState(initialNotifications);
   const unread = notifications.filter(n => !n.read);
   const [showNotif, setShowNotif] = useState(false);
@@ -137,6 +140,9 @@ export function TopBar({ onToggleSidebar, sidebarCollapsed }: TopBarProps) {
             </span>
           </button>
 
+          {/* Role Switcher */}
+          <RoleSwitcher />
+
           {/* Notifications Dropdown */}
           <div className="relative" ref={notifRef}>
             <button
@@ -200,23 +206,40 @@ export function TopBar({ onToggleSidebar, sidebarCollapsed }: TopBarProps) {
               onClick={() => setShowUserMenu(v => !v)}
               className="flex items-center gap-2 px-2.5 py-1.5 rounded-xl border border-[#E2E8F0] bg-white hover:bg-[#F8FAFC] hover:border-[#CBD5E1] transition-all focus-visible:ring-2 focus-visible:ring-[#2563EB] cursor-pointer"
             >
-              <div className="w-7 h-7 rounded-lg bg-[#2563EB] flex items-center justify-center shrink-0">
-                <span className="text-white text-xs font-bold">AF</span>
+              <div
+                className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 text-xs font-bold"
+                style={{
+                  background: user.roleDefinition.bgColor,
+                  color: user.roleDefinition.color,
+                  border: `1.5px solid ${user.roleDefinition.borderColor}`,
+                }}
+              >
+                {user.initials}
               </div>
               <div className="text-left hidden md:block">
-                <span className="text-[#0F172A] text-xs font-bold block leading-tight">Ahmad Faisal</span>
-                <span className="text-[#64748B] text-[10px] block leading-tight">Director</span>
+                <span className="text-[#0F172A] text-xs font-bold block leading-tight">{user.name}</span>
+                <span className="text-[#64748B] text-[10px] block leading-tight">{user.roleDefinition.shortLabel}</span>
               </div>
               <ChevronDown size={13} className="text-[#64748B] hidden md:block" />
             </button>
 
             {showUserMenu && (
-              <div className="absolute right-0 top-full mt-2 w-56 bg-white rounded-2xl border border-[#CBD5E1]/80 shadow-2xl z-50 animate-slide-down py-1 overflow-hidden">
+              <div className="absolute right-0 top-full mt-2 w-60 bg-white rounded-2xl border border-[#CBD5E1]/80 shadow-2xl z-50 animate-slide-down py-1 overflow-hidden">
                 <div className="px-4 py-3 border-b border-[#F1F5F9] bg-[#F8FAFC]/50">
-                  <p className="text-xs font-bold text-[#0F172A]">Ahmad Faisal</p>
-                  <p className="text-[11px] text-[#64748B]">faisal@manggala.co.id</p>
-                  <span className="inline-block mt-1 text-[10px] bg-[#EFF6FF] text-[#2563EB] font-semibold px-2 py-0.5 rounded-md border border-[#BFDBFE]">
-                    Owner / Director
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm">{user.roleDefinition.icon}</span>
+                    <p className="text-xs font-bold text-[#0F172A] truncate">{user.name}</p>
+                  </div>
+                  <p className="text-[11px] text-[#64748B] mt-0.5 truncate">{user.email}</p>
+                  <span
+                    className="inline-block mt-1 text-[10px] font-semibold px-2 py-0.5 rounded-md border"
+                    style={{
+                      color: user.roleDefinition.color,
+                      background: user.roleDefinition.bgColor,
+                      borderColor: user.roleDefinition.borderColor,
+                    }}
+                  >
+                    {user.roleDefinition.label}
                   </span>
                 </div>
                 <div className="py-1">
@@ -232,7 +255,7 @@ export function TopBar({ onToggleSidebar, sidebarCollapsed }: TopBarProps) {
                     className="w-full px-4 py-2 text-left text-xs text-[#334155] hover:bg-[#F8FAFC] flex items-center gap-2 cursor-pointer"
                   >
                     <Shield size={14} className="text-[#94A3B8]" />
-                    <span>Hak Akses & Keamanan</span>
+                    <span>Hak Akses ({user.roleDefinition.allowedModules.length} Modul)</span>
                   </button>
                 </div>
                 <div className="border-t border-[#F1F5F9] pt-1">

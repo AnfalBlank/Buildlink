@@ -10,6 +10,8 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { notifications } from "@/lib/dummy-data";
+import { useAuth } from "@/contexts/AuthContext";
+import { navLabelToModule } from "@/lib/roles";
 
 const nav = [
   { label: "Dasbor", href: "/", icon: LayoutDashboard },
@@ -96,6 +98,7 @@ interface SidebarProps {
 }
 
 export function Sidebar({ collapsed, onToggle }: SidebarProps) {
+  const { user, isAllowed } = useAuth();
   const pathname = usePathname();
   const [expanded, setExpanded] = useState<string[]>(["Proyek", "Produksi"]);
   const unreadCount = notifications.filter(n => !n.read).length;
@@ -108,6 +111,12 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
   const isActive = (href: string) => pathname === href;
   const isParentActive = (children?: { href: string }[]) =>
     children?.some(c => pathname === c.href || pathname.startsWith(c.href + "/")) ?? false;
+
+  // Filter navigation items based on active role permissions
+  const visibleNav = nav.filter(item => {
+    const modKey = navLabelToModule[item.label] ?? "dashboard";
+    return isAllowed(modKey);
+  });
 
   return (
     <aside
@@ -136,7 +145,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
 
       {/* ── Nav ── */}
       <nav className="flex-1 overflow-y-auto py-3 px-3 overflow-x-hidden space-y-0.5">
-        {nav.map((item) => {
+        {visibleNav.map((item) => {
           if (item.href) {
             const active = isActive(item.href);
             return (
@@ -209,6 +218,28 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
           );
         })}
       </nav>
+
+      {/* ── Active Role Pill ── */}
+      <div className="px-3 py-2 border-t border-[#F1F5F9] bg-[#F8FAFC]/50">
+        <div
+          className="px-2.5 py-1.5 rounded-xl border flex items-center gap-2 text-xs"
+          style={{
+            borderColor: user.roleDefinition.borderColor,
+            background: user.roleDefinition.bgColor,
+          }}
+        >
+          <span className="text-sm shrink-0">{user.roleDefinition.icon}</span>
+          <div className="min-w-0 flex-1">
+            <p className="text-[11px] font-bold truncate text-[#0F172A]">{user.name}</p>
+            <p
+              className="text-[10px] font-semibold truncate"
+              style={{ color: user.roleDefinition.color }}
+            >
+              {user.roleDefinition.label}
+            </p>
+          </div>
+        </div>
+      </div>
 
       {/* ── Sidebar System Footer (Single profile & notif remain in TopBar) ── */}
       <div className="p-3 border-t border-[#E2E8F0] shrink-0 bg-[#F8FAFC]/50">
