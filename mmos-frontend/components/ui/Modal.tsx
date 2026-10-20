@@ -39,7 +39,7 @@ export function Modal({ open, onClose, title, children, size = "md" }: ModalProp
   };
 
   return createPortal(
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-2.5 sm:p-4 md:p-6 overflow-y-auto">
       {/* Light Frosted Backdrop (Not dark, keeps background bright and soft) */}
       <div
         className="fixed inset-0 bg-slate-900/15 backdrop-blur-[2px] backdrop-fade-animation transition-opacity"
@@ -61,11 +61,11 @@ export function Modal({ open, onClose, title, children, size = "md" }: ModalProp
         <div className="h-1 w-full bg-gradient-to-r from-[#2563EB] via-[#3B82F6] to-[#60A5FA]" />
 
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-[#F1F5F9] bg-[#F8FAFC]/60">
-          <h2 className="text-base sm:text-lg font-bold text-[#0F172A] tracking-tight">{title}</h2>
+        <div className="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 border-b border-[#F1F5F9] bg-[#F8FAFC]/60">
+          <h2 className="text-sm sm:text-base md:text-lg font-bold text-[#0F172A] tracking-tight truncate mr-2">{title}</h2>
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-lg flex items-center justify-center text-[#94A3B8] hover:text-[#0F172A] hover:bg-[#F1F5F9] transition-all duration-200 hover:rotate-90 active:scale-90 cursor-pointer"
+            className="w-8 h-8 rounded-lg flex items-center justify-center text-[#94A3B8] hover:text-[#0F172A] hover:bg-[#F1F5F9] transition-all duration-200 hover:rotate-90 active:scale-90 cursor-pointer shrink-0"
             title="Tutup (Esc)"
             aria-label="Tutup modal"
           >
@@ -74,7 +74,7 @@ export function Modal({ open, onClose, title, children, size = "md" }: ModalProp
         </div>
 
         {/* Body content with smooth custom scroll */}
-        <div className="px-6 py-5 max-h-[78vh] overflow-y-auto">
+        <div className="px-3.5 sm:px-6 py-3.5 sm:py-5 max-h-[82vh] overflow-y-auto">
           {children}
         </div>
       </div>

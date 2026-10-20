@@ -135,7 +135,7 @@ export default function ProjectsPage() {
       />
 
       {/* Summary KPI Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {[
           { label: "Proyek Aktif", val: data.filter(p => p.status === "Active").length, color: "text-[#16A34A]", bg: "bg-[#F0FDF4]", border: "border-[#BBF7D0]" },
           { label: "Ditunda / On Hold", val: data.filter(p => p.status === "On Hold").length, color: "text-[#D97706]", bg: "bg-[#FFFBEB]", border: "border-[#FDE68A]" },

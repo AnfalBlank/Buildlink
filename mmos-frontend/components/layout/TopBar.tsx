@@ -75,24 +75,24 @@ export function TopBar({ onToggleSidebar, sidebarCollapsed }: TopBarProps) {
           {onToggleSidebar && sidebarCollapsed && (
             <button
               onClick={onToggleSidebar}
-              className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg border text-xs font-semibold
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border text-xs font-semibold
                 bg-[#EFF6FF] border-[#2563EB]/30 text-[#2563EB] hover:bg-[#DBEAFE] hover:border-[#2563EB]
                 transition-all duration-200 shrink-0 shadow-xs cursor-pointer group"
               title="Buka sidebar (Ctrl+B)"
               aria-label="Buka Sidebar"
             >
-              <PanelLeftOpen size={16} className="transition-transform duration-200 group-hover:scale-110" />
+              <PanelLeftOpen size={16} className="transition-transform duration-200 group-hover:scale-110 shrink-0" />
               <span className="hidden sm:inline">Buka Sidebar</span>
             </button>
           )}
 
           {/* Search Input */}
-          <div className="relative flex-1 max-w-xs md:max-w-sm">
-            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#9CA3AF]" />
+          <div className="relative flex-1 max-w-[160px] sm:max-w-xs md:max-w-sm">
+            <Search size={14} className="absolute left-2.5 sm:left-3 top-1/2 -translate-y-1/2 text-[#9CA3AF]" />
             <input
               type="text"
-              placeholder="Cari proyek, order, material..."
-              className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl pl-9 pr-4 py-1.5 text-xs sm:text-sm text-[#111827] placeholder:text-[#9CA3AF] focus:outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/20 w-full transition-all"
+              placeholder="Cari..."
+              className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl pl-8 sm:pl-9 pr-3 py-1.5 text-xs sm:text-sm text-[#111827] placeholder:text-[#9CA3AF] focus:outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/20 w-full transition-all"
             />
           </div>
         </div>
@@ -153,7 +153,7 @@ export function TopBar({ onToggleSidebar, sidebarCollapsed }: TopBarProps) {
             </button>
 
             {showNotif && (
-              <div className="absolute right-0 top-full mt-2 w-80 sm:w-96 bg-white rounded-2xl border border-[#CBD5E1]/80 shadow-2xl z-50 animate-slide-down overflow-hidden">
+              <div className="absolute right-0 top-full mt-2 w-80 sm:w-96 max-w-[calc(100vw-24px)] bg-white rounded-2xl border border-[#CBD5E1]/80 shadow-2xl z-50 animate-slide-down overflow-hidden">
                 <div className="flex items-center justify-between px-4 py-3 border-b border-[#F1F5F9] bg-[#F8FAFC]/70">
                   <span className="text-sm font-bold text-[#0F172A]">Notifikasi Sistem</span>
                   {unread.length > 0 ? (
@@ -217,7 +217,7 @@ export function TopBar({ onToggleSidebar, sidebarCollapsed }: TopBarProps) {
             </button>
 
             {showUserMenu && (
-              <div className="absolute right-0 top-full mt-2 w-60 bg-white rounded-2xl border border-[#CBD5E1]/80 shadow-2xl z-50 animate-slide-down py-1 overflow-hidden">
+              <div className="absolute right-0 top-full mt-2 w-60 max-w-[calc(100vw-24px)] bg-white rounded-2xl border border-[#CBD5E1]/80 shadow-2xl z-50 animate-slide-down py-1 overflow-hidden">
                 <div className="px-4 py-3 border-b border-[#F1F5F9] bg-[#F8FAFC]/50">
                   <div className="flex items-center gap-2">
                     <RoleIcon roleKey={user.role} size={15} style={{ color: user.roleDefinition.color }} />

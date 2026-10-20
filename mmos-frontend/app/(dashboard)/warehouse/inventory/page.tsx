@@ -238,7 +238,7 @@ export default function InventoryPage() {
 
         {/* Table */}
         <div className="overflow-x-auto border border-border rounded-lg">
-          <table className="w-full text-sm">
+          <table className="w-full min-w-[850px] text-sm">
             <thead>
               <tr className="border-b border-border bg-surface-2 text-text-secondary text-xs">
                 <th className="text-left py-3 px-3.5 font-semibold cursor-pointer hover:text-accent transition-colors" onClick={() => toggleSort("materialId")}>

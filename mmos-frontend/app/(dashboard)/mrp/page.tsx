@@ -158,7 +158,7 @@ export default function MRPPage() {
       />
 
       {/* KPI Summary Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
         <div className="card p-4 hover:border-[#CBD5E1] transition-all">
           <p className="text-[#64748B] text-xs font-semibold uppercase tracking-wider mb-1">Total Item Analisis</p>
           <div className="flex items-baseline justify-between">

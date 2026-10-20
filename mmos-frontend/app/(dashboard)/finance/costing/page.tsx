@@ -459,7 +459,7 @@ export default function CostingPage() {
       {activeTab === "rab" && (
         <div className="space-y-6">
           {/* Summary KPIs */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
             <div className="card">
               <p className="text-xs text-[#64748B] font-medium">Total Nilai Kontrak Proyek</p>
               <p className="text-xl sm:text-2xl font-bold font-mono text-[#0F172A] mt-1">
@@ -681,7 +681,7 @@ export default function CostingPage() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
                     {[
                       { label: "Contract Revenue", val: c.forecastRevenue, cls: "text-[#16A34A]" },
                       { label: "Budget Cost", val: c.budgetTotal, cls: "text-[#0F172A]" },
@@ -816,7 +816,7 @@ export default function CostingPage() {
               </div>
 
               <div className="overflow-x-auto border border-[#E2E8F0] rounded-xl">
-                <table className="w-full text-xs">
+                <table className="w-full min-w-[550px] text-xs">
                   <thead>
                     <tr className="bg-[#F8FAFC] text-[#64748B] border-b border-[#E2E8F0]">
                       <th className="py-2 px-3 text-left">Nama Material / Spesifikasi</th>
@@ -899,7 +899,7 @@ export default function CostingPage() {
               </div>
 
               <div className="overflow-x-auto border border-[#E2E8F0] rounded-xl">
-                <table className="w-full text-xs">
+                <table className="w-full min-w-[550px] text-xs">
                   <thead>
                     <tr className="bg-[#F8FAFC] text-[#64748B] border-b border-[#E2E8F0]">
                       <th className="py-2 px-3 text-left">Posisi / Kategori Keahlian</th>
@@ -983,7 +983,7 @@ export default function CostingPage() {
                   </button>
                 </div>
                 <div className="overflow-x-auto border border-[#E2E8F0] rounded-xl">
-                  <table className="w-full text-xs">
+                  <table className="w-full min-w-[420px] text-xs">
                     <thead>
                       <tr className="bg-[#F8FAFC] text-[#64748B] border-b border-[#E2E8F0]">
                         <th className="py-2 px-2 text-left">Item / Alat</th>
@@ -1056,7 +1056,7 @@ export default function CostingPage() {
                   </button>
                 </div>
                 <div className="overflow-x-auto border border-[#E2E8F0] rounded-xl">
-                  <table className="w-full text-xs">
+                  <table className="w-full min-w-[420px] text-xs">
                     <thead>
                       <tr className="bg-[#F8FAFC] text-[#64748B] border-b border-[#E2E8F0]">
                         <th className="py-2 px-2 text-left">Item Testing / Sertifikasi</th>

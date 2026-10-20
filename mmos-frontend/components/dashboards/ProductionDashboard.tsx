@@ -68,7 +68,7 @@ export function ProductionDashboard() {
         </Link>
       </div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         <KpiCard title="Production Order" value={productionOrders.length}
           subtitle={`${inProgressPO.length} berjalan · ${releasedPO.length} dirilis`}
           icon={Factory} color="red"

@@ -96,9 +96,10 @@ const nav = [
 interface SidebarProps {
   collapsed: boolean;
   onToggle: () => void;
+  onNavigate?: () => void;
 }
 
-export function Sidebar({ collapsed, onToggle }: SidebarProps) {
+export function Sidebar({ collapsed, onToggle, onNavigate }: SidebarProps) {
   const { user, isAllowed } = useAuth();
   const pathname = usePathname();
   const [expanded, setExpanded] = useState<string[]>(["Proyek", "Produksi"]);
@@ -126,7 +127,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
     >
       {/* ── Logo & Toggle Header (64px matches TopBar) ── */}
       <div className="shrink-0 h-16 border-b border-[#E2E8F0] bg-white flex items-center justify-between px-4">
-        <Link href="/" className="flex items-center flex-1 min-w-0 pr-2 group">
+        <Link href="/" onClick={onNavigate} className="flex items-center flex-1 min-w-0 pr-2 group">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/buildlink.png"
@@ -156,6 +157,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
               <Link
                 key={item.href}
                 href={item.href}
+                onClick={onNavigate}
                 className={cn(
                   "flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13px] font-medium transition-all duration-150 whitespace-nowrap",
                   active
@@ -202,6 +204,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
                       <Link
                         key={child.href}
                         href={child.href}
+                        onClick={onNavigate}
                         className={cn(
                           "flex items-center gap-2 px-2.5 py-1.5 rounded-md text-[12px] transition-all duration-150 whitespace-nowrap",
                           childActive

@@ -21,7 +21,7 @@ export default function DashboardLoading() {
       </div>
 
       {/* KPI Cards Skeleton Grid */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {[1, 2, 3, 4].map((i) => (
           <div key={i} className="card p-5 space-y-3">
             <div className="flex justify-between items-center">

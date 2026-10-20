@@ -338,7 +338,7 @@ export default function QuotationsPage() {
 
         {/* Table */}
         <div className="overflow-x-auto border border-border rounded-lg">
-          <table className="w-full text-sm">
+          <table className="w-full min-w-[850px] text-sm">
             <thead>
               <tr className="border-b border-border bg-surface-2 text-text-secondary text-xs">
                 <th className="text-left py-3 px-4 font-semibold cursor-pointer hover:text-accent transition-colors" onClick={() => toggleSort("code")}>
@@ -436,7 +436,7 @@ export default function QuotationsPage() {
       {modal?.type === "view" && modal.item && (
         <Modal open title={`Detail Quotation — ${modal.item.code}`} onClose={() => setModal(null)} size="lg">
           <div className="space-y-5">
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
               {[
                 { label: "Pelanggan / Klien", val: modal.item.customer },
                 { label: "Tanggal Diterbitkan", val: modal.item.date },
@@ -460,7 +460,7 @@ export default function QuotationsPage() {
                 <span className="text-xs text-text-secondary font-mono">{modal.item.items?.length || 0} item terdaftar</span>
               </div>
               <div className="overflow-x-auto border border-border rounded-lg">
-                <table className="w-full text-sm">
+                <table className="w-full min-w-[550px] text-sm">
                   <thead>
                     <tr className="border-b border-border bg-surface-2 text-text-secondary text-xs">
                       <th className="text-left py-2 px-3">Deskripsi Produk / Jasa</th>
@@ -731,7 +731,7 @@ export default function QuotationsPage() {
               </div>
 
               <div className="overflow-x-auto border border-border rounded-xl">
-                <table className="w-full text-xs">
+                <table className="w-full min-w-[700px] text-xs">
                   <thead>
                     <tr className="bg-surface-2 text-text-secondary border-b border-border">
                       <th className="py-2.5 px-3 text-center w-10">No</th>

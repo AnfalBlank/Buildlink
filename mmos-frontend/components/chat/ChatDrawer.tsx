@@ -2,10 +2,11 @@
 import { useState, useEffect, useRef } from "react";
 import {
   MessageSquare, X, Send, Search, CheckCheck, Paperclip,
-  Smile, User, Phone, Video, MoreVertical, Circle
+  Smile, User, Phone, Video, MoreVertical, Circle, ArrowLeft
 } from "lucide-react";
 import { users } from "@/lib/dummy-data";
 import { useToast } from "@/components/ui/Toast";
+import { cn } from "@/lib/utils";
 
 interface Message {
   id: string;
@@ -141,6 +142,7 @@ export function ChatDrawer({ open, onClose }: ChatDrawerProps) {
   const [conversations, setConversations] = useState<Record<string, Message[]>>(initialConversations);
   const [inputText, setInputText] = useState("");
   const [searchContact, setSearchContact] = useState("");
+  const [mobileView, setMobileView] = useState<"contacts" | "chat">("contacts");
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const activeContact = contacts.find(c => c.id === activeContactId) ?? contacts[0];
@@ -276,7 +278,12 @@ export function ChatDrawer({ open, onClose }: ChatDrawerProps) {
         {/* Drawer Body: 2 Columns (Contacts & Conversation) */}
         <div className="flex-1 flex overflow-hidden">
           {/* Left Panel: Contact List */}
-          <div className="w-64 sm:w-72 border-r border-[#E2E8F0] bg-[#F8FAFC]/50 flex flex-col shrink-0">
+          <div
+            className={cn(
+              "w-full sm:w-72 border-r border-[#E2E8F0] bg-[#F8FAFC]/50 flex-col shrink-0",
+              mobileView === "chat" ? "hidden sm:flex" : "flex"
+            )}
+          >
             {/* Search contacts */}
             <div className="p-3 border-b border-[#E2E8F0] bg-white">
               <div className="relative">
@@ -300,6 +307,7 @@ export function ChatDrawer({ open, onClose }: ChatDrawerProps) {
                     key={c.id}
                     onClick={() => {
                       setActiveContactId(c.id);
+                      setMobileView("chat");
                       setContacts(prev =>
                         prev.map(item => (item.id === c.id ? { ...item, unreadCount: 0 } : item))
                       );
@@ -340,11 +348,25 @@ export function ChatDrawer({ open, onClose }: ChatDrawerProps) {
           </div>
 
           {/* Right Panel: Conversation Window */}
-          <div className="flex-1 flex flex-col bg-white overflow-hidden">
+          <div
+            className={cn(
+              "flex-1 flex-col bg-white overflow-hidden",
+              mobileView === "contacts" ? "hidden sm:flex" : "flex"
+            )}
+          >
             {/* Active Contact Header */}
             <div className="px-4 py-3 border-b border-[#E2E8F0] bg-white flex items-center justify-between shrink-0">
-              <div className="flex items-center gap-3 min-w-0">
-                <div className="relative">
+              <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+                <button
+                  type="button"
+                  onClick={() => setMobileView("contacts")}
+                  className="sm:hidden p-1.5 -ml-1 rounded-lg hover:bg-[#F1F5F9] text-[#64748B] transition-colors cursor-pointer shrink-0"
+                  title="Kembali ke Daftar Kontak"
+                  aria-label="Kembali ke Daftar Kontak"
+                >
+                  <ArrowLeft size={16} />
+                </button>
+                <div className="relative shrink-0">
                   <div className="w-9 h-9 rounded-xl bg-[#2563EB] text-white font-bold text-xs flex items-center justify-center">
                     {activeContact.name.split(" ").map(n => n[0]).slice(0, 2).join("")}
                   </div>
@@ -360,7 +382,7 @@ export function ChatDrawer({ open, onClose }: ChatDrawerProps) {
                 </div>
               </div>
 
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-1 shrink-0">
                 <span className="text-[10px] text-[#64748B] bg-[#F1F5F9] px-2 py-0.5 rounded-md font-mono">
                   {activeContact.online ? "Online" : "Offline"}
                 </span>

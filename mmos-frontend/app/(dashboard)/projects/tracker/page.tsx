@@ -132,7 +132,7 @@ function TaskRow({ task, onEdit, onDelete, onStatusChange }: {
       </div>
 
       {/* Actions */}
-      <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
+      <div className="flex gap-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity flex-shrink-0">
         <button onClick={() => onEdit(task)} className="p-1.5 rounded hover:bg-[#E2E8F0] text-[#9CA3AF] hover:text-[#2563EB] transition-colors" title="Edit Task">
           <Pencil size={12} />
         </button>
@@ -601,7 +601,7 @@ export default function ProjectTrackerPage() {
       </div>
 
       {/* ── Project selector ── */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
         {projects.filter(p => p.status === "Active" || p.status === "Draft").map(p => {
           const pp = progressProyek(p.id);
           const sel = p.id === selectedPid;
@@ -692,7 +692,7 @@ export default function ProjectTrackerPage() {
 
       {/* ── Tabs + Search & Filter ── */}
       <div className="flex items-center justify-between flex-wrap gap-3">
-        <div className="flex gap-1 border border-[#E2E8F0] rounded-lg p-1 bg-white shadow-xs">
+        <div className="flex gap-1 border border-[#E2E8F0] rounded-lg p-1 bg-white shadow-xs overflow-x-auto max-w-full">
           {([
             { id:"breakdown",  label:"Task Breakdown", icon:<List size={13}/> },
             { id:"gantt",      label:"Gantt Timeline", icon:<CalendarRange size={13}/> },

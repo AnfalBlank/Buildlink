@@ -44,7 +44,7 @@ export function RoleSwitcher() {
       </button>
 
       {open && (
-        <div className="absolute right-0 top-full mt-2 w-80 bg-white rounded-2xl border border-[#CBD5E1]/80 shadow-2xl z-50 overflow-hidden animate-slide-down">
+        <div className="absolute right-0 top-full mt-2 w-80 max-w-[calc(100vw-24px)] bg-white rounded-2xl border border-[#CBD5E1]/80 shadow-2xl z-50 overflow-hidden animate-slide-down">
           {/* Header */}
           <div className="px-4 py-3 border-b border-[#F1F5F9] bg-[#F8FAFC]/70">
             <div className="flex items-center gap-2">
