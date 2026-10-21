@@ -4,16 +4,28 @@ import { goodsReceipts as initialData, purchaseOrders } from "@/lib/dummy-data";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { StatusBadge } from "@/components/ui/Badge";
 import { Modal } from "@/components/ui/Modal";
-import { Plus, Eye, Truck, Search } from "lucide-react";
+import { Plus, Eye, Search } from "lucide-react";
+import { PhotoEvidenceUpload, PhotoEvidenceItem, EVIDENCE_PRESETS } from "@/components/ui/PhotoEvidenceUpload";
 
-type GR = typeof initialData[0];
+type GR = typeof initialData[0] & { photos?: PhotoEvidenceItem[] };
 
 export default function GoodsReceiptPage() {
-  const [data, setData] = useState(initialData);
+  const [data, setData] = useState<GR[]>(() =>
+    initialData.map(gr => {
+      if (gr.id === "GR001" || gr.id === "GR003") {
+        return {
+          ...gr,
+          photos: [...EVIDENCE_PRESETS["goods-receipt"]],
+        };
+      }
+      return { ...gr, photos: [] };
+    })
+  );
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   const [modal, setModal] = useState<{type:"view"|"add";item?:GR}|null>(null);
   const [form, setForm] = useState<Partial<{poId:string;receivedBy:string;receivedDate:string}>>({});
+  const [formPhotos, setFormPhotos] = useState<PhotoEvidenceItem[]>([]);
 
   const filtered = data.filter(gr => {
     const q = search.toLowerCase();
@@ -31,20 +43,36 @@ export default function GoodsReceiptPage() {
       poId: form.poId ?? "",
       vendor: po.vendor,
       receivedDate: form.receivedDate ?? new Date().toISOString().split("T")[0],
-      receivedBy: form.receivedBy ?? "",
+      receivedBy: form.receivedBy ?? "Gudang Andi",
       status: "Partial",
       items: po.items.map(i => ({ material: i.material, qty: i.qty - i.qtyReceived, uom: i.uom, qcStatus: "Pending", notes: "" })),
+      photos: formPhotos,
     };
     setData([...data, newGR]);
     setModal(null);
+    setFormPhotos([]);
   };
 
   return (
     <div>
       <PageHeader
         title="Goods Receipt"
-        subtitle="Penerimaan barang dari vendor"
-        actions={<button className="btn-primary flex items-center gap-2" onClick={() => { setForm({}); setModal({ type: "add" }); }}><Plus size={16} />New GR</button>}
+        subtitle="Penerimaan barang dari vendor, verifikasi visual, dan bukti foto gudang"
+        actions={
+          <button 
+            className="btn-primary flex items-center gap-2 cursor-pointer shadow-xs active:scale-95 transition-all" 
+            onClick={() => { 
+              setForm({
+                receivedDate: new Date().toISOString().split("T")[0],
+                receivedBy: "Gudang Andi",
+              }); 
+              setFormPhotos([]);
+              setModal({ type: "add" }); 
+            }}
+          >
+            <Plus size={16} /> New GR
+          </button>
+        }
       />
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-6">
@@ -73,7 +101,7 @@ export default function GoodsReceiptPage() {
         </div>
         <div className="overflow-x-auto w-full"><table className="w-full text-sm min-w-[850px]">
           <thead><tr className="border-b border-border">
-            {["GR Code","Ref PO","Vendor","Received Date","Received By","Status","Items",""].map(h => (
+            {["GR Code","Ref PO","Vendor","Received Date","Received By","Status","Items","Bukti Foto",""].map(h => (
               <th key={h} className="text-left py-3 px-3 text-text-secondary font-medium text-xs whitespace-nowrap">{h}</th>
             ))}
           </tr></thead>
@@ -88,7 +116,16 @@ export default function GoodsReceiptPage() {
                 <td className="py-3 px-3 whitespace-nowrap"><StatusBadge status={gr.status} /></td>
                 <td className="py-3 px-3 font-mono text-text-secondary whitespace-nowrap">{gr.items.length}</td>
                 <td className="py-3 px-3 whitespace-nowrap">
-                  <button className="text-text-secondary hover:text-accent" onClick={() => setModal({ type: "view", item: gr })}><Eye size={14} /></button>
+                  {gr.photos && gr.photos.length > 0 ? (
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono font-semibold bg-emerald-500/10 text-emerald-600 border border-emerald-500/30">
+                      ✓ {gr.photos.length} Foto
+                    </span>
+                  ) : (
+                    <span className="text-[10px] text-text-secondary">Tidak ada</span>
+                  )}
+                </td>
+                <td className="py-3 px-3 whitespace-nowrap">
+                  <button className="text-text-secondary hover:text-accent cursor-pointer" title="Lihat Detail Goods Receipt" onClick={() => setModal({ type: "view", item: gr })}><Eye size={14} /></button>
                 </td>
               </tr>
             ))}
@@ -108,8 +145,9 @@ export default function GoodsReceiptPage() {
               </div>
             ))}
           </div>
+
           <h4 className="text-sm font-semibold text-text-primary mb-3">Received Items</h4>
-          <div className="overflow-x-auto w-full"><table className="w-full text-sm min-w-[550px]">
+          <div className="overflow-x-auto w-full mb-4"><table className="w-full text-sm min-w-[550px]">
             <thead><tr className="border-b border-border">
               {["Material","Qty Received","UOM","QC Status","Notes"].map(h => (
                 <th key={h} className="text-left py-2 px-3 text-text-secondary text-xs whitespace-nowrap">{h}</th>
@@ -129,7 +167,18 @@ export default function GoodsReceiptPage() {
               ))}
             </tbody>
           </table></div>
-          <div className="flex justify-end gap-2 mt-4">
+
+          {/* Photo Evidence in Goods Receipt View */}
+          <div className="pt-2 border-t border-border mb-3">
+            <PhotoEvidenceUpload
+              readOnly
+              photos={modal.item.photos || []}
+              title="Dokumentasi Bukti Foto Fisik & Verifikasi Label Barcode"
+              description="Arsip visual kondisi material saat dibongkar di dermaga penerimaan gudang."
+            />
+          </div>
+
+          <div className="flex justify-end gap-2 mt-4 pt-3 border-t border-border">
             <button className="btn-secondary" onClick={() => setModal(null)}>Close</button>
             {modal.item.status !== "Accepted" && (
               <button className="btn-primary" onClick={() => { setData(data.map(g => g.id === modal.item!.id ? { ...g, status: "Accepted" } : g)); setModal(null); }}>
@@ -141,7 +190,7 @@ export default function GoodsReceiptPage() {
       )}
 
       {modal?.type === "add" && (
-        <Modal open title="New Goods Receipt" onClose={() => setModal(null)}>
+        <Modal open title="New Goods Receipt" onClose={() => setModal(null)} size="lg">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="text-text-secondary text-xs mb-1.5 block">Reference PO</label>
@@ -158,8 +207,20 @@ export default function GoodsReceiptPage() {
               <label className="text-text-secondary text-xs mb-1.5 block">Received By</label>
               <input className="input" value={form.receivedBy ?? ""} onChange={e => setForm({ ...form, receivedBy: e.target.value })} />
             </div>
+
+            {/* Photo Evidence in New GR Form */}
+            <div className="sm:col-span-2 pt-2 border-t border-border">
+              <PhotoEvidenceUpload
+                photos={formPhotos}
+                onChange={setFormPhotos}
+                presetType="goods-receipt"
+                title="Lampirkan Foto Bukti Bongkar Muat / Surat Jalan Vendor"
+                description="Ambil foto label barcode, stempel QC vendor, atau kondisi kemasan material."
+                defaultInspector="Petugas Penerimaan Gudang"
+              />
+            </div>
           </div>
-          <div className="flex justify-end gap-2 mt-5">
+          <div className="flex justify-end gap-2 mt-5 pt-3 border-t border-border">
             <button className="btn-secondary" onClick={() => setModal(null)}>Cancel</button>
             <button className="btn-primary" onClick={handleCreate}>Create GR</button>
           </div>

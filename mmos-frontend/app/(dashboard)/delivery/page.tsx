@@ -10,8 +10,9 @@ import {
   Plus, Eye, Pencil, Truck, CheckCircle2, Search, Printer,
   Calendar, ArrowUpDown, ShieldCheck, MapPin, User, FileText
 } from "lucide-react";
+import { PhotoEvidenceUpload, PhotoEvidenceItem, EVIDENCE_PRESETS } from "@/components/ui/PhotoEvidenceUpload";
 
-type DO = typeof initialData[0];
+type DO = typeof initialData[0] & { photos?: PhotoEvidenceItem[] };
 
 const CHECKLIST = [
   "Final inspection QC passed & certificate signed",
@@ -24,7 +25,17 @@ const CHECKLIST = [
 
 export default function DeliveryPage() {
   const { toast } = useToast();
-  const [data, setData] = useState(initialData);
+  const [data, setData] = useState<DO[]>(() =>
+    initialData.map(d => {
+      if (d.id === "DO001") {
+        return {
+          ...d,
+          photos: [...EVIDENCE_PRESETS.delivery],
+        };
+      }
+      return { ...d, photos: [] };
+    })
+  );
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   const [periodFilter, setPeriodFilter] = useState("All");
@@ -34,6 +45,7 @@ export default function DeliveryPage() {
   const [modal, setModal] = useState<{ type: "add" | "view" | "checklist"; item?: DO } | null>(null);
   const [form, setForm] = useState<Partial<DO>>({});
   const [checks, setChecks] = useState<Record<string, boolean>>({});
+  const [checklistPhotos, setChecklistPhotos] = useState<PhotoEvidenceItem[]>([]);
 
   // Confirm dialog state
   const [confirmState, setConfirmState] = useState<{
@@ -149,7 +161,7 @@ export default function DeliveryPage() {
       variant: "primary",
       confirmText: "Otorisasi Rilis",
       action: () => {
-        setData(data.map(item => (item.id === d.id ? { ...item, status: "Ready for Delivery" } : item)));
+        setData(data.map(item => (item.id === d.id ? { ...item, status: "Ready for Delivery", photos: checklistPhotos } : item)));
         toast.success("Otorisasi Berhasil", `Unit ${d.code} siap diberangkatkan.`);
         setConfirmState(null);
         setModal(null);
@@ -317,6 +329,7 @@ export default function DeliveryPage() {
                           title="Checklist Otorisasi Rilis"
                           onClick={() => {
                             setChecks({});
+                            setChecklistPhotos(d.photos && d.photos.length > 0 ? [...d.photos] : [...EVIDENCE_PRESETS.delivery]);
                             setModal({ type: "checklist", item: d });
                           }}
                         >
@@ -402,6 +415,16 @@ export default function DeliveryPage() {
               </div>
             </div>
 
+            {/* Attached Photo Evidence in View Modal */}
+            <div className="pt-2 border-t border-[#F1F5F9]">
+              <PhotoEvidenceUpload
+                readOnly
+                photos={modal.item.photos || []}
+                title="Dokumentasi Bukti Foto Pengiriman & Lashing"
+                description="Dokumentasi kargo pengiriman dan pengikatan saat keberangkatan armada pabrik."
+              />
+            </div>
+
             {/* Tanda Tangan Serah Terima */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-center text-xs pt-3 border-t border-[#F1F5F9]">
               <div className="p-3 bg-[#F8FAFC] rounded-xl">
@@ -455,7 +478,7 @@ export default function DeliveryPage() {
 
       {/* Release Checklist Modal */}
       {modal?.type === "checklist" && modal.item && (
-        <Modal open title={`Checklist Otorisasi Pelepasan — ${modal.item.code}`} onClose={() => setModal(null)} size="md">
+        <Modal open title={`Checklist Otorisasi Pelepasan — ${modal.item.code}`} onClose={() => setModal(null)} size="lg">
           <div className="space-y-4">
             <p className="text-xs text-[#64748B]">
               Seluruh parameter kualitas, kepatuhan keselamatan, dan administrasi wajib diverifikasi sebelum unit meninggalkan gerbang pabrik.
@@ -479,6 +502,18 @@ export default function DeliveryPage() {
                   {checks[item] && <CheckCircle2 size={16} className="text-[#16A34A] shrink-0" />}
                 </label>
               ))}
+            </div>
+
+            {/* Photo Evidence in Checklist Modal */}
+            <div className="pt-2 border-t border-[#E2E8F0]">
+              <PhotoEvidenceUpload
+                photos={checklistPhotos}
+                onChange={setChecklistPhotos}
+                presetType="delivery"
+                title="Bukti Foto Pemuatan Truk & Pengikatan (Lashing Inspection)"
+                description="Verifikasi kepatuhan strapping ratchet, sudut pelindung, dan distribusi beban fisik."
+                defaultInspector="Logistik & HSE"
+              />
             </div>
 
             <div className="p-3 bg-[#EFF6FF] rounded-xl border border-[#BFDBFE] flex items-center justify-between text-xs">

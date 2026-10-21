@@ -10,11 +10,19 @@ import {
   Plus, Eye, Pencil, CheckCircle2, XCircle, Clock, Search, 
   Printer, ArrowUpDown, Calendar, ShieldCheck, AlertTriangle 
 } from "lucide-react";
+import { PhotoEvidenceUpload, PhotoEvidenceItem, EVIDENCE_PRESETS } from "@/components/ui/PhotoEvidenceUpload";
 
-type QCI = typeof initialData[0];
+type QCI = typeof initialData[0] & { photos?: PhotoEvidenceItem[] };
 
 export default function InspectionsPage() {
-  const [data, setData] = useState<any[]>(initialData);
+  const [data, setData] = useState<QCI[]>(() => 
+    initialData.map(q => {
+      if (q.id === "QCI001") {
+        return { ...q, photos: [...EVIDENCE_PRESETS.qc] };
+      }
+      return { ...q, photos: [] };
+    })
+  );
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   const [periodFilter, setPeriodFilter] = useState("all");
@@ -23,6 +31,8 @@ export default function InspectionsPage() {
 
   const [modal, setModal] = useState<{ type: "view" | "add" | "result" | "print"; item?: QCI } | null>(null);
   const [form, setForm] = useState<Partial<QCI>>({});
+  const [resultPhotos, setResultPhotos] = useState<PhotoEvidenceItem[]>([]);
+  const [addPhotos, setAddPhotos] = useState<PhotoEvidenceItem[]>([]);
   const [resultForm, setResultForm] = useState<{ status: string; result: string; notes: string }>({
     status: "Pass",
     result: "",
@@ -112,10 +122,12 @@ export default function InspectionsPage() {
           criteria: form.criteria ?? "Dimensi toleransi ±0.02mm, uji visual NDT bebas cacat",
           result: null,
           notes: form.notes ?? "",
+          photos: addPhotos,
         };
         setData([newItem, ...data]);
         toast.success("Inspeksi Didaftarkan", `${newCode} siap dilakukan pemeriksaan fisik.`);
         setModal(null);
+        setAddPhotos([]);
         setConfirmConfig(prev => ({ ...prev, open: false }));
       }
     });
@@ -147,6 +159,7 @@ export default function InspectionsPage() {
             status: resultForm.status,
             result: resultForm.result,
             notes: resultForm.notes,
+            photos: resultPhotos,
           };
         }));
 
@@ -343,9 +356,10 @@ export default function InspectionsPage() {
                         </button>
                         {q.status === "Pending" && (
                           <button 
-                            className="btn-secondary py-1 px-2.5 text-xs text-amber-500 border-amber-500/30 hover:bg-amber-500/10 font-medium"
+                            className="btn-secondary py-1 px-2.5 text-xs text-amber-500 border-amber-500/30 hover:bg-amber-500/10 font-medium cursor-pointer"
                             onClick={() => { 
                               setResultForm({ status: "Pass", result: "", notes: "" }); 
+                              setResultPhotos(q.photos && q.photos.length > 0 ? [...q.photos] : [...EVIDENCE_PRESETS.qc]);
                               setModal({ type: "result", item: q }); 
                             }}
                           >
@@ -364,7 +378,7 @@ export default function InspectionsPage() {
 
       {/* View Modal */}
       {modal?.type === "view" && modal.item && (
-        <Modal open title={`Detail Hasil QC — ${modal.item.code}`} onClose={() => setModal(null)} size="md">
+        <Modal open title={`Detail Hasil QC — ${modal.item.code}`} onClose={() => setModal(null)} size="lg">
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-3">
               {[
@@ -391,6 +405,16 @@ export default function InspectionsPage() {
               </div>
             )}
 
+            {/* Photo Evidence Section */}
+            <div className="pt-2 border-t border-border/80">
+              <PhotoEvidenceUpload
+                readOnly
+                photos={modal.item.photos || []}
+                title="Dokumentasi Bukti Foto Pengujian QC"
+                description="Arsip visual hasil pengujian dimensi dan inspeksi visual permukaan unit."
+              />
+            </div>
+
             <div className="flex items-center justify-between pt-3 border-t border-border">
               <button 
                 className="btn-secondary flex items-center gap-1.5 text-xs"
@@ -406,7 +430,7 @@ export default function InspectionsPage() {
 
       {/* Record Result Modal */}
       {modal?.type === "result" && modal.item && (
-        <Modal open title={`Pencatatan Hasil Pengujian — ${modal.item.code}`} onClose={() => setModal(null)}>
+        <Modal open title={`Pencatatan Hasil Pengujian — ${modal.item.code}`} onClose={() => setModal(null)} size="lg">
           <div className="space-y-4">
             <div className="bg-surface-2 rounded-lg p-3 border border-border">
               <p className="text-text-secondary text-xs mb-0.5">Unit Teruji & Tahapan:</p>
@@ -445,6 +469,18 @@ export default function InspectionsPage() {
                 placeholder="Rincian catatan inspeksi teknis untuk arsip penjaminan mutu..."
                 value={resultForm.notes} 
                 onChange={e => setResultForm({ ...resultForm, notes: e.target.value })} 
+              />
+            </div>
+
+            {/* Photo Evidence Component */}
+            <div className="pt-2 border-t border-border">
+              <PhotoEvidenceUpload
+                photos={resultPhotos}
+                onChange={setResultPhotos}
+                presetType="qc"
+                title="Unggah Bukti Foto Hasil Pemeriksaan"
+                description="Lampirkan foto pengukuran caliper, mikrometer, atau visual hasil las."
+                defaultInspector={modal.item.inspector}
               />
             </div>
 
@@ -559,6 +595,37 @@ export default function InspectionsPage() {
                 </table>
               </div>
 
+              {/* Photographic Evidence Annex (if photos attached) */}
+              {modal.item.photos && modal.item.photos.length > 0 && (
+                <div className="pt-3 border-t border-slate-200 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <p className="font-bold text-slate-800 text-[11px] uppercase tracking-wider">
+                      Lampiran Dokumentasi Visual Mutu & Bukti Pemeriksaan
+                    </p>
+                    <span className="text-[10px] text-slate-500 font-mono">
+                      {modal.item.photos.length} Berkas Bukti Foto Terverifikasi
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    {modal.item.photos.map((photo, pIdx) => (
+                      <div key={photo.id || pIdx} className="p-2 rounded border border-slate-200 bg-slate-50 flex gap-2.5 items-start">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img 
+                          src={photo.url} 
+                          alt={photo.title || "Bukti Uji"} 
+                          className="w-24 h-18 object-cover rounded border border-slate-300 shrink-0" 
+                        />
+                        <div className="overflow-hidden space-y-0.5">
+                          <p className="font-bold text-slate-900 text-[11px] truncate">{photo.title || "Bukti Inspeksi"}</p>
+                          <p className="text-[10px] text-slate-600 line-clamp-2 leading-tight">{photo.caption || "Pemeriksaan visual fisik"}</p>
+                          <p className="text-[9px] text-slate-400 font-mono pt-1">{photo.timestamp}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {/* Signatures */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-12 pt-8 text-center text-xs">
                 <div>
@@ -581,7 +648,7 @@ export default function InspectionsPage() {
 
       {/* Add Inspection Modal */}
       {modal?.type === "add" && (
-        <Modal open title="Daftarkan Lembar Pengujian QC Baru" onClose={() => setModal(null)}>
+        <Modal open title="Daftarkan Lembar Pengujian QC Baru" onClose={() => setModal(null)} size="lg">
           <div className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
@@ -634,6 +701,17 @@ export default function InspectionsPage() {
                 placeholder="Contoh: Dimensi toleransi ±0.02mm, uji visual NDT bebas cacat las..."
                 value={form.criteria ?? ""} 
                 onChange={e => setForm({ ...form, criteria: e.target.value })} 
+              />
+            </div>
+
+            {/* Photo Evidence in Add Modal */}
+            <div className="pt-2 border-t border-border">
+              <PhotoEvidenceUpload
+                photos={addPhotos}
+                onChange={setAddPhotos}
+                presetType="qc"
+                title="Lampiran Foto Awal / Gambar Kerja"
+                description="Opsional: lampirkan foto benda uji sebelum inspeksi dimulai."
               />
             </div>
 

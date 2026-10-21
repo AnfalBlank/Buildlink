@@ -4,19 +4,47 @@ import { ncrs as initialData } from "@/lib/dummy-data";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { StatusBadge } from "@/components/ui/Badge";
 import { Modal } from "@/components/ui/Modal";
-import { Plus, Eye, Pencil, AlertTriangle, Search } from "lucide-react";
+import { Plus, Eye, Pencil, Search } from "lucide-react";
+import { PhotoEvidenceUpload, PhotoEvidenceItem, EVIDENCE_PRESETS } from "@/components/ui/PhotoEvidenceUpload";
 
-type NCR = typeof initialData[0];
+export interface NCR {
+  id: string;
+  code: string;
+  qcInspectionId: string | null;
+  serial: string;
+  title: string;
+  category: string;
+  severity: string;
+  description: string;
+  disposition: string;
+  rootCause: string;
+  correctiveAction: string;
+  pic: string;
+  dueDate: string;
+  status: string;
+  closedDate: string | null;
+  photos?: PhotoEvidenceItem[];
+}
 const DISPOSITIONS = ["Rework","Repair","Use-as-is","Return to Vendor","Scrap"];
 const CATEGORIES = ["Fabrication Defect","Welding Defect","Dimensional Defect","Material Defect","Assembly Defect","Documentation"];
 
 export default function NCRPage() {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [data, setData] = useState<any[]>(initialData);
+  const [data, setData] = useState<NCR[]>(() =>
+    initialData.map(n => {
+      if (n.id === "NCR001" || n.id === "NCR002") {
+        return {
+          ...n,
+          photos: [...EVIDENCE_PRESETS.ncr],
+        };
+      }
+      return { ...n, photos: [] };
+    })
+  );
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   const [modal, setModal] = useState<{type:"add"|"edit"|"view";item?:NCR}|null>(null);
   const [form, setForm] = useState<Partial<NCR>>({});
+  const [formPhotos, setFormPhotos] = useState<PhotoEvidenceItem[]>([]);
 
   const filtered = data.filter(n => {
     const q = search.toLowerCase();
@@ -27,7 +55,7 @@ export default function NCRPage() {
 
   const handleSave = () => {
     if (modal?.type === "add") {
-      setData([...data, {
+      const newNCR: NCR = {
         id: `NCR${String(data.length+1).padStart(3,"0")}`,
         code: `NCR-2026-${String(data.length+1).padStart(3,"0")}`,
         qcInspectionId: form.qcInspectionId ?? null,
@@ -43,19 +71,33 @@ export default function NCRPage() {
         dueDate: form.dueDate ?? "",
         status: "Open",
         closedDate: null,
-      }]);
+        photos: formPhotos,
+      };
+      setData([...data, newNCR]);
     } else if (modal?.type === "edit" && modal.item) {
-      setData(data.map(n => n.id === modal.item!.id ? { ...n, ...form } as NCR : n));
+      setData(data.map(n => n.id === modal.item!.id ? { ...n, ...form, photos: formPhotos } as NCR : n));
     }
     setModal(null);
+    setFormPhotos([]);
   };
 
   return (
     <div>
       <PageHeader
         title="Non-Conformance Reports (NCR)"
-        subtitle="Laporan ketidaksesuaian kualitas"
-        actions={<button className="btn-primary flex items-center gap-2" onClick={() => { setForm({ severity: "Minor", disposition: "Rework", status: "Open" }); setModal({ type: "add" }); }}><Plus size={16} />New NCR</button>}
+        subtitle="Laporan ketidaksesuaian kualitas & arsip bukti visual cacat"
+        actions={
+          <button 
+            className="btn-primary flex items-center gap-2" 
+            onClick={() => { 
+              setForm({ severity: "Minor", disposition: "Rework", status: "Open" }); 
+              setFormPhotos([]);
+              setModal({ type: "add" }); 
+            }}
+          >
+            <Plus size={16} /> New NCR
+          </button>
+        }
       />
 
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-6">
@@ -85,7 +127,7 @@ export default function NCRPage() {
         </div>
         <div className="overflow-x-auto w-full"><table className="w-full text-sm min-w-[900px]">
           <thead><tr className="border-b border-border">
-            {["Code","Serial","Title","Category","Severity","Disposition","PIC","Due Date","Status",""].map(h => (
+            {["Code","Serial","Title","Category","Severity","Disposition","PIC","Due Date","Status","Foto Bukti",""].map(h => (
               <th key={h} className="text-left py-3 px-3 text-text-secondary font-medium text-xs whitespace-nowrap">{h}</th>
             ))}
           </tr></thead>
@@ -104,9 +146,18 @@ export default function NCRPage() {
                 <td className="py-3 px-3 text-text-secondary text-xs whitespace-nowrap">{n.dueDate}</td>
                 <td className="py-3 px-3 whitespace-nowrap"><StatusBadge status={n.status} /></td>
                 <td className="py-3 px-3 whitespace-nowrap">
+                  {n.photos && n.photos.length > 0 ? (
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono font-semibold bg-emerald-500/10 text-emerald-600 border border-emerald-500/30">
+                      ✓ {n.photos.length} Foto
+                    </span>
+                  ) : (
+                    <span className="text-[10px] text-text-secondary">Tidak ada</span>
+                  )}
+                </td>
+                <td className="py-3 px-3 whitespace-nowrap">
                   <div className="flex gap-2">
-                    <button className="text-text-secondary hover:text-accent" onClick={() => setModal({ type: "view", item: n })}><Eye size={14} /></button>
-                    <button className="text-text-secondary hover:text-accent" onClick={() => { setForm({ ...n }); setModal({ type: "edit", item: n }); }}><Pencil size={14} /></button>
+                    <button className="text-text-secondary hover:text-accent cursor-pointer" title="Lihat Detail NCR" onClick={() => setModal({ type: "view", item: n })}><Eye size={14} /></button>
+                    <button className="text-text-secondary hover:text-accent cursor-pointer" title="Edit NCR" onClick={() => { setForm({ ...n }); setFormPhotos(n.photos ? [...n.photos] : []); setModal({ type: "edit", item: n }); }}><Pencil size={14} /></button>
                   </div>
                 </td>
               </tr>
@@ -129,13 +180,25 @@ export default function NCRPage() {
               </div>
             ))}
           </div>
+
           {[["Description",modal.item.description],["Root Cause",modal.item.rootCause],["Corrective Action",modal.item.correctiveAction]].map(([l,v]) => (
             <div key={l} className="bg-surface-2 rounded-lg p-3 mb-3">
               <p className="text-text-secondary text-xs mb-1">{l}</p>
               <p className="text-text-primary text-sm">{v}</p>
             </div>
           ))}
-          <div className="flex justify-end gap-2 mt-4">
+
+          {/* Photo Evidence Section */}
+          <div className="pt-2 border-t border-border mb-3">
+            <PhotoEvidenceUpload
+              readOnly
+              photos={modal.item.photos || []}
+              title="Bukti Foto Temuan Cacat Mutu (Defect Evidence)"
+              description="Dokumentasi visual cacat material, keretakan, atau deviasi fabrikasi terkait tiket NCR ini."
+            />
+          </div>
+
+          <div className="flex justify-end gap-2 mt-4 pt-3 border-t border-border">
             <button className="btn-secondary" onClick={() => setModal(null)}>Close</button>
             {modal.item.status === "Open" && (
               <button className="btn-primary" onClick={() => {
@@ -196,8 +259,19 @@ export default function NCRPage() {
                 <textarea className="input min-h-[60px] resize-none" value={(form as Record<string,string>)[k] ?? ""} onChange={e => setForm({ ...form, [k]: e.target.value })} />
               </div>
             ))}
+
+            {/* Photo Evidence in NCR Form */}
+            <div className="sm:col-span-2 pt-2 border-t border-border">
+              <PhotoEvidenceUpload
+                photos={formPhotos}
+                onChange={setFormPhotos}
+                presetType="ncr"
+                title="Unggah Bukti Foto Cacat Mutu"
+                description="Lampirkan foto fisik cacat, hasil penetrant test, atau dimensi di luar toleransi."
+              />
+            </div>
           </div>
-          <div className="flex justify-end gap-2 mt-5">
+          <div className="flex justify-end gap-2 mt-5 pt-3 border-t border-border">
             <button className="btn-secondary" onClick={() => setModal(null)}>Cancel</button>
             <button className="btn-primary" onClick={handleSave}>Save</button>
           </div>
