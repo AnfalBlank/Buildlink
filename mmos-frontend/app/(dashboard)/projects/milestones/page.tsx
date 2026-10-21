@@ -90,38 +90,42 @@ export default function MilestonesPage() {
             {projects.map(p=><option key={p.id} value={p.id}>{p.code} — {p.name}</option>)}
           </select>
         </div>
-        <div className="overflow-x-auto"><table className="w-full text-sm">
-          <thead><tr className="border-b border-border">
-            {["Project","Milestone","Weight","Target Date","Actual Date","Completion","PIC","Status",""].map(h=>(
-              <th key={h} className="text-left py-3 px-3 text-text-secondary font-medium text-xs">{h}</th>
-            ))}
-          </tr></thead>
-          <tbody>
-            {filtered.map(m=>(
-              <tr key={m.id} className="table-row-hover">
-                <td className="py-3 px-3 text-text-secondary text-xs">{m.projectId}</td>
-                <td className="py-3 px-3 text-text-primary font-medium">{m.name}</td>
-                <td className="py-3 px-3 font-mono text-accent">{m.weight}%</td>
-                <td className="py-3 px-3 text-text-secondary text-xs">{m.targetDate}</td>
-                <td className="py-3 px-3 text-text-secondary text-xs">{m.actualDate ?? "—"}</td>
-                <td className="py-3 px-3 w-28"><ProgressBar value={m.completion} size="sm" showLabel/></td>
-                <td className="py-3 px-3 text-text-secondary text-xs">{m.pic}</td>
-                <td className="py-3 px-3"><StatusBadge status={m.status}/></td>
-                <td className="py-3 px-3">
-                  <div className="flex gap-2">
-                    <button className="text-text-secondary hover:text-accent" onClick={()=>{setForm({...m});setModal({type:"edit",item:m});}}><Pencil size={14}/></button>
-                    <button className="text-text-secondary hover:text-accent-alert" onClick={()=>setData(data.filter(x=>x.id!==m.id))}><Trash2 size={14}/></button>
-                  </div>
-                </td>
+        <div className="overflow-x-auto w-full border border-border rounded-lg">
+          <table className="w-full min-w-[850px] text-sm">
+            <thead>
+              <tr className="border-b border-border bg-surface-2">
+                {["Project","Milestone","Weight","Target Date","Actual Date","Completion","PIC","Status",""].map(h=>(
+                  <th key={h} className="text-left py-3 px-3 text-text-secondary font-medium text-xs whitespace-nowrap">{h}</th>
+                ))}
               </tr>
-            ))}
-          </tbody>
-        </table></div>
+            </thead>
+            <tbody className="divide-y divide-border">
+              {filtered.map(m=>(
+                <tr key={m.id} className="table-row-hover">
+                  <td className="py-3 px-3 text-text-secondary text-xs whitespace-nowrap">{m.projectId}</td>
+                  <td className="py-3 px-3 text-text-primary font-medium whitespace-nowrap">{m.name}</td>
+                  <td className="py-3 px-3 font-mono text-accent whitespace-nowrap">{m.weight}%</td>
+                  <td className="py-3 px-3 text-text-secondary text-xs whitespace-nowrap font-mono">{m.targetDate}</td>
+                  <td className="py-3 px-3 text-text-secondary text-xs whitespace-nowrap font-mono">{m.actualDate ?? "—"}</td>
+                  <td className="py-3 px-3 w-28 whitespace-nowrap"><ProgressBar value={m.completion} size="sm" showLabel/></td>
+                  <td className="py-3 px-3 text-text-secondary text-xs whitespace-nowrap">{m.pic}</td>
+                  <td className="py-3 px-3 whitespace-nowrap"><StatusBadge status={m.status}/></td>
+                  <td className="py-3 px-3 whitespace-nowrap">
+                    <div className="flex gap-2">
+                      <button className="text-text-secondary hover:text-accent cursor-pointer" onClick={()=>{setForm({...m});setModal({type:"edit",item:m});}}><Pencil size={14}/></button>
+                      <button className="text-text-secondary hover:text-accent-alert cursor-pointer" onClick={()=>setData(data.filter(x=>x.id!==m.id))}><Trash2 size={14}/></button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {(modal?.type==="add"||modal?.type==="edit") && (
         <Modal open title={modal.type==="add"?"Add Milestone":"Edit Milestone"} onClose={()=>setModal(null)}>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="text-text-secondary text-xs mb-1.5 block">Project</label>
               <select className="select" value={form.projectId??""} onChange={e=>setForm({...form,projectId:e.target.value})}>

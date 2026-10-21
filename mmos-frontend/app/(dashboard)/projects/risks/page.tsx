@@ -55,14 +55,14 @@ export default function RisksPage() {
         actions={<button className="btn-primary flex items-center gap-2" onClick={()=>{setForm({probability:"Medium",impact:"Medium",status:"Open"});setModal({type:"add"});}}><Plus size={16}/>Add Risk</button>}
       />
 
-      <div className="grid grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-6">
         {[
           {label:"Critical",count:data.filter(r=>{const l=riskLevel(r.probability,r.impact);return l.label==="Critical";}).length,cls:"text-accent-alert"},
           {label:"High",count:data.filter(r=>riskLevel(r.probability,r.impact).label==="High").length,cls:"text-orange-400"},
           {label:"Open",count:data.filter(r=>r.status==="Open").length,cls:"text-accent-warning"},
           {label:"Mitigated",count:data.filter(r=>r.status==="Mitigated").length,cls:"text-accent-success"},
         ].map(s=>(
-          <div key={s.label} className="card text-center">
+          <div key={s.label} className="card text-center p-3 sm:p-4">
             <p className="text-text-secondary text-xs mb-1">{s.label}</p>
             <p className={`font-mono font-bold text-2xl ${s.cls}`}>{s.count}</p>
           </div>
@@ -80,42 +80,46 @@ export default function RisksPage() {
             {["Open","Mitigated","Closed"].map(s => <option key={s}>{s}</option>)}
           </select>
         </div>
-        <div className="overflow-x-auto"><table className="w-full text-sm">
-          <thead><tr className="border-b border-border">
-            {["Project","Title","Probability","Impact","Risk Level","Status","Owner","Due Date","Mitigation",""].map(h=>(
-              <th key={h} className="text-left py-3 px-3 text-text-secondary font-medium text-xs">{h}</th>
-            ))}
-          </tr></thead>
-          <tbody>
-            {filtered.map(r=>{
-              const level = riskLevel(r.probability, r.impact);
-              return (
-                <tr key={r.id} className="table-row-hover">
-                  <td className="py-3 px-3 text-text-secondary text-xs">{r.projectId}</td>
-                  <td className="py-3 px-3 text-text-primary font-medium max-w-[160px]"><div className="truncate">{r.title}</div></td>
-                  <td className="py-3 px-3"><span className="badge-status border text-text-secondary bg-surface-2 border-border">{r.probability}</span></td>
-                  <td className="py-3 px-3"><span className="badge-status border text-text-secondary bg-surface-2 border-border">{r.impact}</span></td>
-                  <td className="py-3 px-3"><span className={`badge-status border ${level.cls}`}>{level.label}</span></td>
-                  <td className="py-3 px-3"><span className={`badge-status border ${r.status==="Open"?"text-accent-alert bg-accent-alert/10 border-accent-alert/30":"text-accent-success bg-accent-success/10 border-accent-success/30"}`}>{r.status}</span></td>
-                  <td className="py-3 px-3 text-text-secondary text-xs">{r.owner}</td>
-                  <td className="py-3 px-3 text-text-secondary text-xs">{r.dueDate}</td>
-                  <td className="py-3 px-3 text-text-secondary text-xs max-w-[180px]"><div className="truncate">{r.mitigation}</div></td>
-                  <td className="py-3 px-3">
-                    <div className="flex gap-2">
-                      <button className="text-text-secondary hover:text-accent" onClick={()=>{setForm({...r});setModal({type:"edit",item:r});}}><Pencil size={14}/></button>
-                      <button className="text-text-secondary hover:text-accent-alert" onClick={()=>setData(data.filter(x=>x.id!==r.id))}><Trash2 size={14}/></button>
-                    </div>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table></div>
+        <div className="overflow-x-auto w-full border border-border rounded-lg">
+          <table className="w-full min-w-[900px] text-sm">
+            <thead>
+              <tr className="border-b border-border bg-surface-2">
+                {["Project","Title","Probability","Impact","Risk Level","Status","Owner","Due Date","Mitigation",""].map(h=>(
+                  <th key={h} className="text-left py-3 px-3 text-text-secondary font-medium text-xs whitespace-nowrap">{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-border">
+              {filtered.map(r=>{
+                const level = riskLevel(r.probability, r.impact);
+                return (
+                  <tr key={r.id} className="table-row-hover">
+                    <td className="py-3 px-3 text-text-secondary text-xs whitespace-nowrap font-mono">{r.projectId}</td>
+                    <td className="py-3 px-3 text-text-primary font-medium max-w-[200px] whitespace-nowrap"><div className="truncate">{r.title}</div></td>
+                    <td className="py-3 px-3 whitespace-nowrap"><span className="badge-status border text-text-secondary bg-surface-2 border-border">{r.probability}</span></td>
+                    <td className="py-3 px-3 whitespace-nowrap"><span className="badge-status border text-text-secondary bg-surface-2 border-border">{r.impact}</span></td>
+                    <td className="py-3 px-3 whitespace-nowrap"><span className={`badge-status border ${level.cls}`}>{level.label}</span></td>
+                    <td className="py-3 px-3 whitespace-nowrap"><span className={`badge-status border ${r.status==="Open"?"text-accent-alert bg-accent-alert/10 border-accent-alert/30":"text-accent-success bg-accent-success/10 border-accent-success/30"}`}>{r.status}</span></td>
+                    <td className="py-3 px-3 text-text-secondary text-xs whitespace-nowrap">{r.owner}</td>
+                    <td className="py-3 px-3 text-text-secondary text-xs whitespace-nowrap font-mono">{r.dueDate}</td>
+                    <td className="py-3 px-3 text-text-secondary text-xs max-w-[200px] whitespace-nowrap"><div className="truncate">{r.mitigation}</div></td>
+                    <td className="py-3 px-3 whitespace-nowrap">
+                      <div className="flex gap-2">
+                        <button className="text-text-secondary hover:text-accent cursor-pointer" onClick={()=>{setForm({...r});setModal({type:"edit",item:r});}}><Pencil size={14}/></button>
+                        <button className="text-text-secondary hover:text-accent-alert cursor-pointer" onClick={()=>setData(data.filter(x=>x.id!==r.id))}><Trash2 size={14}/></button>
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {(modal?.type==="add"||modal?.type==="edit") && (
         <Modal open title={modal.type==="add"?"Add Risk":"Edit Risk"} onClose={()=>setModal(null)} size="lg">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="text-text-secondary text-xs mb-1.5 block">Project</label>
               <select className="select" value={form.projectId??""} onChange={e=>setForm({...form,projectId:e.target.value})}>
@@ -147,7 +151,7 @@ export default function RisksPage() {
               <label className="text-text-secondary text-xs mb-1.5 block">Due Date</label>
               <input type="date" className="input" value={form.dueDate??""} onChange={e=>setForm({...form,dueDate:e.target.value})}/>
             </div>
-            <div className="col-span-2">
+            <div className="col-span-1 sm:col-span-2">
               <label className="text-text-secondary text-xs mb-1.5 block">Mitigation Plan</label>
               <textarea className="input min-h-[60px] resize-none" value={form.mitigation??""} onChange={e=>setForm({...form,mitigation:e.target.value})}/>
             </div>

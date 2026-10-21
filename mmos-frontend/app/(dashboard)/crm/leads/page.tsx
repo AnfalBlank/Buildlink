@@ -67,13 +67,13 @@ export default function LeadsPage() {
       />
 
       {/* Pipeline */}
-      <div className="grid grid-cols-3 lg:grid-cols-6 gap-3 mb-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-6">
         {STAGES.map(s => {
           const count = data.filter(l => l.stage === s).length;
           const val = data.filter(l => l.stage === s).reduce((a, l) => a + l.estimatedValue, 0);
           return (
-            <div key={s} className="card text-center">
-              <p className="text-text-secondary text-xs mb-1">{s}</p>
+            <div key={s} className="card text-center p-3 sm:p-4">
+              <p className="text-text-secondary text-xs mb-1 truncate" title={s}>{s}</p>
               <p className="font-mono font-bold text-xl text-accent">{count}</p>
               {val > 0 && <p className="text-text-secondary text-xs mt-1">{(val / 1e6).toFixed(0)}M</p>}
             </div>
@@ -88,40 +88,42 @@ export default function LeadsPage() {
             <input className="input pl-9" placeholder="Search leads..." value={search} onChange={e => setSearch(e.target.value)} />
           </div>
         </div>
-        <div className="overflow-x-auto"><table className="w-full text-sm">
-          <thead>
-            <tr className="border-b border-border">
-              {["Code", "Company", "Contact", "Source", "Stage", "Est. Value", "Assigned To", "Date", "Actions"].map(h => (
-                <th key={h} className="text-left py-3 px-4 text-text-secondary font-medium text-xs">{h}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {filtered.map(l => (
-              <tr key={l.id} className="table-row-hover">
-                <td className="py-3 px-4 font-mono text-accent text-xs">{l.code}</td>
-                <td className="py-3 px-4 text-text-primary font-medium">{l.company}</td>
-                <td className="py-3 px-4 text-text-secondary">{l.contact}</td>
-                <td className="py-3 px-4 text-text-secondary text-xs">{l.source}</td>
-                <td className="py-3 px-4"><span className={`badge-status border ${stageColor(l.stage)}`}>{l.stage}</span></td>
-                <td className="py-3 px-4 font-mono text-accent text-xs">{formatCurrency(l.estimatedValue)}</td>
-                <td className="py-3 px-4 text-text-secondary text-xs">{l.assignedTo}</td>
-                <td className="py-3 px-4 text-text-secondary text-xs">{l.createdAt}</td>
-                <td className="py-3 px-4">
-                  <div className="flex gap-2">
-                    <button className="text-text-secondary hover:text-accent" onClick={() => openEdit(l)}><Pencil size={14} /></button>
-                    <button className="text-text-secondary hover:text-accent-alert" onClick={() => setData(data.filter(x => x.id !== l.id))}><Trash2 size={14} /></button>
-                  </div>
-                </td>
+        <div className="overflow-x-auto w-full border border-border rounded-lg">
+          <table className="w-full min-w-[850px] text-sm">
+            <thead>
+              <tr className="border-b border-border bg-surface-2">
+                {["Code", "Company", "Contact", "Source", "Stage", "Est. Value", "Assigned To", "Date", "Actions"].map(h => (
+                  <th key={h} className="text-left py-3 px-4 text-text-secondary font-medium text-xs whitespace-nowrap">{h}</th>
+                ))}
               </tr>
-            ))}
-          </tbody>
-        </table></div>
+            </thead>
+            <tbody className="divide-y divide-border">
+              {filtered.map(l => (
+                <tr key={l.id} className="table-row-hover">
+                  <td className="py-3 px-4 font-mono text-accent text-xs whitespace-nowrap">{l.code}</td>
+                  <td className="py-3 px-4 text-text-primary font-medium whitespace-nowrap">{l.company}</td>
+                  <td className="py-3 px-4 text-text-secondary whitespace-nowrap">{l.contact}</td>
+                  <td className="py-3 px-4 text-text-secondary text-xs whitespace-nowrap">{l.source}</td>
+                  <td className="py-3 px-4 whitespace-nowrap"><span className={`badge-status border ${stageColor(l.stage)}`}>{l.stage}</span></td>
+                  <td className="py-3 px-4 font-mono text-accent text-xs whitespace-nowrap">{formatCurrency(l.estimatedValue)}</td>
+                  <td className="py-3 px-4 text-text-secondary text-xs whitespace-nowrap">{l.assignedTo}</td>
+                  <td className="py-3 px-4 text-text-secondary text-xs whitespace-nowrap font-mono">{l.createdAt}</td>
+                  <td className="py-3 px-4 whitespace-nowrap">
+                    <div className="flex gap-2">
+                      <button className="text-text-secondary hover:text-accent cursor-pointer" onClick={() => openEdit(l)}><Pencil size={14} /></button>
+                      <button className="text-text-secondary hover:text-accent-alert cursor-pointer" onClick={() => setData(data.filter(x => x.id !== l.id))}><Trash2 size={14} /></button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {(modal?.type === "add" || modal?.type === "edit") && (
         <Modal open title={modal.type === "add" ? "Add Lead" : "Edit Lead"} onClose={() => setModal(null)}>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {[
               { label: "Company", key: "company" },
               { label: "Contact Person", key: "contact" },
@@ -147,7 +149,7 @@ export default function LeadsPage() {
                 {STAGES.map(s => <option key={s}>{s}</option>)}
               </select>
             </div>
-            <div className="col-span-2">
+            <div className="col-span-1 sm:col-span-2">
               <label className="text-text-secondary text-xs mb-1.5 block">Notes</label>
               <textarea className="input min-h-[60px] resize-none" value={form.notes ?? ""} onChange={e => setForm({ ...form, notes: e.target.value })} />
             </div>

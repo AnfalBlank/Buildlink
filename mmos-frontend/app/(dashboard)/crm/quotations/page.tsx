@@ -341,22 +341,22 @@ export default function QuotationsPage() {
           <table className="w-full min-w-[850px] text-sm">
             <thead>
               <tr className="border-b border-border bg-surface-2 text-text-secondary text-xs">
-                <th className="text-left py-3 px-4 font-semibold cursor-pointer hover:text-accent transition-colors" onClick={() => toggleSort("code")}>
+                <th className="text-left py-3 px-4 font-semibold cursor-pointer hover:text-accent transition-colors whitespace-nowrap" onClick={() => toggleSort("code")}>
                   <div className="flex items-center gap-1.5">No. Penawaran <ArrowUpDown size={12} /></div>
                 </th>
-                <th className="text-left py-3 px-4 font-semibold cursor-pointer hover:text-accent transition-colors" onClick={() => toggleSort("customer")}>
+                <th className="text-left py-3 px-4 font-semibold cursor-pointer hover:text-accent transition-colors whitespace-nowrap" onClick={() => toggleSort("customer")}>
                   <div className="flex items-center gap-1.5">Pelanggan / Klien <ArrowUpDown size={12} /></div>
                 </th>
-                <th className="text-left py-3 px-4 font-semibold cursor-pointer hover:text-accent transition-colors" onClick={() => toggleSort("date")}>
+                <th className="text-left py-3 px-4 font-semibold cursor-pointer hover:text-accent transition-colors whitespace-nowrap" onClick={() => toggleSort("date")}>
                   <div className="flex items-center gap-1.5">Tgl Terbit <ArrowUpDown size={12} /></div>
                 </th>
-                <th className="text-left py-3 px-4 font-semibold">Masa Berlaku</th>
-                <th className="text-center py-3 px-4 font-semibold">Revisi</th>
-                <th className="text-right py-3 px-4 font-semibold cursor-pointer hover:text-accent transition-colors" onClick={() => toggleSort("total")}>
+                <th className="text-left py-3 px-4 font-semibold whitespace-nowrap">Masa Berlaku</th>
+                <th className="text-center py-3 px-4 font-semibold whitespace-nowrap">Revisi</th>
+                <th className="text-right py-3 px-4 font-semibold cursor-pointer hover:text-accent transition-colors whitespace-nowrap" onClick={() => toggleSort("total")}>
                   <div className="flex items-center justify-end gap-1.5">Nilai Total (IDR) <ArrowUpDown size={12} /></div>
                 </th>
-                <th className="text-center py-3 px-4 font-semibold">Status</th>
-                <th className="text-right py-3 px-4 font-semibold">Aksi</th>
+                <th className="text-center py-3 px-4 font-semibold whitespace-nowrap">Status</th>
+                <th className="text-right py-3 px-4 font-semibold whitespace-nowrap">Aksi</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
@@ -369,30 +369,30 @@ export default function QuotationsPage() {
               ) : (
                 filteredAndSorted.map(q => (
                   <tr key={q.id} className="table-row-hover group">
-                    <td className="py-3 px-4 font-mono text-accent font-semibold text-xs">
+                    <td className="py-3 px-4 font-mono text-accent font-semibold text-xs whitespace-nowrap">
                       {q.code}
                     </td>
-                    <td className="py-3 px-4 text-text-primary font-medium">
+                    <td className="py-3 px-4 text-text-primary font-medium whitespace-nowrap">
                       {q.customer}
                     </td>
-                    <td className="py-3 px-4 text-text-secondary text-xs font-mono">
+                    <td className="py-3 px-4 text-text-secondary text-xs font-mono whitespace-nowrap">
                       {q.date}
                     </td>
-                    <td className="py-3 px-4 text-text-secondary text-xs font-mono">
+                    <td className="py-3 px-4 text-text-secondary text-xs font-mono whitespace-nowrap">
                       {q.validUntil}
                     </td>
-                    <td className="py-3 px-4 text-center">
+                    <td className="py-3 px-4 text-center whitespace-nowrap">
                       <span className="px-2 py-0.5 rounded text-[11px] bg-surface-2 text-text-secondary font-mono border border-border">
                         Rev.{q.revision}
                       </span>
                     </td>
-                    <td className="py-3 px-4 font-mono text-accent font-bold text-xs text-right">
+                    <td className="py-3 px-4 font-mono text-accent font-bold text-xs text-right whitespace-nowrap">
                       {formatCurrency(q.total)}
                     </td>
-                    <td className="py-3 px-4 text-center">
+                    <td className="py-3 px-4 text-center whitespace-nowrap">
                       <StatusBadge status={q.status} />
                     </td>
-                    <td className="py-3 px-4 text-right">
+                    <td className="py-3 px-4 text-right whitespace-nowrap">
                       <div className="flex items-center justify-end gap-1.5">
                         <button 
                           className="p-1.5 rounded hover:bg-surface-2 text-text-secondary hover:text-accent transition-colors" 

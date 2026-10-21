@@ -151,7 +151,7 @@ export default function CustomersPage() {
           </span>
         </div>
 
-        <div className="overflow-x-auto -mx-5 px-5">
+        <div className="overflow-x-auto w-full">
           <table className="table min-w-[980px]">
             <thead>
               <tr>
@@ -226,7 +226,7 @@ export default function CustomersPage() {
               </p>
             </div>
 
-            <div className="grid grid-cols-2 gap-3 text-sm">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
               {[
                 { icon: Users, label: "Kontak PIC", val: modal.item.contact },
                 { icon: Mail, label: "Email", val: modal.item.email },

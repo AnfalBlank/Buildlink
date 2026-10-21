@@ -62,23 +62,23 @@ export default function RoutingPage() {
               </div>
 
               {open && (
-                <div className="mt-4 overflow-x-auto">
-                  <table className="w-full text-sm">
-                    <thead><tr className="border-b border-border">
+                <div className="mt-4 overflow-x-auto w-full border border-border rounded-lg">
+                  <table className="w-full min-w-[700px] text-sm">
+                    <thead><tr className="border-b border-border bg-surface-2">
                       {["Seq","Operation Name","Work Center","Setup (h)","Run (h)","Skill Required","Requires QC"].map(h=>(
-                        <th key={h} className="text-left py-2 px-3 text-text-secondary font-medium text-xs">{h}</th>
+                        <th key={h} className="text-left py-2.5 px-3 text-text-secondary font-medium text-xs whitespace-nowrap">{h}</th>
                       ))}
                     </tr></thead>
-                    <tbody>
+                    <tbody className="divide-y divide-border">
                       {r.operations.map(op=>(
-                        <tr key={op.seq} className="border-b border-border/50 hover:bg-surface-2">
-                          <td className="py-2 px-3 font-mono text-accent font-bold">{op.seq}</td>
-                          <td className="py-2 px-3 text-text-primary font-medium">{op.name}</td>
-                          <td className="py-2 px-3"><span className="badge-status border text-accent bg-accent/10 border-accent/30">{op.workCenter}</span></td>
-                          <td className="py-2 px-3 font-mono text-text-secondary">{op.setupTime}h</td>
-                          <td className="py-2 px-3 font-mono text-text-secondary">{op.runTime}h</td>
-                          <td className="py-2 px-3 text-text-secondary text-xs">{op.skill}</td>
-                          <td className="py-2 px-3">{op.requiresQC?<span className="flex items-center gap-1 text-accent-warning text-xs"><ShieldCheck size={12}/>QC Required</span>:<span className="text-text-secondary text-xs">-</span>}</td>
+                        <tr key={op.seq} className="hover:bg-surface-2">
+                          <td className="py-2.5 px-3 font-mono text-accent font-bold whitespace-nowrap">{op.seq}</td>
+                          <td className="py-2.5 px-3 text-text-primary font-medium whitespace-nowrap">{op.name}</td>
+                          <td className="py-2.5 px-3 whitespace-nowrap"><span className="badge-status border text-accent bg-accent/10 border-accent/30">{op.workCenter}</span></td>
+                          <td className="py-2.5 px-3 font-mono text-text-secondary whitespace-nowrap">{op.setupTime}h</td>
+                          <td className="py-2.5 px-3 font-mono text-text-secondary whitespace-nowrap">{op.runTime}h</td>
+                          <td className="py-2.5 px-3 text-text-secondary text-xs whitespace-nowrap">{op.skill}</td>
+                          <td className="py-2.5 px-3 whitespace-nowrap">{op.requiresQC?<span className="flex items-center gap-1 text-accent-warning text-xs"><ShieldCheck size={12}/>QC Required</span>:<span className="text-text-secondary text-xs">-</span>}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -92,7 +92,7 @@ export default function RoutingPage() {
 
       {modal?.type==="view"&&(
         <Modal open title={`Routing — ${modal.item.code}`} onClose={()=>setModal(null)} size="xl">
-          <div className="mb-4 grid grid-cols-3 gap-3">
+          <div className="mb-4 grid grid-cols-2 sm:grid-cols-3 gap-3">
             {[["Code",modal.item.code],["Product",products.find(p=>p.id===modal.item.productId)?.name??modal.item.productId],
               ["Revision",modal.item.revision],["Status",modal.item.status],
               ["Total Ops",String(modal.item.operations.length)],
@@ -100,27 +100,27 @@ export default function RoutingPage() {
             ].map(([l,v])=>(
               <div key={l} className="bg-surface-2 rounded-lg p-3">
                 <p className="text-text-secondary text-xs mb-1">{l}</p>
-                <p className="text-text-primary font-medium text-sm">{v}</p>
+                <p className="text-text-primary font-medium text-sm truncate">{v}</p>
               </div>
             ))}
           </div>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead><tr className="border-b border-border">
+          <div className="overflow-x-auto w-full border border-border rounded-lg">
+            <table className="w-full min-w-[600px] text-sm">
+              <thead><tr className="border-b border-border bg-surface-2">
                 {["Seq","Operation","Work Center","Setup","Run","Skill","QC"].map(h=>(
-                  <th key={h} className="text-left py-2 px-3 text-text-secondary text-xs font-medium">{h}</th>
+                  <th key={h} className="text-left py-2.5 px-3 text-text-secondary text-xs font-medium whitespace-nowrap">{h}</th>
                 ))}
               </tr></thead>
-              <tbody>
+              <tbody className="divide-y divide-border">
                 {modal.item.operations.map(op=>(
-                  <tr key={op.seq} className="border-b border-border/50">
-                    <td className="py-2 px-3 font-mono text-accent font-bold">{op.seq}</td>
-                    <td className="py-2 px-3 text-text-primary">{op.name}</td>
-                    <td className="py-2 px-3 text-text-secondary text-xs">{op.workCenter}</td>
-                    <td className="py-2 px-3 font-mono text-text-secondary text-xs">{op.setupTime}h</td>
-                    <td className="py-2 px-3 font-mono text-text-secondary text-xs">{op.runTime}h</td>
-                    <td className="py-2 px-3 text-text-secondary text-xs">{op.skill}</td>
-                    <td className="py-2 px-3">{op.requiresQC?<ShieldCheck size={14} className="text-accent-warning"/>:<span className="text-text-secondary">-</span>}</td>
+                  <tr key={op.seq}>
+                    <td className="py-2 px-3 font-mono text-accent font-bold whitespace-nowrap">{op.seq}</td>
+                    <td className="py-2 px-3 text-text-primary whitespace-nowrap">{op.name}</td>
+                    <td className="py-2 px-3 text-text-secondary text-xs whitespace-nowrap">{op.workCenter}</td>
+                    <td className="py-2 px-3 font-mono text-text-secondary text-xs whitespace-nowrap">{op.setupTime}h</td>
+                    <td className="py-2 px-3 font-mono text-text-secondary text-xs whitespace-nowrap">{op.runTime}h</td>
+                    <td className="py-2 px-3 text-text-secondary text-xs whitespace-nowrap">{op.skill}</td>
+                    <td className="py-2 px-3 whitespace-nowrap">{op.requiresQC?<ShieldCheck size={14} className="text-accent-warning"/>:<span className="text-text-secondary">-</span>}</td>
                   </tr>
                 ))}
               </tbody>

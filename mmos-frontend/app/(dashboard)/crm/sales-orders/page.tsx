@@ -265,23 +265,23 @@ export default function SalesOrdersPage() {
           <table className="w-full min-w-[850px] text-sm">
             <thead>
               <tr className="border-b border-border bg-surface-2 text-text-secondary text-xs">
-                <th className="text-left py-3 px-4 font-semibold cursor-pointer hover:text-accent transition-colors" onClick={() => toggleSort("code")}>
+                <th className="text-left py-3 px-4 font-semibold cursor-pointer hover:text-accent transition-colors whitespace-nowrap" onClick={() => toggleSort("code")}>
                   <div className="flex items-center gap-1.5">No. SO <ArrowUpDown size={12} /></div>
                 </th>
-                <th className="text-left py-3 px-4 font-semibold cursor-pointer hover:text-accent transition-colors" onClick={() => toggleSort("customer")}>
+                <th className="text-left py-3 px-4 font-semibold cursor-pointer hover:text-accent transition-colors whitespace-nowrap" onClick={() => toggleSort("customer")}>
                   <div className="flex items-center gap-1.5">Pelanggan <ArrowUpDown size={12} /></div>
                 </th>
-                <th className="text-left py-3 px-4 font-semibold">PO Pelanggan</th>
-                <th className="text-right py-3 px-4 font-semibold cursor-pointer hover:text-accent transition-colors" onClick={() => toggleSort("contractValue")}>
+                <th className="text-left py-3 px-4 font-semibold whitespace-nowrap">PO Pelanggan</th>
+                <th className="text-right py-3 px-4 font-semibold cursor-pointer hover:text-accent transition-colors whitespace-nowrap" onClick={() => toggleSort("contractValue")}>
                   <div className="flex items-center justify-end gap-1.5">Nilai Kontrak (IDR) <ArrowUpDown size={12} /></div>
                 </th>
-                <th className="text-left py-3 px-4 font-semibold cursor-pointer hover:text-accent transition-colors" onClick={() => toggleSort("date")}>
+                <th className="text-left py-3 px-4 font-semibold cursor-pointer hover:text-accent transition-colors whitespace-nowrap" onClick={() => toggleSort("date")}>
                   <div className="flex items-center gap-1.5">Tgl Order <ArrowUpDown size={12} /></div>
                 </th>
-                <th className="text-left py-3 px-4 font-semibold">Target Kirim</th>
-                <th className="text-left py-3 px-4 font-semibold">Termin Bayar</th>
-                <th className="text-center py-3 px-4 font-semibold">Status</th>
-                <th className="text-right py-3 px-4 font-semibold">Aksi</th>
+                <th className="text-left py-3 px-4 font-semibold whitespace-nowrap">Target Kirim</th>
+                <th className="text-left py-3 px-4 font-semibold whitespace-nowrap">Termin Bayar</th>
+                <th className="text-center py-3 px-4 font-semibold whitespace-nowrap">Status</th>
+                <th className="text-right py-3 px-4 font-semibold whitespace-nowrap">Aksi</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
@@ -294,31 +294,31 @@ export default function SalesOrdersPage() {
               ) : (
                 filteredAndSorted.map(so => (
                   <tr key={so.id} className="table-row-hover group">
-                    <td className="py-3 px-4 font-mono text-accent font-semibold text-xs">
+                    <td className="py-3 px-4 font-mono text-accent font-semibold text-xs whitespace-nowrap">
                       {so.code}
                     </td>
-                    <td className="py-3 px-4 text-text-primary font-medium">
+                    <td className="py-3 px-4 text-text-primary font-medium whitespace-nowrap">
                       {so.customer}
                     </td>
-                    <td className="py-3 px-4 font-mono text-text-secondary text-xs">
+                    <td className="py-3 px-4 font-mono text-text-secondary text-xs whitespace-nowrap">
                       {so.poNumber}
                     </td>
-                    <td className="py-3 px-4 font-mono text-accent font-bold text-xs text-right">
+                    <td className="py-3 px-4 font-mono text-accent font-bold text-xs text-right whitespace-nowrap">
                       {formatCurrency(so.contractValue)}
                     </td>
-                    <td className="py-3 px-4 text-text-secondary text-xs font-mono">
+                    <td className="py-3 px-4 text-text-secondary text-xs font-mono whitespace-nowrap">
                       {so.date}
                     </td>
-                    <td className="py-3 px-4 text-text-secondary text-xs font-mono">
+                    <td className="py-3 px-4 text-text-secondary text-xs font-mono whitespace-nowrap">
                       {so.deliveryDate}
                     </td>
-                    <td className="py-3 px-4 text-text-secondary text-xs max-w-[150px] truncate" title={so.paymentTerms}>
+                    <td className="py-3 px-4 text-text-secondary text-xs max-w-[150px] truncate whitespace-nowrap" title={so.paymentTerms}>
                       {so.paymentTerms}
                     </td>
-                    <td className="py-3 px-4 text-center">
+                    <td className="py-3 px-4 text-center whitespace-nowrap">
                       <StatusBadge status={so.status} />
                     </td>
-                    <td className="py-3 px-4 text-right">
+                    <td className="py-3 px-4 text-right whitespace-nowrap">
                       <div className="flex items-center justify-end gap-1.5">
                         <button 
                           className="p-1.5 rounded hover:bg-surface-2 text-text-secondary hover:text-accent transition-colors" 
@@ -362,7 +362,7 @@ export default function SalesOrdersPage() {
       {modal?.type === "view" && modal.item && (
         <Modal open title={`Detail Sales Order — ${modal.item.code}`} onClose={() => setModal(null)} size="lg">
           <div className="space-y-5">
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {[
                 ["No. Dokumen Sales Order", modal.item.code],
                 ["Nama Pelanggan", modal.item.customer],
@@ -529,7 +529,7 @@ export default function SalesOrdersPage() {
           onClose={() => setModal(null)}
         >
           <div className="space-y-4">
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label className="text-text-secondary text-xs mb-1.5 block font-medium">Pelanggan *</label>
                 <select 
@@ -556,7 +556,7 @@ export default function SalesOrdersPage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label className="text-text-secondary text-xs mb-1.5 block font-medium">Nomor PO Pelanggan *</label>
                 <input 
@@ -579,7 +579,7 @@ export default function SalesOrdersPage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label className="text-text-secondary text-xs mb-1.5 block font-medium">Tanggal Order</label>
                 <input 

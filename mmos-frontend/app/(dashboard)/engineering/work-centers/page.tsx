@@ -61,35 +61,39 @@ export default function WorkCentersPage() {
             <input className="input pl-9" placeholder="Cari nama / tipe..." value={search} onChange={e => setSearch(e.target.value)} />
           </div>
         </div>
-        <div className="overflow-x-auto"><table className="w-full text-sm">
-          <thead><tr className="border-b border-border">
-            {["ID","Name","Type","Capacity","Unit","Status",""].map(h=>(
-              <th key={h} className="text-left py-3 px-4 text-text-secondary font-medium text-xs">{h}</th>
-            ))}
-          </tr></thead>
-          <tbody>
-            {filtered.map(w=>(
-              <tr key={w.id} className="table-row-hover">
-                <td className="py-3 px-4 font-mono text-accent text-xs">{w.id}</td>
-                <td className="py-3 px-4 text-text-primary font-medium">{w.name}</td>
-                <td className="py-3 px-4"><span className={`badge-status border ${w.type==="Machine"?"text-accent-warning bg-accent-warning/10 border-accent-warning/30":"text-accent bg-accent/10 border-accent/30"}`}>{w.type}</span></td>
-                <td className="py-3 px-4 font-mono text-text-secondary">{w.capacity}</td>
-                <td className="py-3 px-4 text-text-secondary text-xs">{w.unit}</td>
-                <td className="py-3 px-4"><StatusBadge status={w.status}/></td>
-                <td className="py-3 px-4">
-                  <div className="flex gap-2">
-                    <button className="text-text-secondary hover:text-accent" onClick={()=>{setForm({...w});setModal({type:"edit",item:w});}}><Pencil size={14}/></button>
-                    <button className="text-text-secondary hover:text-accent-alert" onClick={()=>setData(data.filter(x=>x.id!==w.id))}><Trash2 size={14}/></button>
-                  </div>
-                </td>
+        <div className="overflow-x-auto w-full border border-border rounded-lg">
+          <table className="w-full min-w-[750px] text-sm">
+            <thead>
+              <tr className="border-b border-border bg-surface-2">
+                {["ID","Name","Type","Capacity","Unit","Status",""].map(h=>(
+                  <th key={h} className="text-left py-3 px-4 text-text-secondary font-medium text-xs whitespace-nowrap">{h}</th>
+                ))}
               </tr>
-            ))}
-          </tbody>
-        </table></div>
+            </thead>
+            <tbody className="divide-y divide-border">
+              {filtered.map(w=>(
+                <tr key={w.id} className="table-row-hover">
+                  <td className="py-3 px-4 font-mono text-accent text-xs whitespace-nowrap">{w.id}</td>
+                  <td className="py-3 px-4 text-text-primary font-medium whitespace-nowrap">{w.name}</td>
+                  <td className="py-3 px-4 whitespace-nowrap"><span className={`badge-status border ${w.type==="Machine"?"text-accent-warning bg-accent-warning/10 border-accent-warning/30":"text-accent bg-accent/10 border-accent/30"}`}>{w.type}</span></td>
+                  <td className="py-3 px-4 font-mono text-text-secondary whitespace-nowrap">{w.capacity}</td>
+                  <td className="py-3 px-4 text-text-secondary text-xs whitespace-nowrap">{w.unit}</td>
+                  <td className="py-3 px-4 whitespace-nowrap"><StatusBadge status={w.status}/></td>
+                  <td className="py-3 px-4 whitespace-nowrap">
+                    <div className="flex gap-2">
+                      <button className="text-text-secondary hover:text-accent cursor-pointer" onClick={()=>{setForm({...w});setModal({type:"edit",item:w});}}><Pencil size={14}/></button>
+                      <button className="text-text-secondary hover:text-accent-alert cursor-pointer" onClick={()=>setData(data.filter(x=>x.id!==w.id))}><Trash2 size={14}/></button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
       {(modal?.type==="add"||modal?.type==="edit")&&(
         <Modal open title={modal.type==="add"?"Add Work Center":"Edit Work Center"} onClose={()=>setModal(null)}>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {[{label:"ID",key:"id"},{label:"Name",key:"name"},{label:"Capacity",key:"capacity"},{label:"Unit",key:"unit",ph:"Shift / Welder / Inspector"}].map(f=>(
               <div key={f.key}>
                 <label className="text-text-secondary text-xs mb-1.5 block">{f.label}</label>

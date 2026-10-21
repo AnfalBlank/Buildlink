@@ -61,60 +61,64 @@ export default function EngineeringDocumentsPage() {
         }
       />
 
-      <div className="grid grid-cols-5 gap-3 mb-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 mb-6">
         {STATUSES.map(s=>(
-          <div key={s} className={`card text-center cursor-pointer transition-all ${statusFilter===s?"border-accent":""}`} onClick={()=>setStatusFilter(statusFilter===s?"All":s)}>
-            <p className="text-text-secondary text-xs mb-1">{s}</p>
+          <div key={s} className={`card text-center p-3 sm:p-4 cursor-pointer transition-all ${statusFilter===s?"border-accent":""}`} onClick={()=>setStatusFilter(statusFilter===s?"All":s)}>
+            <p className="text-text-secondary text-xs mb-1 truncate" title={s}>{s}</p>
             <p className="font-mono font-bold text-xl text-accent">{statusCounts[s]??0}</p>
           </div>
         ))}
       </div>
 
       <div className="card">
-        <div className="flex gap-3 mb-4">
+        <div className="flex flex-col sm:flex-row gap-3 mb-4">
           <div className="relative flex-1 max-w-sm">
             <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary"/>
             <input className="input pl-9" placeholder="Search documents..." value={search} onChange={e=>setSearch(e.target.value)}/>
           </div>
-          <select className="select w-44" value={statusFilter} onChange={e=>setStatusFilter(e.target.value)}>
+          <select className="select w-full sm:w-44" value={statusFilter} onChange={e=>setStatusFilter(e.target.value)}>
             <option value="All">All Status</option>
             {STATUSES.map(s=><option key={s}>{s}</option>)}
           </select>
         </div>
-        <div className="overflow-x-auto"><table className="w-full text-sm">
-          <thead><tr className="border-b border-border">
-            {["Doc Code","Title","Type","Revision","Project","Owner","Approved By","Released","Status",""].map(h=>(
-              <th key={h} className="text-left py-3 px-3 text-text-secondary font-medium text-xs">{h}</th>
-            ))}
-          </tr></thead>
-          <tbody>
-            {filtered.map(d=>(
-              <tr key={d.id} className="table-row-hover">
-                <td className="py-3 px-3 font-mono text-accent text-xs">{d.code}</td>
-                <td className="py-3 px-3 text-text-primary font-medium max-w-[200px]"><div className="truncate">{d.title}</div></td>
-                <td className="py-3 px-3"><span className="badge-status border text-accent bg-accent/10 border-accent/30">{d.type}</span></td>
-                <td className="py-3 px-3 font-mono text-text-secondary text-xs">{d.revision}</td>
-                <td className="py-3 px-3 text-text-secondary text-xs">{d.projectId}</td>
-                <td className="py-3 px-3 text-text-secondary text-xs">{d.owner}</td>
-                <td className="py-3 px-3 text-text-secondary text-xs">{d.approvedBy??"-"}</td>
-                <td className="py-3 px-3 text-text-secondary text-xs">{d.releasedAt??"-"}</td>
-                <td className="py-3 px-3"><StatusBadge status={d.status}/></td>
-                <td className="py-3 px-3">
-                  <div className="flex gap-2">
-                    <button className="text-text-secondary hover:text-accent" onClick={()=>setModal({type:"view",item:d})}><Eye size={14}/></button>
-                    <button className="text-text-secondary hover:text-accent" onClick={()=>{setForm({...d});setModal({type:"edit",item:d});}}><Pencil size={14}/></button>
-                    <button className="text-text-secondary hover:text-accent-alert" onClick={()=>setData(data.filter(x=>x.id!==d.id))}><Trash2 size={14}/></button>
-                  </div>
-                </td>
+        <div className="overflow-x-auto w-full border border-border rounded-lg">
+          <table className="w-full min-w-[950px] text-sm">
+            <thead>
+              <tr className="border-b border-border bg-surface-2">
+                {["Doc Code","Title","Type","Revision","Project","Owner","Approved By","Released","Status",""].map(h=>(
+                  <th key={h} className="text-left py-3 px-3 text-text-secondary font-medium text-xs whitespace-nowrap">{h}</th>
+                ))}
               </tr>
-            ))}
-          </tbody>
-        </table></div>
+            </thead>
+            <tbody className="divide-y divide-border">
+              {filtered.map(d=>(
+                <tr key={d.id} className="table-row-hover">
+                  <td className="py-3 px-3 font-mono text-accent text-xs whitespace-nowrap">{d.code}</td>
+                  <td className="py-3 px-3 text-text-primary font-medium max-w-[220px] whitespace-nowrap"><div className="truncate">{d.title}</div></td>
+                  <td className="py-3 px-3 whitespace-nowrap"><span className="badge-status border text-accent bg-accent/10 border-accent/30">{d.type}</span></td>
+                  <td className="py-3 px-3 font-mono text-text-secondary text-xs whitespace-nowrap">{d.revision}</td>
+                  <td className="py-3 px-3 text-text-secondary text-xs whitespace-nowrap">{d.projectId}</td>
+                  <td className="py-3 px-3 text-text-secondary text-xs whitespace-nowrap">{d.owner}</td>
+                  <td className="py-3 px-3 text-text-secondary text-xs whitespace-nowrap">{d.approvedBy??"-"}</td>
+                  <td className="py-3 px-3 text-text-secondary text-xs whitespace-nowrap font-mono">{d.releasedAt??"-"}</td>
+                  <td className="py-3 px-3 whitespace-nowrap"><StatusBadge status={d.status}/></td>
+                  <td className="py-3 px-3 whitespace-nowrap">
+                    <div className="flex gap-2">
+                      <button className="text-text-secondary hover:text-accent cursor-pointer" onClick={()=>setModal({type:"view",item:d})}><Eye size={14}/></button>
+                      <button className="text-text-secondary hover:text-accent cursor-pointer" onClick={()=>{setForm({...d});setModal({type:"edit",item:d});}}><Pencil size={14}/></button>
+                      <button className="text-text-secondary hover:text-accent-alert cursor-pointer" onClick={()=>setData(data.filter(x=>x.id!==d.id))}><Trash2 size={14}/></button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {modal?.type==="view" && modal.item && (
         <Modal open title={`Document — ${modal.item.code}`} onClose={()=>setModal(null)} size="lg">
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {[
               ["Code",modal.item.code],["Title",modal.item.title],["Type",modal.item.type],
               ["Revision",modal.item.revision],["Project",modal.item.projectId],["Product",modal.item.productId],
@@ -123,10 +127,10 @@ export default function EngineeringDocumentsPage() {
             ].map(([l,v])=>(
               <div key={l} className="bg-surface-2 rounded-lg p-3">
                 <p className="text-text-secondary text-xs mb-1">{l}</p>
-                <p className="text-text-primary font-medium text-sm">{v}</p>
+                <p className="text-text-primary font-medium text-sm truncate">{v}</p>
               </div>
             ))}
-            <div className="col-span-2 bg-surface-2 rounded-lg p-3">
+            <div className="col-span-1 sm:col-span-2 bg-surface-2 rounded-lg p-3">
               <p className="text-text-secondary text-xs mb-1">Description</p>
               <p className="text-text-primary text-sm">{modal.item.description}</p>
             </div>
@@ -144,8 +148,8 @@ export default function EngineeringDocumentsPage() {
 
       {(modal?.type==="add"||modal?.type==="edit") && (
         <Modal open title={modal.type==="add"?"New Document":"Edit Document"} onClose={()=>setModal(null)} size="lg">
-          <div className="grid grid-cols-2 gap-4">
-            <div className="col-span-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="col-span-1 sm:col-span-2">
               <label className="text-text-secondary text-xs mb-1.5 block">Title</label>
               <input className="input" value={form.title??""} onChange={e=>setForm({...form,title:e.target.value})}/>
             </div>
@@ -177,7 +181,7 @@ export default function EngineeringDocumentsPage() {
                 {STATUSES.map(s=><option key={s}>{s}</option>)}
               </select>
             </div>
-            <div className="col-span-2">
+            <div className="col-span-1 sm:col-span-2">
               <label className="text-text-secondary text-xs mb-1.5 block">Description</label>
               <textarea className="input min-h-[60px] resize-none" value={form.description??""} onChange={e=>setForm({...form,description:e.target.value})}/>
             </div>

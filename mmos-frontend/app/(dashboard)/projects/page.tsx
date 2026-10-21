@@ -178,7 +178,7 @@ export default function ProjectsPage() {
         </div>
 
         {/* Responsive Table */}
-        <div className="overflow-x-auto -mx-5 px-5">
+        <div className="overflow-x-auto w-full">
           <table className="table min-w-[980px]">
             <thead>
               <tr>
@@ -294,7 +294,7 @@ export default function ProjectsPage() {
             </div>
 
             {/* Grid Metrics */}
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
               {[
                 ["Mulai", modal.item.startDate, Calendar],
                 ["Target Selesai", modal.item.targetDate, Calendar],

@@ -729,11 +729,11 @@ export default function ProjectTrackerPage() {
               )}
             </div>
 
-            <div className="flex items-center gap-1 bg-white border border-[#E2E8F0] p-1 rounded-lg">
-              <Filter size={11} className="text-[#9CA3AF] ml-1.5 mr-1"/>
+            <div className="flex items-center gap-1 bg-white border border-[#E2E8F0] p-1 rounded-lg overflow-x-auto max-w-full scrollbar-none">
+              <Filter size={11} className="text-[#9CA3AF] ml-1.5 mr-1 shrink-0"/>
               {["Semua","Berjalan","Tertahan","Terlambat","Selesai"].map(s => (
                 <button key={s} onClick={() => setFilterStatus(s)}
-                  className={`px-2.5 py-1 rounded text-[11px] font-medium transition-colors ${
+                  className={`px-2.5 py-1 rounded text-[11px] font-medium transition-colors shrink-0 whitespace-nowrap ${
                     filterStatus === s
                       ? "bg-[#EFF6FF] text-[#2563EB] font-semibold"
                       : "text-[#6B7280] hover:text-[#111827]"
@@ -879,13 +879,13 @@ export default function ProjectTrackerPage() {
           open title={modal.type === "tambah" ? "Tambah Task Baru" : `Edit Task`}
           onClose={() => setModal(null)} size="lg"
         >
-          <div className="grid grid-cols-2 gap-4">
-            <div className="col-span-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="col-span-1 sm:col-span-2">
               <label className="text-[#4B5563] text-xs font-medium mb-1.5 block">Nama Task *</label>
               <input className="input" placeholder="Nama pekerjaan teknis..."
                 value={form.nama ?? ""} onChange={e => setForm({...form, nama:e.target.value})}/>
             </div>
-            <div className="col-span-2">
+            <div className="col-span-1 sm:col-span-2">
               <label className="text-[#4B5563] text-xs font-medium mb-1.5 block">Deskripsi</label>
               <textarea className="input min-h-[64px] resize-none"
                 value={form.deskripsi ?? ""} onChange={e => setForm({...form, deskripsi:e.target.value})}/>
@@ -1024,67 +1024,71 @@ export default function ProjectTrackerPage() {
               {/* Milestones Summary Table */}
               <div>
                 <h4 className="text-xs font-bold uppercase tracking-wider text-[#334155] mb-2">1. Ringkasan Milestone Proyek</h4>
-                <table className="w-full text-xs border border-[#CBD5E1]">
-                  <thead className="bg-[#F1F5F9] text-[#334155]">
-                    <tr>
-                      <th className="p-2 border border-[#CBD5E1] text-left">Nama Tahapan Milestone</th>
-                      <th className="p-2 border border-[#CBD5E1] text-center w-20">Bobot</th>
-                      <th className="p-2 border border-[#CBD5E1] text-center w-24">Target Selesai</th>
-                      <th className="p-2 border border-[#CBD5E1] text-center w-28">Status</th>
-                      <th className="p-2 border border-[#CBD5E1] text-right w-24">Penyelesaian</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {projMs.map(ms => {
-                      const mPct = progressMilestone(ms.id, tasks);
-                      return (
-                        <tr key={ms.id}>
-                          <td className="p-2 border border-[#CBD5E1] font-medium">{ms.name}</td>
-                          <td className="p-2 border border-[#CBD5E1] text-center">{ms.weight}%</td>
-                          <td className="p-2 border border-[#CBD5E1] text-center">{ms.targetDate}</td>
-                          <td className="p-2 border border-[#CBD5E1] text-center font-semibold">{ms.status}</td>
-                          <td className="p-2 border border-[#CBD5E1] text-right font-bold text-[#2563EB]">{mPct}%</td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
+                <div className="overflow-x-auto w-full">
+                  <table className="w-full min-w-[550px] text-xs border border-[#CBD5E1]">
+                    <thead className="bg-[#F1F5F9] text-[#334155]">
+                      <tr>
+                        <th className="p-2 border border-[#CBD5E1] text-left whitespace-nowrap">Nama Tahapan Milestone</th>
+                        <th className="p-2 border border-[#CBD5E1] text-center w-20 whitespace-nowrap">Bobot</th>
+                        <th className="p-2 border border-[#CBD5E1] text-center w-24 whitespace-nowrap">Target Selesai</th>
+                        <th className="p-2 border border-[#CBD5E1] text-center w-28 whitespace-nowrap">Status</th>
+                        <th className="p-2 border border-[#CBD5E1] text-right w-24 whitespace-nowrap">Penyelesaian</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {projMs.map(ms => {
+                        const mPct = progressMilestone(ms.id, tasks);
+                        return (
+                          <tr key={ms.id}>
+                            <td className="p-2 border border-[#CBD5E1] font-medium whitespace-nowrap">{ms.name}</td>
+                            <td className="p-2 border border-[#CBD5E1] text-center whitespace-nowrap">{ms.weight}%</td>
+                            <td className="p-2 border border-[#CBD5E1] text-center whitespace-nowrap">{ms.targetDate}</td>
+                            <td className="p-2 border border-[#CBD5E1] text-center font-semibold whitespace-nowrap">{ms.status}</td>
+                            <td className="p-2 border border-[#CBD5E1] text-right font-bold text-[#2563EB] whitespace-nowrap">{mPct}%</td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
               </div>
 
               {/* Tasks Detail Table */}
               <div>
                 <h4 className="text-xs font-bold uppercase tracking-wider text-[#334155] mb-2">2. Rincian Task & Pekerjaan Lapangan</h4>
-                <table className="w-full text-xs border border-[#CBD5E1]">
-                  <thead className="bg-[#F1F5F9] text-[#334155]">
-                    <tr>
-                      <th className="p-2 border border-[#CBD5E1] text-left">Item Pekerjaan (Task)</th>
-                      <th className="p-2 border border-[#CBD5E1] text-left w-28">PIC</th>
-                      <th className="p-2 border border-[#CBD5E1] text-center w-24">Deadline</th>
-                      <th className="p-2 border border-[#CBD5E1] text-center w-20">Jam Kerja</th>
-                      <th className="p-2 border border-[#CBD5E1] text-center w-24">Status</th>
-                      <th className="p-2 border border-[#CBD5E1] text-right w-20">Progres</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {projTasks.map(t => (
-                      <tr key={t.id}>
-                        <td className="p-2 border border-[#CBD5E1]">
-                          <span className="font-medium text-[#0F172A]">{t.nama}</span>
-                          {t.deskripsi && <p className="text-[10px] text-[#64748B]">{t.deskripsi}</p>}
-                        </td>
-                        <td className="p-2 border border-[#CBD5E1]">{t.pic}</td>
-                        <td className="p-2 border border-[#CBD5E1] text-center">{t.targetSelesai}</td>
-                        <td className="p-2 border border-[#CBD5E1] text-center font-mono">{t.aktualJam}/{t.estimasiJam}h</td>
-                        <td className="p-2 border border-[#CBD5E1] text-center font-medium">{t.status}</td>
-                        <td className="p-2 border border-[#CBD5E1] text-right font-bold">{t.persentase}%</td>
+                <div className="overflow-x-auto w-full">
+                  <table className="w-full min-w-[550px] text-xs border border-[#CBD5E1]">
+                    <thead className="bg-[#F1F5F9] text-[#334155]">
+                      <tr>
+                        <th className="p-2 border border-[#CBD5E1] text-left whitespace-nowrap">Item Pekerjaan (Task)</th>
+                        <th className="p-2 border border-[#CBD5E1] text-left w-28 whitespace-nowrap">PIC</th>
+                        <th className="p-2 border border-[#CBD5E1] text-center w-24 whitespace-nowrap">Deadline</th>
+                        <th className="p-2 border border-[#CBD5E1] text-center w-20 whitespace-nowrap">Jam Kerja</th>
+                        <th className="p-2 border border-[#CBD5E1] text-center w-24 whitespace-nowrap">Status</th>
+                        <th className="p-2 border border-[#CBD5E1] text-right w-20 whitespace-nowrap">Progres</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      {projTasks.map(t => (
+                        <tr key={t.id}>
+                          <td className="p-2 border border-[#CBD5E1] whitespace-nowrap">
+                            <span className="font-medium text-[#0F172A]">{t.nama}</span>
+                            {t.deskripsi && <p className="text-[10px] text-[#64748B]">{t.deskripsi}</p>}
+                          </td>
+                          <td className="p-2 border border-[#CBD5E1] whitespace-nowrap">{t.pic}</td>
+                          <td className="p-2 border border-[#CBD5E1] text-center whitespace-nowrap">{t.targetSelesai}</td>
+                          <td className="p-2 border border-[#CBD5E1] text-center font-mono whitespace-nowrap">{t.aktualJam}/{t.estimasiJam}h</td>
+                          <td className="p-2 border border-[#CBD5E1] text-center font-medium whitespace-nowrap">{t.status}</td>
+                          <td className="p-2 border border-[#CBD5E1] text-right font-bold whitespace-nowrap">{t.persentase}%</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
 
               {/* Approvals Signatures Block */}
-              <div className="grid grid-cols-3 gap-6 pt-6 text-center text-xs">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-6 text-center text-xs">
                 <div>
                   <p className="text-[#64748B] mb-12">Disiapkan Oleh (Lead Engineer):</p>
                   <p className="font-bold border-t border-[#94A3B8] pt-1">Budi Setiawan, S.T.</p>
