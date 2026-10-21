@@ -7,9 +7,10 @@ import { StatusBadge } from "@/components/ui/Badge";
 import { Modal } from "@/components/ui/Modal";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { toast } from "@/components/ui/Toast";
+import Link from "next/link";
 import { 
   Plus, Pencil, Trash2, Search, FileText, Eye, Printer, 
-  ArrowUpDown, Calendar, CheckCircle2, Send, Download, Tag
+  ArrowUpDown, Calendar, CheckCircle2, Send, Download, Tag, Calculator
 } from "lucide-react";
 
 type Quotation = typeof initialData[0];
@@ -253,6 +254,13 @@ export default function QuotationsPage() {
         subtitle="Manajemen penawaran komersial, RAB jual klien, revisi, dan status persetujuan"
         actions={
           <div className="flex items-center gap-2.5">
+            <Link 
+              href="/engineering/rab"
+              className="btn-secondary flex items-center gap-1.5 text-xs text-accent border-accent/30 bg-accent/5 hover:bg-accent/10"
+              title="Buka Kalkulator Estimasi Biaya & RAB Fabrikasi"
+            >
+              <Calculator size={15} /> Estimator & RAB
+            </Link>
             <button 
               className="btn-secondary flex items-center gap-2 text-xs"
               onClick={() => {

@@ -39,6 +39,7 @@ const nav = [
     children: [
       { label: "Dokumen", href: "/engineering/documents" },
       { label: "Produk & BOM", href: "/engineering/products" },
+      { label: "Estimasi & RAB", href: "/engineering/rab" },
       { label: "Routing", href: "/engineering/routing" },
       { label: "Work Center", href: "/engineering/work-centers" },
     ],
@@ -64,6 +65,7 @@ const nav = [
     children: [
       { label: "Inventori", href: "/warehouse/inventory" },
       { label: "Transaksi Stok", href: "/warehouse/transactions" },
+      { label: "Pelat Sisa (Offcut)", href: "/quality/traceability?tab=offcut" },
     ],
   },
   {
@@ -72,6 +74,7 @@ const nav = [
       { label: "Inspeksi", href: "/quality/inspections" },
       { label: "NCR", href: "/quality/ncr" },
       { label: "Rework", href: "/quality/rework" },
+      { label: "Traceability & MTC", href: "/quality/traceability" },
     ],
   },
   {
