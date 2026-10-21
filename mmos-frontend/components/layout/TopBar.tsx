@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect } from "react";
 import {
   Search, Bell, ChevronDown, PanelLeftClose, PanelLeftOpen,
-  User, LogOut, Shield, MessageSquare, Clock, Calendar
+  User, LogOut, Shield, MessageSquare, Clock, Calendar, Menu
 } from "lucide-react";
 import { notifications as initialNotifications } from "@/lib/dummy-data";
 import { ChatDrawer } from "@/components/chat/ChatDrawer";
@@ -12,10 +12,11 @@ import { RoleIcon } from "@/components/ui/RoleIcon";
 
 interface TopBarProps {
   onToggleSidebar?: () => void;
+  onOpenMobile?: () => void;
   sidebarCollapsed?: boolean;
 }
 
-export function TopBar({ onToggleSidebar, sidebarCollapsed }: TopBarProps) {
+export function TopBar({ onToggleSidebar, onOpenMobile, sidebarCollapsed }: TopBarProps) {
   const { user } = useAuth();
   const [notifications, setNotifications] = useState(initialNotifications);
   const unread = notifications.filter(n => !n.read);
@@ -68,37 +69,49 @@ export function TopBar({ onToggleSidebar, sidebarCollapsed }: TopBarProps) {
 
   return (
     <>
-      <header className="h-16 border-b border-[#E2E8F0] bg-white flex items-center justify-between px-4 lg:px-6 shrink-0 sticky top-0 z-30 gap-3 select-none">
-        {/* Left section: Sidebar toggle & Search */}
-        <div className="flex items-center gap-3 flex-1 min-w-0 max-w-xl">
-          {/* Sidebar toggle button (shown only when sidebar is collapsed, preventing duplicate buttons) */}
+      <header className="h-16 border-b border-[#E2E8F0] bg-white flex items-center justify-between px-3 sm:px-4 lg:px-6 shrink-0 sticky top-0 z-30 gap-2 sm:gap-3 select-none">
+        {/* Left section: Mobile menu hamburger, Desktop toggle & Search */}
+        <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0 max-w-xl">
+          {/* Mobile hamburger button (Screen < 1024px) */}
+          {onOpenMobile && (
+            <button
+              onClick={onOpenMobile}
+              className="lg:hidden flex items-center justify-center w-9 h-9 rounded-xl border border-[#E2E8F0] bg-white text-[#475569] hover:bg-[#F8FAFC] hover:text-[#0F172A] shrink-0 cursor-pointer shadow-xs active:scale-95 transition-all"
+              aria-label="Buka Menu Navigasi"
+              title="Menu Navigasi"
+            >
+              <Menu size={18} />
+            </button>
+          )}
+
+          {/* Desktop toggle button (Screen >= 1024px, shown only when desktop sidebar is collapsed) */}
           {onToggleSidebar && sidebarCollapsed && (
             <button
               onClick={onToggleSidebar}
-              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border text-xs font-semibold
+              className="hidden lg:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border text-xs font-semibold
                 bg-[#EFF6FF] border-[#2563EB]/30 text-[#2563EB] hover:bg-[#DBEAFE] hover:border-[#2563EB]
                 transition-all duration-200 shrink-0 shadow-xs cursor-pointer group"
               title="Buka sidebar (Ctrl+B)"
               aria-label="Buka Sidebar"
             >
               <PanelLeftOpen size={16} className="transition-transform duration-200 group-hover:scale-110 shrink-0" />
-              <span className="hidden sm:inline">Buka Sidebar</span>
+              <span>Buka Sidebar</span>
             </button>
           )}
 
-          {/* Search Input */}
-          <div className="relative flex-1 max-w-[160px] sm:max-w-xs md:max-w-sm">
-            <Search size={14} className="absolute left-2.5 sm:left-3 top-1/2 -translate-y-1/2 text-[#9CA3AF]" />
+          {/* Search Input (visible on md screens up so mobile icons never overlap) */}
+          <div className="relative flex-1 max-w-xs md:max-w-sm hidden md:block">
+            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#9CA3AF]" />
             <input
               type="text"
-              placeholder="Cari..."
-              className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl pl-8 sm:pl-9 pr-3 py-1.5 text-xs sm:text-sm text-[#111827] placeholder:text-[#9CA3AF] focus:outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/20 w-full transition-all"
+              placeholder="Cari proyek, order, material..."
+              className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl pl-9 pr-3 py-1.5 text-xs sm:text-sm text-[#111827] placeholder:text-[#9CA3AF] focus:outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/20 w-full transition-all"
             />
           </div>
         </div>
 
         {/* Center/Right section: Realtime Clock, Status, Chat, Notifications, User Profile */}
-        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+        <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
           {/* Live Clock & Date Badge */}
           {now && (
             <div className="hidden xl:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] text-xs">

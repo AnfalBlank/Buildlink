@@ -26,8 +26,8 @@ export function RoleSwitcher() {
     <div className="relative" ref={ref}>
       <button
         onClick={() => setOpen(v => !v)}
-        className="flex items-center gap-2 px-2.5 py-1.5 rounded-xl border border-dashed text-xs font-medium
-          transition-all duration-200 cursor-pointer group hover:shadow-sm"
+        className="flex items-center gap-1.5 px-2 py-1.5 sm:px-2.5 rounded-xl border border-dashed text-xs font-medium
+          transition-all duration-200 cursor-pointer group hover:shadow-sm shrink-0"
         style={{
           borderColor: roleDef.borderColor,
           background: roleDef.bgColor,
@@ -35,12 +35,12 @@ export function RoleSwitcher() {
         }}
         title="Ganti Role / User (Demo)"
       >
-        <ArrowLeftRight size={13} className="transition-transform duration-200 group-hover:rotate-180" />
-        <span className="hidden sm:inline-flex items-center gap-1.5">
+        <ArrowLeftRight size={13} className="transition-transform duration-200 group-hover:rotate-180 shrink-0" />
+        <span className="hidden md:inline-flex items-center gap-1.5">
           <RoleIcon roleKey={roleDef.key} size={13} />
           {roleDef.shortLabel}
         </span>
-        <ChevronDown size={12} className={`transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
+        <ChevronDown size={11} className={`transition-transform duration-200 shrink-0 ${open ? "rotate-180" : ""}`} />
       </button>
 
       {open && (

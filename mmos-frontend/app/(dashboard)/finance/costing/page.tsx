@@ -425,31 +425,33 @@ export default function CostingPage() {
       </div>
 
       {/* ── View Mode Tabs ── */}
-      <div className="flex items-center gap-2 border-b border-[#E2E8F0] pb-2">
+      <div className="flex items-center gap-2 border-b border-[#E2E8F0] pb-2 overflow-x-auto scrollbar-none max-w-full">
         <button
           onClick={() => setActiveTab("rab")}
-          className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
+          className={`flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all cursor-pointer shrink-0 whitespace-nowrap ${
             activeTab === "rab"
               ? "bg-[#0F172A] text-white shadow-xs"
               : "text-[#64748B] hover:bg-[#F1F5F9] hover:text-[#0F172A]"
           }`}
         >
-          <Calculator size={14} />
-          <span>Daftar Rencana Anggaran Biaya (RAB)</span>
-          <span className="text-[10px] px-2 py-0.2 rounded-full font-bold bg-white/20 text-white ml-1">
+          <Calculator size={14} className="shrink-0" />
+          <span className="hidden sm:inline">Daftar Rencana Anggaran Biaya (RAB)</span>
+          <span className="sm:hidden">Dokumen RAB</span>
+          <span className="text-[10px] px-2 py-0.5 rounded-full font-bold bg-white/20 text-white ml-1">
             {rabs.length}
           </span>
         </button>
         <button
           onClick={() => setActiveTab("costing")}
-          className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
+          className={`flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all cursor-pointer shrink-0 whitespace-nowrap ${
             activeTab === "costing"
               ? "bg-[#0F172A] text-white shadow-xs"
               : "text-[#64748B] hover:bg-[#F1F5F9] hover:text-[#0F172A]"
           }`}
         >
-          <TrendingUp size={14} />
-          <span>Realisasi Biaya Aktual vs Anggaran (Project Costing)</span>
+          <TrendingUp size={14} className="shrink-0" />
+          <span className="hidden sm:inline">Realisasi Biaya Aktual vs Anggaran (Project Costing)</span>
+          <span className="sm:hidden">Project Costing</span>
         </button>
       </div>
 
@@ -553,17 +555,19 @@ export default function CostingPage() {
                       </p>
                     </div>
 
-                    <div className="flex items-center gap-2 self-start lg:self-auto">
+                    <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap self-start lg:self-auto">
                       <button
                         onClick={() => setModal({ type: "print", item: rab })}
-                        className="btn-secondary text-xs flex items-center gap-1.5 py-1.5 px-3"
+                        className="btn-secondary text-xs flex items-center gap-1.5 py-1.5 px-2.5 sm:px-3"
                         title="Cetak Lembar Resmi RAB"
                       >
-                        <Printer size={13} /> Cetak Lembar RAB
+                        <Printer size={13} />
+                        <span className="hidden sm:inline">Cetak Lembar RAB</span>
+                        <span className="sm:hidden">Cetak</span>
                       </button>
                       <button
                         onClick={() => openEditRab(rab)}
-                        className="btn-secondary text-xs flex items-center gap-1.5 py-1.5 px-3"
+                        className="btn-secondary text-xs flex items-center gap-1.5 py-1.5 px-2.5 sm:px-3"
                         title="Edit Dokumen RAB"
                       >
                         <Pencil size={13} /> Edit
@@ -579,51 +583,51 @@ export default function CostingPage() {
                   </div>
 
                   {/* Financial Breakdown Grid */}
-                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 py-3 border-b border-[#F1F5F9] text-xs">
-                    <div className="bg-[#F8FAFC] p-2.5 rounded-xl border border-[#E2E8F0]">
-                      <span className="text-[10px] text-[#64748B] block font-medium">A. Material & Komponen</span>
-                      <span className="font-mono font-bold text-[#0F172A] text-xs mt-0.5 block">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3 py-3 border-b border-[#F1F5F9] text-xs">
+                    <div className="bg-[#F8FAFC] p-2 sm:p-2.5 rounded-xl border border-[#E2E8F0]">
+                      <span className="text-[10px] text-[#64748B] block font-medium truncate">A. Material</span>
+                      <span className="font-mono font-bold text-[#0F172A] text-[11px] sm:text-xs mt-0.5 block truncate">
                         {formatCurrency(m.matTotal)}
                       </span>
                     </div>
-                    <div className="bg-[#F8FAFC] p-2.5 rounded-xl border border-[#E2E8F0]">
-                      <span className="text-[10px] text-[#64748B] block font-medium">B. Tenaga Kerja (Labor)</span>
-                      <span className="font-mono font-bold text-[#0F172A] text-xs mt-0.5 block">
+                    <div className="bg-[#F8FAFC] p-2 sm:p-2.5 rounded-xl border border-[#E2E8F0]">
+                      <span className="text-[10px] text-[#64748B] block font-medium truncate">B. Labor</span>
+                      <span className="font-mono font-bold text-[#0F172A] text-[11px] sm:text-xs mt-0.5 block truncate">
                         {formatCurrency(m.laborTotal)}
                       </span>
                     </div>
-                    <div className="bg-[#F8FAFC] p-2.5 rounded-xl border border-[#E2E8F0]">
-                      <span className="text-[10px] text-[#64748B] block font-medium">C. Mesin & Subkontrak</span>
-                      <span className="font-mono font-bold text-[#0F172A] text-xs mt-0.5 block">
+                    <div className="bg-[#F8FAFC] p-2 sm:p-2.5 rounded-xl border border-[#E2E8F0]">
+                      <span className="text-[10px] text-[#64748B] block font-medium truncate">C. Mesin & Subkon</span>
+                      <span className="font-mono font-bold text-[#0F172A] text-[11px] sm:text-xs mt-0.5 block truncate">
                         {formatCurrency(m.machTotal)}
                       </span>
                     </div>
-                    <div className="bg-[#F8FAFC] p-2.5 rounded-xl border border-[#E2E8F0]">
-                      <span className="text-[10px] text-[#64748B] block font-medium">D. Overhead & QC</span>
-                      <span className="font-mono font-bold text-[#0F172A] text-xs mt-0.5 block">
+                    <div className="bg-[#F8FAFC] p-2 sm:p-2.5 rounded-xl border border-[#E2E8F0]">
+                      <span className="text-[10px] text-[#64748B] block font-medium truncate">D. Overhead & QC</span>
+                      <span className="font-mono font-bold text-[#0F172A] text-[11px] sm:text-xs mt-0.5 block truncate">
                         {formatCurrency(m.ovhTotal)}
                       </span>
                     </div>
-                    <div className="bg-[#EFF6FF] p-2.5 rounded-xl border border-[#BFDBFE]">
-                      <span className="text-[10px] text-[#1E40AF] block font-medium">Total Anggaran (HPP)</span>
-                      <span className="font-mono font-black text-[#2563EB] text-xs mt-0.5 block">
+                    <div className="bg-[#EFF6FF] p-2 sm:p-2.5 rounded-xl border border-[#BFDBFE]">
+                      <span className="text-[10px] text-[#1E40AF] block font-medium truncate">Total HPP</span>
+                      <span className="font-mono font-black text-[#2563EB] text-[11px] sm:text-xs mt-0.5 block truncate">
                         {formatCurrency(m.totalCost)}
                       </span>
                     </div>
-                    <div className="bg-[#F0FDF4] p-2.5 rounded-xl border border-[#BBF7D0]">
-                      <span className="text-[10px] text-[#166534] block font-medium">Gross Profit & Margin</span>
-                      <span className="font-mono font-black text-[#16A34A] text-xs mt-0.5 block">
+                    <div className="bg-[#F0FDF4] p-2 sm:p-2.5 rounded-xl border border-[#BBF7D0]">
+                      <span className="text-[10px] text-[#166534] block font-medium truncate">Margin & Profit</span>
+                      <span className="font-mono font-black text-[#16A34A] text-[11px] sm:text-xs mt-0.5 block truncate">
                         {m.marginPct.toFixed(1)}% ({formatCurrency(m.grossProfit)})
                       </span>
                     </div>
                   </div>
 
-                  <div className="pt-2 flex items-center justify-between text-xs text-[#64748B]">
-                    <span className="truncate max-w-xl">
+                  <div className="pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-xs text-[#64748B]">
+                    <span className="truncate max-w-xl text-[11px] sm:text-xs">
                       Catatan: {rab.notes || "Tidak ada catatan khusus teknis."}
                     </span>
-                    <span className="font-semibold text-[#0F172A]">
-                      Nilai Kontrak: <strong className="font-mono">{formatCurrency(rab.contractValue)}</strong>
+                    <span className="font-semibold text-[#0F172A] shrink-0 text-xs sm:text-right">
+                      Nilai Kontrak: <strong className="font-mono text-[#2563EB]">{formatCurrency(rab.contractValue)}</strong>
                     </span>
                   </div>
                 </div>
@@ -667,17 +671,17 @@ export default function CostingPage() {
               const variance = c.budgetTotal - c.eac;
               return (
                 <div key={c.projectId} className="card">
-                  <div className="flex items-start justify-between mb-4">
-                    <div>
-                      <h3 className="text-[#0F172A] font-semibold">{c.projectName}</h3>
+                  <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2 sm:gap-4 mb-4">
+                    <div className="min-w-0 flex-1">
+                      <h3 className="text-[#0F172A] font-semibold text-sm sm:text-base truncate">{c.projectName}</h3>
                       <p className="text-[#64748B] text-xs font-mono">{c.projectCode}</p>
                     </div>
-                    <div className="text-right">
+                    <div className="sm:text-right shrink-0">
                       <p className="text-[#64748B] text-xs mb-0.5">Forecast Margin</p>
-                      <p className={`font-mono font-bold text-xl ${marginPct >= 20 ? "text-[#16A34A]" : marginPct >= 10 ? "text-[#D97706]" : "text-[#DC2626]"}`}>
+                      <p className={`font-mono font-bold text-lg sm:text-xl ${marginPct >= 20 ? "text-[#16A34A]" : marginPct >= 10 ? "text-[#D97706]" : "text-[#DC2626]"}`}>
                         {marginPct.toFixed(1)}%
                       </p>
-                      <p className="text-[#64748B] text-xs">{formatCurrency(c.forecastMargin)}</p>
+                      <p className="text-[#64748B] text-xs font-mono">{formatCurrency(c.forecastMargin)}</p>
                     </div>
                   </div>
 

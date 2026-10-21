@@ -122,8 +122,7 @@ export function Sidebar({ collapsed, onToggle, onNavigate }: SidebarProps) {
 
   return (
     <aside
-      className="flex flex-col w-[260px] h-full bg-white border-r border-[#E2E8F0] select-none"
-      style={{ height: "100vh" }}
+      className="flex flex-col w-full h-full bg-white border-r border-[#E2E8F0] select-none"
     >
       {/* ── Logo & Toggle Header (64px matches TopBar) ── */}
       <div className="shrink-0 h-16 border-b border-[#E2E8F0] bg-white flex items-center justify-between px-4">

@@ -6,43 +6,27 @@ import { TopBar } from "@/components/layout/TopBar";
 import { cn } from "@/lib/utils";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
-  const [collapsed, setCollapsed] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  const [desktopCollapsed, setDesktopCollapsed] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const pathname = usePathname();
-
-  // Screen size listener
-  useEffect(() => {
-    const handleResize = () => {
-      const mobile = window.innerWidth < 1024;
-      setIsMobile(mobile);
-      if (mobile) {
-        setCollapsed(true);
-      }
-    };
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   // Route transition & auto-close drawer on mobile navigation
   useEffect(() => {
     setIsTransitioning(true);
-    if (isMobile) {
-      setCollapsed(true);
-    }
+    setMobileOpen(false);
     const timer = setTimeout(() => {
       setIsTransitioning(false);
     }, 350);
     return () => clearTimeout(timer);
-  }, [pathname, isMobile]);
+  }, [pathname]);
 
-  // Keyboard shortcut Ctrl+B / Cmd+B to toggle sidebar
+  // Keyboard shortcut Ctrl+B / Cmd+B to toggle sidebar on desktop
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "b") {
         e.preventDefault();
-        setCollapsed((c) => !c);
+        setDesktopCollapsed((c) => !c);
       }
     };
     window.addEventListener("keydown", handleKeyDown);
@@ -72,54 +56,54 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           "hidden lg:block relative shrink-0 overflow-hidden select-none",
           "transition-[width] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
         )}
-        style={{ width: collapsed ? 0 : 260 }}
+        style={{ width: desktopCollapsed ? 0 : 260 }}
       >
         <div
           className={cn(
             "w-[260px] h-full transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]",
-            collapsed
+            desktopCollapsed
               ? "-translate-x-6 opacity-0 pointer-events-none"
               : "translate-x-0 opacity-100"
           )}
         >
-          <Sidebar collapsed={collapsed} onToggle={() => setCollapsed((c) => !c)} />
+          <Sidebar
+            collapsed={desktopCollapsed}
+            onToggle={() => setDesktopCollapsed((c) => !c)}
+          />
         </div>
       </div>
 
       {/* ── Mobile / Tablet Overlay Drawer (Screen < 1024px) ── */}
-      {isMobile && (
-        <>
-          {/* Backdrop */}
-          <div
-            className={cn(
-              "fixed inset-0 z-40 bg-slate-900/40 backdrop-blur-xs transition-opacity duration-300 lg:hidden",
-              collapsed ? "opacity-0 pointer-events-none" : "opacity-100"
-            )}
-            onClick={() => setCollapsed(true)}
-            aria-hidden="true"
-          />
+      {/* Backdrop */}
+      <div
+        className={cn(
+          "fixed inset-0 z-40 bg-slate-900/40 backdrop-blur-xs transition-opacity duration-300 lg:hidden",
+          mobileOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        )}
+        onClick={() => setMobileOpen(false)}
+        aria-hidden="true"
+      />
 
-          {/* Drawer Panel */}
-          <div
-            className={cn(
-              "fixed top-0 bottom-0 left-0 z-50 w-[270px] max-w-[85vw] bg-white shadow-2xl transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] lg:hidden",
-              collapsed ? "-translate-x-full pointer-events-none" : "translate-x-0"
-            )}
-          >
-            <Sidebar
-              collapsed={false}
-              onToggle={() => setCollapsed(true)}
-              onNavigate={() => setCollapsed(true)}
-            />
-          </div>
-        </>
-      )}
+      {/* Drawer Panel */}
+      <div
+        className={cn(
+          "fixed top-0 bottom-0 left-0 z-50 w-[270px] max-w-[85vw] bg-white shadow-2xl transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] lg:hidden",
+          mobileOpen ? "translate-x-0" : "-translate-x-full pointer-events-none"
+        )}
+      >
+        <Sidebar
+          collapsed={false}
+          onToggle={() => setMobileOpen(false)}
+          onNavigate={() => setMobileOpen(false)}
+        />
+      </div>
 
       {/* Main content area */}
       <div className="flex-1 flex flex-col overflow-hidden min-w-0 w-full">
         <TopBar
-          onToggleSidebar={() => setCollapsed((c) => !c)}
-          sidebarCollapsed={collapsed}
+          onToggleSidebar={() => setDesktopCollapsed((c) => !c)}
+          onOpenMobile={() => setMobileOpen(true)}
+          sidebarCollapsed={desktopCollapsed}
         />
 
         <main className="flex-1 overflow-y-auto overflow-x-hidden p-3.5 sm:p-5 lg:p-6 min-w-0 flex flex-col justify-between">

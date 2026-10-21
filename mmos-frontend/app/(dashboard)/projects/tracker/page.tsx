@@ -657,14 +657,14 @@ export default function ProjectTrackerPage() {
             <div className="w-px h-14 bg-[#E2E8F0] hidden lg:block self-center"/>
 
             {/* Hours + cost */}
-            <div className="flex gap-3 flex-shrink-0">
-              <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg px-3 py-2.5 min-w-[90px]">
+            <div className="flex gap-2 sm:gap-3 flex-wrap">
+              <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg px-3 py-2.5 flex-1 min-w-[90px]">
                 <p className="text-[10px] text-[#9CA3AF] uppercase tracking-wide mb-1">Jam Kerja</p>
                 <p className="font-mono font-bold text-lg text-[#D97706]">{stats.aktJam}h</p>
                 <p className="text-[10px] text-[#9CA3AF]">/ {stats.estJam}h est.</p>
               </div>
               {cost && (
-                <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg px-3 py-2.5 min-w-[120px]">
+                <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg px-3 py-2.5 flex-1 min-w-[120px]">
                   <p className="text-[10px] text-[#9CA3AF] uppercase tracking-wide mb-1">Biaya Aktual</p>
                   <p className="font-mono font-bold text-sm text-[#2563EB]">{formatCurrency(cost.actualTotal)}</p>
                   <div className="mt-1 h-1.5 bg-[#E2E8F0] rounded-full overflow-hidden">
@@ -679,9 +679,9 @@ export default function ProjectTrackerPage() {
 
           {/* Overall bar */}
           <div className="mt-4 pt-4 border-t border-[#F1F5F9]">
-            <div className="flex justify-between text-[11px] mb-1.5">
-              <span className="text-[#6B7280]">Total Progres Tertimbang = Σ(bobot milestone × % penyelesaian task)</span>
-              <span className="font-mono font-semibold" style={{color:pColor}}>{pPct}%</span>
+            <div className="flex items-center justify-between gap-2 text-[11px] mb-1.5">
+              <span className="text-[#6B7280] truncate">Total Progres Tertimbang (Milestone Task)</span>
+              <span className="font-mono font-semibold shrink-0" style={{color:pColor}}>{pPct}%</span>
             </div>
             <div className="h-2.5 bg-[#E2E8F0] rounded-full overflow-hidden">
               <div className="h-full rounded-full transition-all" style={{width:`${pPct}%`, background:pColor}}/>
