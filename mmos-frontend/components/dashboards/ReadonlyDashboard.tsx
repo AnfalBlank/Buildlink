@@ -144,16 +144,16 @@ export function ReadonlyDashboard() {
           </div>
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="w-full text-xs">
+        <div className="overflow-x-auto w-full">
+          <table className="w-full text-xs min-w-[750px]">
             <thead>
               <tr className="border-b border-[#F1F5F9] bg-[#F8FAFC]/50">
-                <th className="text-left py-2 px-3 text-[#64748B] font-semibold">Waktu (WIB)</th>
-                <th className="text-left py-2 px-3 text-[#64748B] font-semibold">Pengguna</th>
-                <th className="text-left py-2 px-3 text-[#64748B] font-semibold">Aksi</th>
-                <th className="text-left py-2 px-3 text-[#64748B] font-semibold">Entitas</th>
-                <th className="text-left py-2 px-3 text-[#64748B] font-semibold">Kode Dokumen</th>
-                <th className="text-left py-2 px-3 text-[#64748B] font-semibold">Rincian Perubahan</th>
+                <th className="text-left py-2 px-3 text-[#64748B] font-semibold whitespace-nowrap">Waktu (WIB)</th>
+                <th className="text-left py-2 px-3 text-[#64748B] font-semibold whitespace-nowrap">Pengguna</th>
+                <th className="text-left py-2 px-3 text-[#64748B] font-semibold whitespace-nowrap">Aksi</th>
+                <th className="text-left py-2 px-3 text-[#64748B] font-semibold whitespace-nowrap">Entitas</th>
+                <th className="text-left py-2 px-3 text-[#64748B] font-semibold whitespace-nowrap">Kode Dokumen</th>
+                <th className="text-left py-2 px-3 text-[#64748B] font-semibold whitespace-nowrap">Rincian Perubahan</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[#F1F5F9]">
@@ -167,15 +167,15 @@ export function ReadonlyDashboard() {
                 return (
                   <tr key={l.id} className="hover:bg-[#F8FAFC]">
                     <td className="py-2.5 px-3 font-mono text-[#64748B] whitespace-nowrap">{l.timestamp}</td>
-                    <td className="py-2.5 px-3 font-semibold text-[#0F172A]">{l.user}</td>
-                    <td className="py-2.5 px-3">
+                    <td className="py-2.5 px-3 font-semibold text-[#0F172A] whitespace-nowrap">{l.user}</td>
+                    <td className="py-2.5 px-3 whitespace-nowrap">
                       <span className={`px-2 py-0.5 rounded border text-[10px] font-bold ${actionBadge}`}>
                         {l.action}
                       </span>
                     </td>
-                    <td className="py-2.5 px-3 text-[#475569]">{l.entity}</td>
-                    <td className="py-2.5 px-3 font-mono font-bold text-[#2563EB]">{l.entityCode}</td>
-                    <td className="py-2.5 px-3 text-[#64748B]">{l.detail}</td>
+                    <td className="py-2.5 px-3 text-[#475569] whitespace-nowrap">{l.entity}</td>
+                    <td className="py-2.5 px-3 font-mono font-bold text-[#2563EB] whitespace-nowrap">{l.entityCode}</td>
+                    <td className="py-2.5 px-3 text-[#64748B] whitespace-nowrap">{l.detail}</td>
                   </tr>
                 );
               })}

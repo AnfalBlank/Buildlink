@@ -187,31 +187,31 @@ export function ProcurementDashboard() {
               Generate PO Massal <ChevronRight size={12} />
             </Link>
           </div>
-          <div className="overflow-x-auto">
-            <table className="w-full text-xs">
+          <div className="overflow-x-auto w-full">
+            <table className="w-full text-xs min-w-[700px]">
               <thead>
                 <tr className="border-b border-[#F1F5F9] bg-[#F8FAFC]/50">
-                  <th className="text-left py-2 px-3 text-[#64748B] font-semibold">Material</th>
-                  <th className="text-left py-2 px-3 text-[#64748B] font-semibold">Proyek</th>
-                  <th className="text-left py-2 px-3 text-[#64748B] font-semibold">Kebutuhan Netto</th>
-                  <th className="text-left py-2 px-3 text-[#64748B] font-semibold">Tanggal Diperlukan</th>
-                  <th className="text-left py-2 px-3 text-[#64748B] font-semibold">Rekomendasi PO</th>
-                  <th className="text-left py-2 px-3 text-[#64748B] font-semibold">Aksi</th>
+                  <th className="text-left py-2 px-3 text-[#64748B] font-semibold whitespace-nowrap">Material</th>
+                  <th className="text-left py-2 px-3 text-[#64748B] font-semibold whitespace-nowrap">Proyek</th>
+                  <th className="text-left py-2 px-3 text-[#64748B] font-semibold whitespace-nowrap">Kebutuhan Netto</th>
+                  <th className="text-left py-2 px-3 text-[#64748B] font-semibold whitespace-nowrap">Tanggal Diperlukan</th>
+                  <th className="text-left py-2 px-3 text-[#64748B] font-semibold whitespace-nowrap">Rekomendasi PO</th>
+                  <th className="text-left py-2 px-3 text-[#64748B] font-semibold whitespace-nowrap">Aksi</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#F1F5F9]">
                 {shortages.map(s => (
                   <tr key={s.id} className="hover:bg-[#F8FAFC]">
-                    <td className="py-2.5 px-3 font-semibold text-[#0F172A]">{s.material}</td>
-                    <td className="py-2.5 px-3 font-mono text-[#64748B]">{s.projectId}</td>
-                    <td className="py-2.5 px-3 font-mono font-bold text-[#DC2626]">{s.netRequirement}</td>
-                    <td className="py-2.5 px-3 text-[#64748B]">{s.requiredDate}</td>
-                    <td className="py-2.5 px-3">
+                    <td className="py-2.5 px-3 font-semibold text-[#0F172A] whitespace-nowrap">{s.material}</td>
+                    <td className="py-2.5 px-3 font-mono text-[#64748B] whitespace-nowrap">{s.projectId}</td>
+                    <td className="py-2.5 px-3 font-mono font-bold text-[#DC2626] whitespace-nowrap">{s.netRequirement}</td>
+                    <td className="py-2.5 px-3 text-[#64748B] whitespace-nowrap">{s.requiredDate}</td>
+                    <td className="py-2.5 px-3 whitespace-nowrap">
                       <span className="font-mono font-bold text-[#D97706] bg-[#FFFBEB] px-2 py-0.5 rounded border border-[#FDE68A]">
                         {s.recommendedPO}
                       </span>
                     </td>
-                    <td className="py-2.5 px-3">
+                    <td className="py-2.5 px-3 whitespace-nowrap">
                       <Link
                         href={`/procurement/purchase-orders?material=${encodeURIComponent(s.material)}`}
                         className="text-[#4F46E5] hover:underline font-semibold"

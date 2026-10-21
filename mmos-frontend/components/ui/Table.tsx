@@ -23,13 +23,13 @@ export function Table<T extends Record<string, unknown>>({
 }: TableProps<T>) {
   return (
     <div className="w-full overflow-x-auto">
-      <table className="w-full text-sm">
+      <table className="w-full text-sm min-w-[650px]">
         <thead>
           <tr className="border-b border-border">
             {columns.map((col) => (
               <th
                 key={col.key}
-                className={cn("text-left py-3 px-4 text-text-secondary font-medium", col.className)}
+                className={cn("text-left py-3 px-4 text-text-secondary font-medium whitespace-nowrap", col.className)}
               >
                 {col.header}
               </th>
@@ -54,7 +54,7 @@ export function Table<T extends Record<string, unknown>>({
                 )}
               >
                 {columns.map((col) => (
-                  <td key={col.key} className={cn("py-3 px-4 text-text-primary", col.className)}>
+                  <td key={col.key} className={cn("py-3 px-4 text-text-primary whitespace-nowrap", col.className)}>
                     {col.render ? col.render(row) : String(row[col.key] ?? "")}
                   </td>
                 ))}

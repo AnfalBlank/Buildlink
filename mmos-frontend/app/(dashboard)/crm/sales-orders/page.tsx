@@ -454,35 +454,35 @@ export default function SalesOrdersPage() {
               </div>
 
               {/* Scope of Work Table */}
-              <div>
-                <table className="w-full text-left border-collapse">
+              <div className="overflow-x-auto w-full border border-slate-200 rounded-lg">
+                <table className="w-full text-left border-collapse min-w-[650px]">
                   <thead>
                     <tr className="bg-slate-900 text-white text-[10px] uppercase font-semibold">
-                      <th className="py-2 px-3 border border-slate-900 text-center w-8">No</th>
-                      <th className="py-2 px-3 border border-slate-900">Uraian Pekerjaan / Fabrikasi Sesuai PO</th>
-                      <th className="py-2 px-3 border border-slate-900 text-center w-24">Satuan</th>
-                      <th className="py-2 px-3 border border-slate-900 text-right w-44">Nilai Kontrak (IDR)</th>
+                      <th className="py-2 px-3 border border-slate-900 text-center w-8 whitespace-nowrap">No</th>
+                      <th className="py-2 px-3 border border-slate-900 whitespace-nowrap">Uraian Pekerjaan / Fabrikasi Sesuai PO</th>
+                      <th className="py-2 px-3 border border-slate-900 text-center w-24 whitespace-nowrap">Satuan</th>
+                      <th className="py-2 px-3 border border-slate-900 text-right w-44 whitespace-nowrap">Nilai Kontrak (IDR)</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-200 text-xs">
                     <tr>
-                      <td className="py-3 px-3 border border-slate-200 text-center font-mono">1</td>
-                      <td className="py-3 px-3 border border-slate-200 font-medium">
+                      <td className="py-3 px-3 border border-slate-200 text-center font-mono whitespace-nowrap">1</td>
+                      <td className="py-3 px-3 border border-slate-200 font-medium whitespace-nowrap">
                         Pengadaan & Fabrikasi Unit Presisi Sesuai Purchase Order {modal.item.poNumber}
                         <p className="text-[11px] text-slate-500 mt-0.5">Spesifikasi teknik terlampir pada dokumen kontrak dan gambar kerja engineering.</p>
                       </td>
-                      <td className="py-3 px-3 border border-slate-200 text-center">1 Lot</td>
-                      <td className="py-3 px-3 border border-slate-200 text-right font-mono font-bold text-slate-900">
+                      <td className="py-3 px-3 border border-slate-200 text-center whitespace-nowrap">1 Lot</td>
+                      <td className="py-3 px-3 border border-slate-200 text-right font-mono font-bold text-slate-900 whitespace-nowrap">
                         {formatCurrency(modal.item.contractValue)}
                       </td>
                     </tr>
                     <tr className="bg-slate-50 font-bold">
-                      <td colSpan={3} className="py-2.5 px-3 border border-slate-200 text-right uppercase text-[11px]">Subtotal Nilai Kontrak</td>
-                      <td className="py-2.5 px-3 border border-slate-200 text-right font-mono">{formatCurrency(modal.item.contractValue)}</td>
+                      <td colSpan={3} className="py-2.5 px-3 border border-slate-200 text-right uppercase text-[11px] whitespace-nowrap">Subtotal Nilai Kontrak</td>
+                      <td className="py-2.5 px-3 border border-slate-200 text-right font-mono whitespace-nowrap">{formatCurrency(modal.item.contractValue)}</td>
                     </tr>
                     <tr className="bg-blue-50 font-black text-slate-900 text-sm">
-                      <td colSpan={3} className="py-3 px-3 border border-slate-300 text-right uppercase">Total Nilai Pesanan Disepakati</td>
-                      <td className="py-3 px-3 border border-slate-300 text-right font-mono text-blue-900">{formatCurrency(modal.item.contractValue)}</td>
+                      <td colSpan={3} className="py-3 px-3 border border-slate-300 text-right uppercase whitespace-nowrap">Total Nilai Pesanan Disepakati</td>
+                      <td className="py-3 px-3 border border-slate-300 text-right font-mono text-blue-900 whitespace-nowrap">{formatCurrency(modal.item.contractValue)}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -496,7 +496,7 @@ export default function SalesOrdersPage() {
               </div>
 
               {/* Signatures */}
-              <div className="grid grid-cols-3 gap-6 pt-6 text-center text-xs">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 pt-6 text-center text-xs">
                 <div>
                   <p className="text-slate-500 text-[10px]">Sales & Marketing,</p>
                   <div className="h-14"></div>

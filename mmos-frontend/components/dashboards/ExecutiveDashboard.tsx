@@ -321,27 +321,27 @@ export function ExecutiveDashboard() {
               Jalankan MRP <ChevronRight size={12} />
             </Link>
           </div>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+          <div className="overflow-x-auto w-full">
+            <table className="w-full text-sm min-w-[700px]">
               <thead>
                 <tr className="border-b border-[#F1F5F9]">
                   {["Material", "Proyek", "Kebutuhan Kotor", "Stok", "Net Req", "Tgl Butuh", "Rec. PO Qty"].map(h => (
-                    <th key={h} className="text-left py-2 px-3 text-[#6B7280] font-medium text-xs">{h}</th>
+                    <th key={h} className="text-left py-2 px-3 text-[#6B7280] font-medium text-xs whitespace-nowrap">{h}</th>
                   ))}
                 </tr>
               </thead>
               <tbody>
                 {shortages.map(m => (
                   <tr key={m.id} className="table-row-hover">
-                    <td className="py-2.5 px-3 text-[#111827] font-medium">{m.material}</td>
-                    <td className="py-2.5 px-3 text-[#6B7280] text-xs">{m.projectId}</td>
-                    <td className="py-2.5 px-3 font-mono text-[#4B5563]">{m.grossRequirement}</td>
-                    <td className="py-2.5 px-3 font-mono text-[#4B5563]">{m.onHand}</td>
-                    <td className="py-2.5 px-3">
+                    <td className="py-2.5 px-3 text-[#111827] font-medium whitespace-nowrap">{m.material}</td>
+                    <td className="py-2.5 px-3 text-[#6B7280] text-xs whitespace-nowrap">{m.projectId}</td>
+                    <td className="py-2.5 px-3 font-mono text-[#4B5563] whitespace-nowrap">{m.grossRequirement}</td>
+                    <td className="py-2.5 px-3 font-mono text-[#4B5563] whitespace-nowrap">{m.onHand}</td>
+                    <td className="py-2.5 px-3 whitespace-nowrap">
                       <span className="font-mono font-bold text-[#DC2626] bg-[#FEF2F2] px-2 py-0.5 rounded">{m.netRequirement}</span>
                     </td>
-                    <td className="py-2.5 px-3 text-[#6B7280] text-xs">{m.requiredDate}</td>
-                    <td className="py-2.5 px-3">
+                    <td className="py-2.5 px-3 text-[#6B7280] text-xs whitespace-nowrap">{m.requiredDate}</td>
+                    <td className="py-2.5 px-3 whitespace-nowrap">
                       <span className="font-mono font-semibold text-[#D97706]">{m.recommendedPO}</span>
                     </td>
                   </tr>

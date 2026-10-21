@@ -166,7 +166,7 @@ export default function ReportsPage() {
       {/* ── Project Report ── */}
       {tab === "Project" && (
         <div className="space-y-5">
-          <div className="grid grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
             {[
               { label: "Active Projects", val: filteredProjects.filter(p=>p.status==="Active").length, cls:"text-accent" },
               { label: "On Time", val: filteredProjects.filter(p=>p.status==="Active").length, cls:"text-accent-success" },
@@ -184,7 +184,7 @@ export default function ReportsPage() {
             {filteredProjects.length === 0 ? (
               <p className="text-text-secondary text-sm text-center py-8">Tidak ada data untuk periode yang dipilih.</p>
             ) : (
-              <div className="overflow-x-auto"><table className="w-full text-sm">
+              <div className="overflow-x-auto w-full"><table className="w-full text-sm min-w-[850px]">
                 <thead><tr className="border-b border-border">
                   {["Code","Project Name","Customer","PM","Target","Contract Value","Progress","Status"].map(h=>(
                     <th key={h} className="text-left py-2 px-3 text-text-secondary text-xs whitespace-nowrap">{h}</th>
@@ -193,14 +193,14 @@ export default function ReportsPage() {
                 <tbody>
                   {filteredProjects.map(p=>(
                     <tr key={p.id} className="border-b border-border/50">
-                      <td className="py-2 px-3 font-mono text-accent text-xs">{p.code}</td>
-                      <td className="py-2 px-3 text-text-primary font-medium">{p.name}</td>
-                      <td className="py-2 px-3 text-text-secondary text-xs">{p.customer}</td>
-                      <td className="py-2 px-3 text-text-secondary text-xs">{p.pm}</td>
+                      <td className="py-2 px-3 font-mono text-accent text-xs whitespace-nowrap">{p.code}</td>
+                      <td className="py-2 px-3 text-text-primary font-medium whitespace-nowrap">{p.name}</td>
+                      <td className="py-2 px-3 text-text-secondary text-xs whitespace-nowrap">{p.customer}</td>
+                      <td className="py-2 px-3 text-text-secondary text-xs whitespace-nowrap">{p.pm}</td>
                       <td className="py-2 px-3 text-text-secondary text-xs whitespace-nowrap">{p.targetDate}</td>
                       <td className="py-2 px-3 font-mono text-accent text-xs whitespace-nowrap">{formatCurrency(p.contractValue)}</td>
-                      <td className="py-2 px-3 w-28"><ProgressBar value={p.progress} size="sm" showLabel/></td>
-                      <td className="py-2 px-3"><StatusBadge status={p.status}/></td>
+                      <td className="py-2 px-3 w-28 whitespace-nowrap"><ProgressBar value={p.progress} size="sm" showLabel/></td>
+                      <td className="py-2 px-3 whitespace-nowrap"><StatusBadge status={p.status}/></td>
                     </tr>
                   ))}
                 </tbody>
@@ -213,7 +213,7 @@ export default function ReportsPage() {
       {/* ── Production Report ── */}
       {tab === "Production" && (
         <div className="space-y-5">
-          <div className="grid grid-cols-2 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <div className="card">
               <h3 className="text-sm font-semibold text-text-primary mb-4">Work Order Status Distribution</h3>
               {filteredWO.length === 0 ? <p className="text-text-secondary text-sm text-center py-8">Tidak ada data.</p> : (
@@ -249,7 +249,7 @@ export default function ReportsPage() {
           <div className="card">
             <h3 className="text-sm font-semibold text-text-primary mb-4">Work Order Efficiency</h3>
             {filteredWO.length === 0 ? <p className="text-text-secondary text-sm text-center py-8">Tidak ada data.</p> : (
-              <div className="overflow-x-auto"><table className="w-full text-sm">
+              <div className="overflow-x-auto w-full"><table className="w-full text-sm min-w-[750px]">
                 <thead><tr className="border-b border-border">
                   {["WO Code","Operation","Serial","Est.Hrs","Act.Hrs","Efficiency","Status"].map(h=>(
                     <th key={h} className="text-left py-2 px-3 text-text-secondary text-xs whitespace-nowrap">{h}</th>
@@ -260,13 +260,13 @@ export default function ReportsPage() {
                     const eff = w.actualHours>0?Math.round((w.estimatedHours/w.actualHours)*100):null;
                     return (
                       <tr key={w.id} className="border-b border-border/50">
-                        <td className="py-2 px-3 font-mono text-accent text-xs">{w.code}</td>
-                        <td className="py-2 px-3 text-text-primary">{w.operation}</td>
-                        <td className="py-2 px-3 font-mono text-text-secondary text-xs">{w.serial}</td>
-                        <td className="py-2 px-3 font-mono text-text-secondary">{w.estimatedHours}h</td>
-                        <td className="py-2 px-3 font-mono text-text-secondary">{w.actualHours}h</td>
-                        <td className="py-2 px-3">{eff!=null?<span className={`font-mono font-bold ${eff>=90?"text-accent-success":eff>=75?"text-accent-warning":"text-accent-alert"}`}>{eff}%</span>:<span className="text-text-secondary">-</span>}</td>
-                        <td className="py-2 px-3"><StatusBadge status={w.status}/></td>
+                        <td className="py-2 px-3 font-mono text-accent text-xs whitespace-nowrap">{w.code}</td>
+                        <td className="py-2 px-3 text-text-primary whitespace-nowrap">{w.operation}</td>
+                        <td className="py-2 px-3 font-mono text-text-secondary text-xs whitespace-nowrap">{w.serial}</td>
+                        <td className="py-2 px-3 font-mono text-text-secondary whitespace-nowrap">{w.estimatedHours}h</td>
+                        <td className="py-2 px-3 font-mono text-text-secondary whitespace-nowrap">{w.actualHours}h</td>
+                        <td className="py-2 px-3 whitespace-nowrap">{eff!=null?<span className={`font-mono font-bold ${eff>=90?"text-accent-success":eff>=75?"text-accent-warning":"text-accent-alert"}`}>{eff}%</span>:<span className="text-text-secondary">-</span>}</td>
+                        <td className="py-2 px-3 whitespace-nowrap"><StatusBadge status={w.status}/></td>
                       </tr>
                     );
                   })}
@@ -282,7 +282,7 @@ export default function ReportsPage() {
         <div className="space-y-5">
           <div className="card">
             <h3 className="text-sm font-semibold text-text-primary mb-4">Material Shortage Report</h3>
-            <div className="overflow-x-auto"><table className="w-full text-sm">
+            <div className="overflow-x-auto w-full"><table className="w-full text-sm min-w-[850px]">
               <thead><tr className="border-b border-border">
                 {["Material","Project","Gross Req","On Hand","Net Req","Required Date","Lead Time","Rec. PO","Status"].map(h=>(
                   <th key={h} className="text-left py-2 px-3 text-text-secondary text-xs whitespace-nowrap">{h}</th>
@@ -293,15 +293,15 @@ export default function ReportsPage() {
                   .filter(m => !m.requiredDate || isInRange(m.requiredDate, range))
                   .map(m=>(
                   <tr key={m.id} className="border-b border-border/50">
-                    <td className="py-2 px-3 text-text-primary font-medium">{m.material}</td>
-                    <td className="py-2 px-3 text-text-secondary text-xs">{m.projectId}</td>
-                    <td className="py-2 px-3 font-mono text-text-secondary">{m.grossRequirement}</td>
-                    <td className="py-2 px-3 font-mono text-text-secondary">{m.onHand}</td>
-                    <td className="py-2 px-3 font-mono font-bold text-accent-alert">{m.netRequirement}</td>
+                    <td className="py-2 px-3 text-text-primary font-medium whitespace-nowrap">{m.material}</td>
+                    <td className="py-2 px-3 text-text-secondary text-xs whitespace-nowrap">{m.projectId}</td>
+                    <td className="py-2 px-3 font-mono text-text-secondary whitespace-nowrap">{m.grossRequirement}</td>
+                    <td className="py-2 px-3 font-mono text-text-secondary whitespace-nowrap">{m.onHand}</td>
+                    <td className="py-2 px-3 font-mono font-bold text-accent-alert whitespace-nowrap">{m.netRequirement}</td>
                     <td className="py-2 px-3 text-text-secondary text-xs whitespace-nowrap">{m.requiredDate}</td>
-                    <td className="py-2 px-3 font-mono text-text-secondary text-xs">{m.leadTime}d</td>
-                    <td className="py-2 px-3 font-mono text-accent-warning">{m.recommendedPO}</td>
-                    <td className="py-2 px-3"><span className={`badge-status border ${m.status==="Shortage"?"text-accent-alert bg-accent-alert/10 border-accent-alert/30":"text-accent-success bg-accent-success/10 border-accent-success/30"}`}>{m.status}</span></td>
+                    <td className="py-2 px-3 font-mono text-text-secondary text-xs whitespace-nowrap">{m.leadTime}d</td>
+                    <td className="py-2 px-3 font-mono text-accent-warning whitespace-nowrap">{m.recommendedPO}</td>
+                    <td className="py-2 px-3 whitespace-nowrap"><span className={`badge-status border ${m.status==="Shortage"?"text-accent-alert bg-accent-alert/10 border-accent-alert/30":"text-accent-success bg-accent-success/10 border-accent-success/30"}`}>{m.status}</span></td>
                   </tr>
                 ))}
               </tbody>
@@ -313,7 +313,7 @@ export default function ReportsPage() {
       {/* ── Quality Report ── */}
       {tab === "Quality" && (
         <div className="space-y-5">
-          <div className="grid grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
             {[
               { label: "Total Inspections", val: filteredInspections.length, cls:"text-accent" },
               { label: "Pass", val: filteredInspections.filter(q=>q.status==="Pass").length, cls:"text-accent-success" },
@@ -329,7 +329,7 @@ export default function ReportsPage() {
           <div className="card">
             <h3 className="text-sm font-semibold text-text-primary mb-4">Open NCRs</h3>
             {filteredNCRs.length === 0 ? <p className="text-text-secondary text-sm text-center py-8">Tidak ada data.</p> : (
-              <div className="overflow-x-auto"><table className="w-full text-sm">
+              <div className="overflow-x-auto w-full"><table className="w-full text-sm min-w-[750px]">
                 <thead><tr className="border-b border-border">
                   {["Code","Serial","Title","Severity","Disposition","PIC","Due Date","Status"].map(h=>(
                     <th key={h} className="text-left py-2 px-3 text-text-secondary text-xs whitespace-nowrap">{h}</th>
@@ -338,14 +338,14 @@ export default function ReportsPage() {
                 <tbody>
                   {filteredNCRs.map(n=>(
                     <tr key={n.id} className="border-b border-border/50">
-                      <td className="py-2 px-3 font-mono text-accent-alert text-xs">{n.code}</td>
-                      <td className="py-2 px-3 font-mono text-text-secondary text-xs">{n.serial}</td>
-                      <td className="py-2 px-3 text-text-primary">{n.title}</td>
-                      <td className="py-2 px-3"><span className={`badge-status border ${n.severity==="Major"?"text-accent-alert bg-accent-alert/10 border-accent-alert/30":"text-accent-warning bg-accent-warning/10 border-accent-warning/30"}`}>{n.severity}</span></td>
-                      <td className="py-2 px-3 text-text-secondary text-xs">{n.disposition}</td>
-                      <td className="py-2 px-3 text-text-secondary text-xs">{n.pic}</td>
+                      <td className="py-2 px-3 font-mono text-accent-alert text-xs whitespace-nowrap">{n.code}</td>
+                      <td className="py-2 px-3 font-mono text-text-secondary text-xs whitespace-nowrap">{n.serial}</td>
+                      <td className="py-2 px-3 text-text-primary whitespace-nowrap">{n.title}</td>
+                      <td className="py-2 px-3 whitespace-nowrap"><span className={`badge-status border ${n.severity==="Major"?"text-accent-alert bg-accent-alert/10 border-accent-alert/30":"text-accent-warning bg-accent-warning/10 border-accent-warning/30"}`}>{n.severity}</span></td>
+                      <td className="py-2 px-3 text-text-secondary text-xs whitespace-nowrap">{n.disposition}</td>
+                      <td className="py-2 px-3 text-text-secondary text-xs whitespace-nowrap">{n.pic}</td>
                       <td className="py-2 px-3 text-text-secondary text-xs whitespace-nowrap">{n.dueDate}</td>
-                      <td className="py-2 px-3"><StatusBadge status={n.status}/></td>
+                      <td className="py-2 px-3 whitespace-nowrap"><StatusBadge status={n.status}/></td>
                     </tr>
                   ))}
                 </tbody>
@@ -358,7 +358,7 @@ export default function ReportsPage() {
       {/* ── Finance & Cost ── */}
       {tab === "Finance & Cost" && (
         <div className="space-y-5">
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
             {[
               { label: "Total Contract Revenue", val: formatCurrency(totalRevenue), cls:"text-accent-success" },
               { label: "Budget Cost", val: formatCurrency(totalBudget), cls:"text-text-primary" },
@@ -373,7 +373,7 @@ export default function ReportsPage() {
               </div>
             ))}
           </div>
-          <div className="grid grid-cols-2 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <div className="card">
               <h3 className="text-sm font-semibold text-text-primary mb-4">Actual Cost Breakdown</h3>
               {filteredCosts.length===0 ? <p className="text-text-secondary text-sm text-center py-8">Tidak ada data.</p> : (

@@ -257,39 +257,39 @@ export function ProjectDashboard() {
             Lihat Semua Risiko <ChevronRight size={12} />
           </Link>
         </div>
-        <div className="overflow-x-auto">
-          <table className="w-full text-xs">
+        <div className="overflow-x-auto w-full">
+          <table className="w-full text-xs min-w-[750px]">
             <thead>
               <tr className="border-b border-[#F1F5F9] bg-[#F8FAFC]/50">
-                <th className="text-left py-2 px-3 text-[#64748B] font-semibold">Judul Risiko</th>
-                <th className="text-left py-2 px-3 text-[#64748B] font-semibold">Proyek</th>
-                <th className="text-left py-2 px-3 text-[#64748B] font-semibold">Probabilitas</th>
-                <th className="text-left py-2 px-3 text-[#64748B] font-semibold">Dampak</th>
-                <th className="text-left py-2 px-3 text-[#64748B] font-semibold">Status</th>
-                <th className="text-left py-2 px-3 text-[#64748B] font-semibold">Rencana Mitigasi</th>
-                <th className="text-left py-2 px-3 text-[#64748B] font-semibold">Owner</th>
+                <th className="text-left py-2 px-3 text-[#64748B] font-semibold whitespace-nowrap">Judul Risiko</th>
+                <th className="text-left py-2 px-3 text-[#64748B] font-semibold whitespace-nowrap">Proyek</th>
+                <th className="text-left py-2 px-3 text-[#64748B] font-semibold whitespace-nowrap">Probabilitas</th>
+                <th className="text-left py-2 px-3 text-[#64748B] font-semibold whitespace-nowrap">Dampak</th>
+                <th className="text-left py-2 px-3 text-[#64748B] font-semibold whitespace-nowrap">Status</th>
+                <th className="text-left py-2 px-3 text-[#64748B] font-semibold whitespace-nowrap">Rencana Mitigasi</th>
+                <th className="text-left py-2 px-3 text-[#64748B] font-semibold whitespace-nowrap">Owner</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[#F1F5F9]">
               {risks.map(r => (
                 <tr key={r.id} className="hover:bg-[#F8FAFC]">
-                  <td className="py-2.5 px-3 font-medium text-[#0F172A]">{r.title}</td>
-                  <td className="py-2.5 px-3 font-mono text-[#64748B]">{r.projectId}</td>
-                  <td className="py-2.5 px-3">
+                  <td className="py-2.5 px-3 font-medium text-[#0F172A] whitespace-nowrap">{r.title}</td>
+                  <td className="py-2.5 px-3 font-mono text-[#64748B] whitespace-nowrap">{r.projectId}</td>
+                  <td className="py-2.5 px-3 whitespace-nowrap">
                     <span className={`px-2 py-0.5 rounded text-[10px] font-semibold ${r.probability === 'High' ? 'bg-[#FEF2F2] text-[#DC2626]' : 'bg-[#FFFBEB] text-[#D97706]'}`}>
                       {r.probability}
                     </span>
                   </td>
-                  <td className="py-2.5 px-3">
+                  <td className="py-2.5 px-3 whitespace-nowrap">
                     <span className={`px-2 py-0.5 rounded text-[10px] font-semibold ${r.impact === 'High' ? 'bg-[#FEF2F2] text-[#DC2626]' : 'bg-[#EFF6FF] text-[#2563EB]'}`}>
                       {r.impact}
                     </span>
                   </td>
-                  <td className="py-2.5 px-3">
+                  <td className="py-2.5 px-3 whitespace-nowrap">
                     <StatusBadge status={r.status} />
                   </td>
-                  <td className="py-2.5 px-3 text-[#475569] max-w-xs truncate">{r.mitigation}</td>
-                  <td className="py-2.5 px-3 text-[#64748B]">{r.owner}</td>
+                  <td className="py-2.5 px-3 text-[#475569] max-w-xs truncate whitespace-nowrap">{r.mitigation}</td>
+                  <td className="py-2.5 px-3 text-[#64748B] whitespace-nowrap">{r.owner}</td>
                 </tr>
               ))}
             </tbody>

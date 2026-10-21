@@ -587,16 +587,16 @@ export default function QuotationsPage() {
               </div>
 
               {/* Items Table */}
-              <div>
-                <table className="w-full text-left border-collapse">
+              <div className="overflow-x-auto w-full border border-slate-200 rounded-lg">
+                <table className="w-full text-left border-collapse min-w-[650px]">
                   <thead>
                     <tr className="bg-slate-900 text-white text-[10px] uppercase font-semibold">
-                      <th className="py-2 px-3 border border-slate-900 text-center w-8">No</th>
-                      <th className="py-2 px-3 border border-slate-900">Deskripsi Pekerjaan / Produk</th>
-                      <th className="py-2 px-3 border border-slate-900 text-center w-16">Qty</th>
-                      <th className="py-2 px-3 border border-slate-900 text-center w-16">Satuan</th>
-                      <th className="py-2 px-3 border border-slate-900 text-right w-36">Harga Satuan (IDR)</th>
-                      <th className="py-2 px-3 border border-slate-900 text-right w-36">Jumlah (IDR)</th>
+                      <th className="py-2 px-3 border border-slate-900 text-center w-8 whitespace-nowrap">No</th>
+                      <th className="py-2 px-3 border border-slate-900 whitespace-nowrap">Deskripsi Pekerjaan / Produk</th>
+                      <th className="py-2 px-3 border border-slate-900 text-center w-16 whitespace-nowrap">Qty</th>
+                      <th className="py-2 px-3 border border-slate-900 text-center w-16 whitespace-nowrap">Satuan</th>
+                      <th className="py-2 px-3 border border-slate-900 text-right w-36 whitespace-nowrap">Harga Satuan (IDR)</th>
+                      <th className="py-2 px-3 border border-slate-900 text-right w-36 whitespace-nowrap">Jumlah (IDR)</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-200 text-xs">
@@ -604,32 +604,32 @@ export default function QuotationsPage() {
                       { product: "Pekerjaan fabrikasi presisi sesuai spesifikasi teknis", qty: 1, unit: "Set", unitPrice: modal.item.total, total: modal.item.total }
                     ]).map((row, idx) => (
                       <tr key={idx}>
-                        <td className="py-2.5 px-3 border border-slate-200 text-center font-mono">{idx + 1}</td>
-                        <td className="py-2.5 px-3 border border-slate-200 font-medium">{row.product}</td>
-                        <td className="py-2.5 px-3 border border-slate-200 text-center font-mono">{row.qty}</td>
-                        <td className="py-2.5 px-3 border border-slate-200 text-center">{row.unit}</td>
-                        <td className="py-2.5 px-3 border border-slate-200 text-right font-mono">{formatCurrency(row.unitPrice)}</td>
-                        <td className="py-2.5 px-3 border border-slate-200 text-right font-mono font-semibold">{formatCurrency(row.total)}</td>
+                        <td className="py-2.5 px-3 border border-slate-200 text-center font-mono whitespace-nowrap">{idx + 1}</td>
+                        <td className="py-2.5 px-3 border border-slate-200 font-medium whitespace-nowrap">{row.product}</td>
+                        <td className="py-2.5 px-3 border border-slate-200 text-center font-mono whitespace-nowrap">{row.qty}</td>
+                        <td className="py-2.5 px-3 border border-slate-200 text-center whitespace-nowrap">{row.unit}</td>
+                        <td className="py-2.5 px-3 border border-slate-200 text-right font-mono whitespace-nowrap">{formatCurrency(row.unitPrice)}</td>
+                        <td className="py-2.5 px-3 border border-slate-200 text-right font-mono font-semibold whitespace-nowrap">{formatCurrency(row.total)}</td>
                       </tr>
                     ))}
                     <tr className="bg-slate-50 font-bold">
-                      <td colSpan={5} className="py-2.5 px-3 border border-slate-200 text-right uppercase text-[11px]">Subtotal DPP</td>
-                      <td className="py-2.5 px-3 border border-slate-200 text-right font-mono">{formatCurrency(modal.item.total)}</td>
+                      <td colSpan={5} className="py-2.5 px-3 border border-slate-200 text-right uppercase text-[11px] whitespace-nowrap">Subtotal DPP</td>
+                      <td className="py-2.5 px-3 border border-slate-200 text-right font-mono whitespace-nowrap">{formatCurrency(modal.item.total)}</td>
                     </tr>
                     <tr className="bg-slate-50">
-                      <td colSpan={5} className="py-2 px-3 border border-slate-200 text-right text-[11px] text-slate-600">PPN 11%</td>
-                      <td className="py-2 px-3 border border-slate-200 text-right font-mono text-slate-600">{formatCurrency(Math.round(modal.item.total * 0.11))}</td>
+                      <td colSpan={5} className="py-2 px-3 border border-slate-200 text-right text-[11px] text-slate-600 whitespace-nowrap">PPN 11%</td>
+                      <td className="py-2 px-3 border border-slate-200 text-right font-mono text-slate-600 whitespace-nowrap">{formatCurrency(Math.round(modal.item.total * 0.11))}</td>
                     </tr>
                     <tr className="bg-blue-50 font-black text-slate-900 text-sm">
-                      <td colSpan={5} className="py-3 px-3 border border-slate-300 text-right uppercase">Total Penawaran Termasuk PPN</td>
-                      <td className="py-3 px-3 border border-slate-300 text-right font-mono text-blue-900">{formatCurrency(Math.round(modal.item.total * 1.11))}</td>
+                      <td colSpan={5} className="py-3 px-3 border border-slate-300 text-right uppercase whitespace-nowrap">Total Penawaran Termasuk PPN</td>
+                      <td className="py-3 px-3 border border-slate-300 text-right font-mono text-blue-900 whitespace-nowrap">{formatCurrency(Math.round(modal.item.total * 1.11))}</td>
                     </tr>
                   </tbody>
                 </table>
               </div>
 
               {/* Terms & Conditions */}
-              <div className="grid grid-cols-2 gap-4 text-[10px] text-slate-600 pt-2 border-t border-slate-200">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-[10px] text-slate-600 pt-2 border-t border-slate-200">
                 <div>
                   <p className="font-bold text-slate-800 mb-1">SYARAT & KETENTUAN PENAWARAN:</p>
                   <ul className="list-disc pl-4 space-y-0.5">
@@ -648,7 +648,7 @@ export default function QuotationsPage() {
               </div>
 
               {/* Signatures */}
-              <div className="grid grid-cols-2 gap-12 pt-8 text-center text-xs">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-12 pt-8 text-center text-xs">
                 <div>
                   <p className="text-slate-500 text-[10px]">Dibuat & Diajukan Oleh,</p>
                   <div className="h-16"></div>

@@ -90,16 +90,16 @@ export default function UsersPage() {
             {ROLES.map(r => <option key={r}>{r}</option>)}
           </select>
         </div>
-        <div className="overflow-x-auto"><table className="w-full text-sm">
+        <div className="overflow-x-auto w-full"><table className="w-full text-sm min-w-[750px]">
           <thead><tr className="border-b border-border">
             {["Name","Email","Role","Department","Status",""].map(h => (
-              <th key={h} className="text-left py-3 px-4 text-text-secondary font-medium text-xs">{h}</th>
+              <th key={h} className="text-left py-3 px-4 text-text-secondary font-medium text-xs whitespace-nowrap">{h}</th>
             ))}
           </tr></thead>
           <tbody>
             {filtered.map(u => (
               <tr key={u.id} className="table-row-hover">
-                <td className="py-3 px-4 text-text-primary font-medium">
+                <td className="py-3 px-4 text-text-primary font-medium whitespace-nowrap">
                   <div className="flex items-center gap-3">
                     <div className="w-8 h-8 bg-accent/20 rounded-full flex items-center justify-center text-accent text-xs font-bold">
                       {u.name.split(" ").map(n=>n[0]).join("").slice(0,2)}
@@ -107,11 +107,11 @@ export default function UsersPage() {
                     {u.name}
                   </div>
                 </td>
-                <td className="py-3 px-4 text-text-secondary text-xs">{u.email}</td>
-                <td className="py-3 px-4"><span className={`badge-status border ${roleColor(u.role)}`}>{u.role}</span></td>
-                <td className="py-3 px-4 text-text-secondary text-xs">{u.department}</td>
-                <td className="py-3 px-4"><StatusBadge status={u.status} /></td>
-                <td className="py-3 px-4">
+                <td className="py-3 px-4 text-text-secondary text-xs whitespace-nowrap">{u.email}</td>
+                <td className="py-3 px-4 whitespace-nowrap"><span className={`badge-status border ${roleColor(u.role)}`}>{u.role}</span></td>
+                <td className="py-3 px-4 text-text-secondary text-xs whitespace-nowrap">{u.department}</td>
+                <td className="py-3 px-4 whitespace-nowrap"><StatusBadge status={u.status} /></td>
+                <td className="py-3 px-4 whitespace-nowrap">
                   <div className="flex gap-2">
                     <button className="text-text-secondary hover:text-accent" onClick={() => { setForm({ ...u }); setModal({ type: "edit", item: u }); }}><Pencil size={14} /></button>
                     <button className="text-text-secondary hover:text-accent-alert" onClick={() => setData(data.filter(x => x.id !== u.id))}><Trash2 size={14} /></button>
@@ -125,8 +125,8 @@ export default function UsersPage() {
 
       {(modal?.type === "add" || modal?.type === "edit") && (
         <Modal open title={modal.type === "add" ? "Add User" : "Edit User"} onClose={() => setModal(null)}>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="col-span-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="sm:col-span-2">
               <label className="text-text-secondary text-xs mb-1.5 block">Full Name</label>
               <input className="input" value={form.name ?? ""} onChange={e => setForm({ ...form, name: e.target.value })} />
             </div>

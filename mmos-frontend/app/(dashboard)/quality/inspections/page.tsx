@@ -203,7 +203,7 @@ export default function InspectionsPage() {
       />
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {[
           { label: "Menunggu Pengujian (Pending)", val: data.filter(q => q.status === "Pending").length, icon: <Clock size={16} className="text-accent-warning" />, cls: "text-accent-warning", border: "border-amber-500/20" },
           { label: "Lolos Uji (Pass)", val: data.filter(q => q.status === "Pass").length, icon: <CheckCircle2 size={16} className="text-accent-success" />, cls: "text-accent-success", border: "border-emerald-500/20" },
@@ -266,27 +266,27 @@ export default function InspectionsPage() {
         </div>
 
         {/* Table */}
-        <div className="overflow-x-auto border border-border rounded-lg">
-          <table className="w-full text-sm">
+        <div className="overflow-x-auto border border-border rounded-lg w-full">
+          <table className="w-full text-sm min-w-[950px]">
             <thead>
               <tr className="border-b border-border bg-surface-2 text-text-secondary text-xs">
-                <th className="text-left py-3 px-3.5 font-semibold cursor-pointer hover:text-accent transition-colors" onClick={() => toggleSort("code")}>
+                <th className="text-left py-3 px-3.5 font-semibold cursor-pointer hover:text-accent transition-colors whitespace-nowrap" onClick={() => toggleSort("code")}>
                   <div className="flex items-center gap-1.5">No. QC <ArrowUpDown size={12} /></div>
                 </th>
-                <th className="text-left py-3 px-3.5 font-semibold cursor-pointer hover:text-accent transition-colors" onClick={() => toggleSort("serial")}>
+                <th className="text-left py-3 px-3.5 font-semibold cursor-pointer hover:text-accent transition-colors whitespace-nowrap" onClick={() => toggleSort("serial")}>
                   <div className="flex items-center gap-1.5">Serial Number <ArrowUpDown size={12} /></div>
                 </th>
-                <th className="text-left py-3 px-3.5 font-semibold cursor-pointer hover:text-accent transition-colors" onClick={() => toggleSort("operation")}>
+                <th className="text-left py-3 px-3.5 font-semibold cursor-pointer hover:text-accent transition-colors whitespace-nowrap" onClick={() => toggleSort("operation")}>
                   <div className="flex items-center gap-1.5">Tahapan Operasi <ArrowUpDown size={12} /></div>
                 </th>
-                <th className="text-left py-3 px-3.5 font-semibold">Inspektor</th>
-                <th className="text-left py-3 px-3.5 font-semibold cursor-pointer hover:text-accent transition-colors" onClick={() => toggleSort("date")}>
+                <th className="text-left py-3 px-3.5 font-semibold whitespace-nowrap">Inspektor</th>
+                <th className="text-left py-3 px-3.5 font-semibold cursor-pointer hover:text-accent transition-colors whitespace-nowrap" onClick={() => toggleSort("date")}>
                   <div className="flex items-center gap-1.5">Tgl Uji <ArrowUpDown size={12} /></div>
                 </th>
-                <th className="text-left py-3 px-3.5 font-semibold">Kriteria Penerimaan</th>
-                <th className="text-left py-3 px-3.5 font-semibold">Hasil Temuan</th>
-                <th className="text-center py-3 px-3.5 font-semibold">Status</th>
-                <th className="text-right py-3 px-3.5 font-semibold">Aksi</th>
+                <th className="text-left py-3 px-3.5 font-semibold whitespace-nowrap">Kriteria Penerimaan</th>
+                <th className="text-left py-3 px-3.5 font-semibold whitespace-nowrap">Hasil Temuan</th>
+                <th className="text-center py-3 px-3.5 font-semibold whitespace-nowrap">Status</th>
+                <th className="text-right py-3 px-3.5 font-semibold whitespace-nowrap">Aksi</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
@@ -299,33 +299,33 @@ export default function InspectionsPage() {
               ) : (
                 filteredAndSorted.map(q => (
                   <tr key={q.id} className="table-row-hover group">
-                    <td className="py-3 px-3.5 font-mono text-accent font-semibold text-xs">
+                    <td className="py-3 px-3.5 font-mono text-accent font-semibold text-xs whitespace-nowrap">
                       {q.code}
                     </td>
-                    <td className="py-3 px-3.5 font-mono text-text-primary text-xs font-bold">
+                    <td className="py-3 px-3.5 font-mono text-text-primary text-xs font-bold whitespace-nowrap">
                       {q.serial}
                     </td>
-                    <td className="py-3 px-3.5 text-text-primary font-medium max-w-[160px] truncate" title={q.operation}>
+                    <td className="py-3 px-3.5 text-text-primary font-medium max-w-[160px] truncate whitespace-nowrap" title={q.operation}>
                       {q.operation}
                     </td>
-                    <td className="py-3 px-3.5 text-text-secondary text-xs">
+                    <td className="py-3 px-3.5 text-text-secondary text-xs whitespace-nowrap">
                       {q.inspector}
                     </td>
-                    <td className="py-3 px-3.5 text-text-secondary text-xs font-mono">
+                    <td className="py-3 px-3.5 text-text-secondary text-xs font-mono whitespace-nowrap">
                       {q.date}
                     </td>
-                    <td className="py-3 px-3.5 text-text-secondary text-xs max-w-[180px] truncate" title={q.criteria}>
+                    <td className="py-3 px-3.5 text-text-secondary text-xs max-w-[180px] truncate whitespace-nowrap" title={q.criteria}>
                       {q.criteria}
                     </td>
-                    <td className="py-3 px-3.5 text-xs max-w-[140px] truncate font-mono">
+                    <td className="py-3 px-3.5 text-xs max-w-[140px] truncate font-mono whitespace-nowrap">
                       <span className={q.status === "Pass" ? "text-emerald-500" : q.status === "Fail" ? "text-rose-500 font-bold" : "text-text-secondary"}>
                         {q.result ?? "—"}
                       </span>
                     </td>
-                    <td className="py-3 px-3.5 text-center">
+                    <td className="py-3 px-3.5 text-center whitespace-nowrap">
                       <StatusBadge status={q.status} />
                     </td>
-                    <td className="py-3 px-3.5 text-right">
+                    <td className="py-3 px-3.5 text-right whitespace-nowrap">
                       <div className="flex items-center justify-end gap-1.5">
                         <button 
                           className="p-1.5 rounded hover:bg-surface-2 text-text-secondary hover:text-accent transition-colors" 
@@ -518,47 +518,49 @@ export default function InspectionsPage() {
               </div>
 
               {/* Parameters Table */}
-              <table className="w-full text-left border-collapse text-xs">
-                <thead>
-                  <tr className="bg-slate-900 text-white text-[10px] uppercase font-semibold">
-                    <th className="py-2 px-3 border border-slate-900 w-10 text-center">No</th>
-                    <th className="py-2 px-3 border border-slate-900">Parameter Uji & Standar Toleransi</th>
-                    <th className="py-2 px-3 border border-slate-900">Hasil Pengukuran Aktual</th>
-                    <th className="py-2 px-3 border border-slate-900 text-center w-24">Kesesuaian</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-200">
-                  <tr>
-                    <td className="py-3 px-3 border border-slate-200 text-center font-mono">1</td>
-                    <td className="py-3 px-3 border border-slate-200 font-medium">
-                      Pemeriksaan Geometrik & Dimensi Kritis
-                      <p className="text-[10px] text-slate-500 mt-0.5">{modal.item.criteria}</p>
-                    </td>
-                    <td className="py-3 px-3 border border-slate-200 font-mono font-semibold">
-                      {modal.item.result || "Semua toleransi tercapai"}
-                    </td>
-                    <td className="py-3 px-3 border border-slate-200 text-center font-bold text-emerald-700">
-                      CONFORM
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="py-3 px-3 border border-slate-200 text-center font-mono">2</td>
-                    <td className="py-3 px-3 border border-slate-200 font-medium">
-                      Pemeriksaan Visual Cacat Permukaan (NDT)
-                      <p className="text-[10px] text-slate-500 mt-0.5">Bebas dari retak las (crack), porosity, dan undercutting.</p>
-                    </td>
-                    <td className="py-3 px-3 border border-slate-200 font-mono text-slate-700">
-                      100% Visual Test Clear
-                    </td>
-                    <td className="py-3 px-3 border border-slate-200 text-center font-bold text-emerald-700">
-                      CONFORM
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+              <div className="overflow-x-auto w-full border border-slate-200 rounded-lg">
+                <table className="w-full text-left border-collapse text-xs min-w-[550px]">
+                  <thead>
+                    <tr className="bg-slate-900 text-white text-[10px] uppercase font-semibold">
+                      <th className="py-2 px-3 border border-slate-900 w-10 text-center whitespace-nowrap">No</th>
+                      <th className="py-2 px-3 border border-slate-900 whitespace-nowrap">Parameter Uji & Standar Toleransi</th>
+                      <th className="py-2 px-3 border border-slate-900 whitespace-nowrap">Hasil Pengukuran Aktual</th>
+                      <th className="py-2 px-3 border border-slate-900 text-center w-24 whitespace-nowrap">Kesesuaian</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-200">
+                    <tr>
+                      <td className="py-3 px-3 border border-slate-200 text-center font-mono whitespace-nowrap">1</td>
+                      <td className="py-3 px-3 border border-slate-200 font-medium whitespace-nowrap">
+                        Pemeriksaan Geometrik & Dimensi Kritis
+                        <p className="text-[10px] text-slate-500 mt-0.5">{modal.item.criteria}</p>
+                      </td>
+                      <td className="py-3 px-3 border border-slate-200 font-mono font-semibold whitespace-nowrap">
+                        {modal.item.result || "Semua toleransi tercapai"}
+                      </td>
+                      <td className="py-3 px-3 border border-slate-200 text-center font-bold text-emerald-700 whitespace-nowrap">
+                        CONFORM
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="py-3 px-3 border border-slate-200 text-center font-mono whitespace-nowrap">2</td>
+                      <td className="py-3 px-3 border border-slate-200 font-medium whitespace-nowrap">
+                        Pemeriksaan Visual Cacat Permukaan (NDT)
+                        <p className="text-[10px] text-slate-500 mt-0.5">Bebas dari retak las (crack), porosity, dan undercutting.</p>
+                      </td>
+                      <td className="py-3 px-3 border border-slate-200 font-mono text-slate-700 whitespace-nowrap">
+                        100% Visual Test Clear
+                      </td>
+                      <td className="py-3 px-3 border border-slate-200 text-center font-bold text-emerald-700 whitespace-nowrap">
+                        CONFORM
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
 
               {/* Signatures */}
-              <div className="grid grid-cols-2 gap-12 pt-8 text-center text-xs">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-12 pt-8 text-center text-xs">
                 <div>
                   <p className="text-slate-500 text-[10px]">Inspektor Penguji,</p>
                   <div className="h-14"></div>
@@ -581,7 +583,7 @@ export default function InspectionsPage() {
       {modal?.type === "add" && (
         <Modal open title="Daftarkan Lembar Pengujian QC Baru" onClose={() => setModal(null)}>
           <div className="space-y-4">
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label className="text-text-secondary text-xs mb-1.5 block font-medium">Serial Number Unit *</label>
                 <input 
@@ -604,7 +606,7 @@ export default function InspectionsPage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label className="text-text-secondary text-xs mb-1.5 block font-medium">Inspektor Penanggung Jawab</label>
                 <input 

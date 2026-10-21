@@ -277,26 +277,26 @@ export default function ProductionOrdersPage() {
         </div>
 
         {/* Table View */}
-        <div className="overflow-x-auto -mx-5 px-5">
+        <div className="overflow-x-auto w-full">
           <table className="table min-w-[1050px]">
             <thead>
               <tr>
-                <th onClick={() => handleSort("code")} className="cursor-pointer hover:text-[#2563EB]">
+                <th onClick={() => handleSort("code")} className="cursor-pointer hover:text-[#2563EB] whitespace-nowrap">
                   KODE SPK
                 </th>
-                <th>PRODUK</th>
-                <th>PROYEK</th>
-                <th onClick={() => handleSort("qty")} className="cursor-pointer hover:text-[#2563EB]">
+                <th className="whitespace-nowrap">PRODUK</th>
+                <th className="whitespace-nowrap">PROYEK</th>
+                <th onClick={() => handleSort("qty")} className="cursor-pointer hover:text-[#2563EB] whitespace-nowrap">
                   JUMLAH
                 </th>
-                <th onClick={() => handleSort("targetDate")} className="cursor-pointer hover:text-[#2563EB]">
+                <th onClick={() => handleSort("targetDate")} className="cursor-pointer hover:text-[#2563EB] whitespace-nowrap">
                   TARGET DATE
                 </th>
-                <th onClick={() => handleSort("progress")} className="cursor-pointer hover:text-[#2563EB] w-40">
+                <th onClick={() => handleSort("progress")} className="cursor-pointer hover:text-[#2563EB] w-40 whitespace-nowrap">
                   PROGRESS
                 </th>
-                <th>STATUS</th>
-                <th className="text-right">AKSI</th>
+                <th className="whitespace-nowrap">STATUS</th>
+                <th className="text-right whitespace-nowrap">AKSI</th>
               </tr>
             </thead>
             <tbody>
@@ -309,18 +309,18 @@ export default function ProductionOrdersPage() {
               ) : (
                 filtered.map(p => (
                   <tr key={p.id} className="hover:bg-[#F8FAFC]/80 transition-colors">
-                    <td className="font-mono font-bold text-[#2563EB]">{p.code}</td>
-                    <td className="font-semibold text-[#0F172A]">{p.product}</td>
-                    <td className="font-mono text-xs text-[#64748B]">{p.projectId}</td>
-                    <td className="font-mono font-bold">{p.qty} unit</td>
-                    <td className="text-[#475569] font-mono text-xs">{p.targetDate}</td>
-                    <td>
+                    <td className="font-mono font-bold text-[#2563EB] whitespace-nowrap">{p.code}</td>
+                    <td className="font-semibold text-[#0F172A] whitespace-nowrap">{p.product}</td>
+                    <td className="font-mono text-xs text-[#64748B] whitespace-nowrap">{p.projectId}</td>
+                    <td className="font-mono font-bold whitespace-nowrap">{p.qty} unit</td>
+                    <td className="text-[#475569] font-mono text-xs whitespace-nowrap">{p.targetDate}</td>
+                    <td className="whitespace-nowrap">
                       <div className="flex items-center gap-2">
                         <ProgressBar value={p.progress} size="sm" className="flex-1" />
                         <span className="text-xs font-mono font-bold text-[#475569]">{p.progress}%</span>
                       </div>
                     </td>
-                    <td><StatusBadge status={p.status} /></td>
+                    <td className="whitespace-nowrap"><StatusBadge status={p.status} /></td>
                     <td className="text-right">
                       <div className="flex items-center justify-end gap-1.5">
                         <button
@@ -430,7 +430,7 @@ export default function ProductionOrdersPage() {
             </div>
 
             {/* Tanda Tangan Mandor / Supervisor */}
-            <div className="grid grid-cols-2 gap-4 text-center text-xs pt-3 border-t border-[#F1F5F9]">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-center text-xs pt-3 border-t border-[#F1F5F9]">
               <div className="p-3 bg-[#F8FAFC] rounded-xl">
                 <p className="text-[#64748B]">Disetujui Oleh (Pabrik)</p>
                 <div className="h-10 flex items-end justify-center font-bold text-[#0F172A]">Supri Santoso</div>

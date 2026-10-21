@@ -253,23 +253,23 @@ export default function DeliveryPage() {
         </div>
 
         {/* Responsive Table */}
-        <div className="overflow-x-auto -mx-5 px-5">
+        <div className="overflow-x-auto w-full">
           <table className="table min-w-[1050px]">
             <thead>
               <tr>
-                <th onClick={() => handleSort("code")} className="cursor-pointer hover:text-[#2563EB]">
+                <th onClick={() => handleSort("code")} className="cursor-pointer hover:text-[#2563EB] whitespace-nowrap">
                   NO. SURAT JALAN
                 </th>
-                <th>PELANGGAN / PENERIMA</th>
-                <th>PROYEK</th>
-                <th onClick={() => handleSort("deliveryDate")} className="cursor-pointer hover:text-[#2563EB]">
+                <th className="whitespace-nowrap">PELANGGAN / PENERIMA</th>
+                <th className="whitespace-nowrap">PROYEK</th>
+                <th onClick={() => handleSort("deliveryDate")} className="cursor-pointer hover:text-[#2563EB] whitespace-nowrap">
                   TANGGAL KIRIM
                 </th>
-                <th>UNIT / SERIAL NUMBER</th>
-                <th>EKSPEDISI / DRIVER</th>
-                <th>NO. POLISI</th>
-                <th>STATUS</th>
-                <th className="text-right">AKSI</th>
+                <th className="whitespace-nowrap">UNIT / SERIAL NUMBER</th>
+                <th className="whitespace-nowrap">EKSPEDISI / DRIVER</th>
+                <th className="whitespace-nowrap">NO. POLISI</th>
+                <th className="whitespace-nowrap">STATUS</th>
+                <th className="text-right whitespace-nowrap">AKSI</th>
               </tr>
             </thead>
             <tbody>
@@ -282,13 +282,13 @@ export default function DeliveryPage() {
               ) : (
                 filtered.map(d => (
                   <tr key={d.id} className="hover:bg-[#F8FAFC]/80 transition-colors">
-                    <td className="font-mono font-bold text-[#2563EB]">{d.code}</td>
-                    <td className="font-semibold text-[#0F172A] max-w-[180px]">
+                    <td className="font-mono font-bold text-[#2563EB] whitespace-nowrap">{d.code}</td>
+                    <td className="font-semibold text-[#0F172A] max-w-[180px] whitespace-nowrap">
                       <div className="truncate" title={d.customer}>{d.customer}</div>
                     </td>
-                    <td className="font-mono text-xs text-[#64748B]">{d.projectId}</td>
-                    <td className="text-xs text-[#475569] font-mono">{d.deliveryDate}</td>
-                    <td>
+                    <td className="font-mono text-xs text-[#64748B] whitespace-nowrap">{d.projectId}</td>
+                    <td className="text-xs text-[#475569] font-mono whitespace-nowrap">{d.deliveryDate}</td>
+                    <td className="whitespace-nowrap">
                       <div className="flex gap-1 flex-wrap">
                         {d.units.map(u => (
                           <span key={u} className="font-mono text-[11px] font-bold bg-[#EFF6FF] text-[#2563EB] px-2 py-0.5 rounded border border-[#BFDBFE]">
@@ -297,12 +297,12 @@ export default function DeliveryPage() {
                         ))}
                       </div>
                     </td>
-                    <td className="text-xs text-[#475569]">
+                    <td className="text-xs text-[#475569] whitespace-nowrap">
                       <div className="font-medium text-[#0F172A]">{d.transporter}</div>
                       <div className="text-[#64748B] text-[11px]">{d.driver || "Driver Assigned"}</div>
                     </td>
-                    <td className="font-mono text-xs text-[#64748B]">{d.truckPlate || "—"}</td>
-                    <td><StatusBadge status={d.status} /></td>
+                    <td className="font-mono text-xs text-[#64748B] whitespace-nowrap">{d.truckPlate || "—"}</td>
+                    <td className="whitespace-nowrap"><StatusBadge status={d.status} /></td>
                     <td className="text-right">
                       <div className="flex items-center justify-end gap-1.5">
                         <button
@@ -403,7 +403,7 @@ export default function DeliveryPage() {
             </div>
 
             {/* Tanda Tangan Serah Terima */}
-            <div className="grid grid-cols-3 gap-3 text-center text-xs pt-3 border-t border-[#F1F5F9]">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-center text-xs pt-3 border-t border-[#F1F5F9]">
               <div className="p-3 bg-[#F8FAFC] rounded-xl">
                 <p className="text-[#64748B]">Diserahkan Oleh (Pabrik)</p>
                 <div className="h-12 flex items-end justify-center font-bold text-[#0F172A]">Supri Santoso</div>

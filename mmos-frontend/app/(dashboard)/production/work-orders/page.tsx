@@ -78,10 +78,10 @@ export default function WorkOrdersPage() {
             {STATUSES.map(s => <option key={s}>{s}</option>)}
           </select>
         </div>
-        <div className="overflow-x-auto"><table className="w-full text-sm">
+        <div className="overflow-x-auto w-full"><table className="w-full text-sm min-w-[950px]">
           <thead><tr className="border-b border-border">
             {["Code","Serial","Operation","Seq","Work Center","Assigned To","Target","Est.h","Act.h","Eff%","Status",""].map(h=>(
-              <th key={h} className="text-left py-3 px-3 text-text-secondary font-medium text-xs">{h}</th>
+              <th key={h} className="text-left py-3 px-3 text-text-secondary font-medium text-xs whitespace-nowrap">{h}</th>
             ))}
           </tr></thead>
           <tbody>
@@ -89,20 +89,20 @@ export default function WorkOrdersPage() {
               const eff = efficiencyPct(w);
               return (
                 <tr key={w.id} className="table-row-hover">
-                  <td className="py-3 px-3 font-mono text-accent text-xs">{w.code}</td>
-                  <td className="py-3 px-3 font-mono text-text-secondary text-xs">{w.serial}</td>
-                  <td className="py-3 px-3 text-text-primary font-medium max-w-[140px]"><div className="truncate">{w.operation}</div></td>
-                  <td className="py-3 px-3 font-mono text-text-secondary">{w.seq}</td>
-                  <td className="py-3 px-3 text-text-secondary text-xs">{w.workCenter}</td>
-                  <td className="py-3 px-3 text-text-secondary text-xs">{w.assignedTo}</td>
-                  <td className="py-3 px-3 text-text-secondary text-xs">{w.targetDate}</td>
-                  <td className="py-3 px-3 font-mono text-text-secondary text-xs">{w.estimatedHours}h</td>
-                  <td className="py-3 px-3 font-mono text-text-secondary text-xs">{w.actualHours>0?`${w.actualHours}h`:"-"}</td>
-                  <td className="py-3 px-3">
+                  <td className="py-3 px-3 font-mono text-accent text-xs whitespace-nowrap">{w.code}</td>
+                  <td className="py-3 px-3 font-mono text-text-secondary text-xs whitespace-nowrap">{w.serial}</td>
+                  <td className="py-3 px-3 text-text-primary font-medium max-w-[140px] whitespace-nowrap"><div className="truncate">{w.operation}</div></td>
+                  <td className="py-3 px-3 font-mono text-text-secondary whitespace-nowrap">{w.seq}</td>
+                  <td className="py-3 px-3 text-text-secondary text-xs whitespace-nowrap">{w.workCenter}</td>
+                  <td className="py-3 px-3 text-text-secondary text-xs whitespace-nowrap">{w.assignedTo}</td>
+                  <td className="py-3 px-3 text-text-secondary text-xs whitespace-nowrap">{w.targetDate}</td>
+                  <td className="py-3 px-3 font-mono text-text-secondary text-xs whitespace-nowrap">{w.estimatedHours}h</td>
+                  <td className="py-3 px-3 font-mono text-text-secondary text-xs whitespace-nowrap">{w.actualHours>0?`${w.actualHours}h`:"-"}</td>
+                  <td className="py-3 px-3 whitespace-nowrap">
                     {eff!=null ? <span className={`font-mono text-xs font-bold ${eff>=90?"text-accent-success":eff>=75?"text-accent-warning":"text-accent-alert"}`}>{eff}%</span> : <span className="text-text-secondary text-xs">-</span>}
                   </td>
-                  <td className="py-3 px-3"><StatusBadge status={w.status}/></td>
-                  <td className="py-3 px-3">
+                  <td className="py-3 px-3 whitespace-nowrap"><StatusBadge status={w.status}/></td>
+                  <td className="py-3 px-3 whitespace-nowrap">
                     <div className="flex gap-2">
                       <button className="text-text-secondary hover:text-accent" onClick={()=>setModal({type:"view",item:w})}><Eye size={14}/></button>
                       <button className="text-text-secondary hover:text-accent" onClick={()=>{setForm({...w});setModal({type:"edit",item:w});}}><Pencil size={14}/></button>
@@ -118,7 +118,7 @@ export default function WorkOrdersPage() {
 
       {modal?.type==="view"&&modal.item&&(
         <Modal open title={`Work Order — ${modal.item.code}`} onClose={()=>setModal(null)} size="lg">
-          <div className="grid grid-cols-3 gap-3 mb-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
             {[
               ["WO Code",modal.item.code],["Production Order",modal.item.productionOrderId],["Serial",modal.item.serial],
               ["Operation",modal.item.operation],["Seq",String(modal.item.seq)],["Work Center",modal.item.workCenter],
@@ -151,7 +151,7 @@ export default function WorkOrdersPage() {
 
       {(modal?.type==="add"||modal?.type==="edit")&&(
         <Modal open title={modal.type==="add"?"New Work Order":"Edit Work Order"} onClose={()=>setModal(null)} size="lg">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="text-text-secondary text-xs mb-1.5 block">Production Order</label>
               <select className="select" value={form.productionOrderId??""} onChange={e=>setForm({...form,productionOrderId:e.target.value})}>
@@ -182,7 +182,7 @@ export default function WorkOrdersPage() {
                 {STATUSES.map(s=><option key={s}>{s}</option>)}
               </select>
             </div>
-            <div className="col-span-2">
+            <div className="sm:col-span-2">
               <label className="text-text-secondary text-xs mb-1.5 block">Notes</label>
               <textarea className="input min-h-[60px] resize-none" value={form.notes??""} onChange={e=>setForm({...form,notes:e.target.value})}/>
             </div>

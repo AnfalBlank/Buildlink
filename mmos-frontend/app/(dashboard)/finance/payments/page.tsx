@@ -41,10 +41,10 @@ export default function PaymentsPage() {
         actions={<button className="btn-primary flex items-center gap-2" onClick={() => { setForm({ method: "Transfer" }); setModal({ type: "add" }); }}><Plus size={16} />Record Payment</button>}
       />
 
-      <div className="grid grid-cols-3 gap-4 mb-6">
-        <div className="card"><p className="text-text-secondary text-xs mb-1">Total Payments</p><p className="font-mono font-bold text-2xl text-accent">{data.length}</p></div>
-        <div className="card"><p className="text-text-secondary text-xs mb-1">Total Received</p><p className="font-mono font-bold text-xl text-accent-success">{formatCurrency(data.reduce((s,p) => s+p.amount, 0))}</p></div>
-        <div className="card"><p className="text-text-secondary text-xs mb-1">This Month</p><p className="font-mono font-bold text-xl text-accent">{data.filter(p=>p.date.startsWith("2026-10")).length} payments</p></div>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
+        <div className="card p-4"><p className="text-text-secondary text-xs mb-1">Total Payments</p><p className="font-mono font-bold text-2xl text-accent">{data.length}</p></div>
+        <div className="card p-4"><p className="text-text-secondary text-xs mb-1">Total Received</p><p className="font-mono font-bold text-xl text-accent-success">{formatCurrency(data.reduce((s,p) => s+p.amount, 0))}</p></div>
+        <div className="card p-4"><p className="text-text-secondary text-xs mb-1">This Month</p><p className="font-mono font-bold text-xl text-accent">{data.filter(p=>p.date.startsWith("2026-10")).length} payments</p></div>
       </div>
 
       <div className="card">
@@ -54,35 +54,39 @@ export default function PaymentsPage() {
             <input className="input pl-9" placeholder="Cari payment / customer / referensi..." value={search} onChange={e => setSearch(e.target.value)} />
           </div>
         </div>
-        <div className="overflow-x-auto"><table className="w-full text-sm">
-          <thead><tr className="border-b border-border">
-            {["Payment ID","Invoice Ref","Customer","Date","Amount","Method","Reference","Notes"].map(h => (
-              <th key={h} className="text-left py-3 px-4 text-text-secondary font-medium text-xs">{h}</th>
-            ))}
-          </tr></thead>
-          <tbody>
-            {filtered.map(p => {
-              const inv = invoices.find(i => i.id === p.invoiceId);
-              return (
-                <tr key={p.id} className="table-row-hover">
-                  <td className="py-3 px-4 font-mono text-accent text-xs">{p.id}</td>
-                  <td className="py-3 px-4 font-mono text-accent-warning text-xs">{p.invoiceId}</td>
-                  <td className="py-3 px-4 text-text-primary font-medium">{inv?.customer ?? "-"}</td>
-                  <td className="py-3 px-4 text-text-secondary text-xs">{p.date}</td>
-                  <td className="py-3 px-4 font-mono text-accent-success font-bold text-xs">{formatCurrency(p.amount)}</td>
-                  <td className="py-3 px-4"><span className="badge-status border text-accent bg-accent/10 border-accent/30">{p.method}</span></td>
-                  <td className="py-3 px-4 font-mono text-text-secondary text-xs">{p.reference}</td>
-                  <td className="py-3 px-4 text-text-secondary text-xs">{p.notes || "-"}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table></div>
+        <div className="overflow-x-auto w-full border border-border rounded-lg">
+          <table className="w-full min-w-[850px] text-sm">
+            <thead>
+              <tr className="border-b border-border bg-surface-2">
+                {["Payment ID","Invoice Ref","Customer","Date","Amount","Method","Reference","Notes"].map(h => (
+                  <th key={h} className="text-left py-3 px-4 text-text-secondary font-medium text-xs whitespace-nowrap">{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-border">
+              {filtered.map(p => {
+                const inv = invoices.find(i => i.id === p.invoiceId);
+                return (
+                  <tr key={p.id} className="table-row-hover">
+                    <td className="py-3 px-4 font-mono text-accent text-xs whitespace-nowrap">{p.id}</td>
+                    <td className="py-3 px-4 font-mono text-accent-warning text-xs whitespace-nowrap">{p.invoiceId}</td>
+                    <td className="py-3 px-4 text-text-primary font-medium whitespace-nowrap">{inv?.customer ?? "-"}</td>
+                    <td className="py-3 px-4 text-text-secondary text-xs whitespace-nowrap font-mono">{p.date}</td>
+                    <td className="py-3 px-4 font-mono text-accent-success font-bold text-xs whitespace-nowrap">{formatCurrency(p.amount)}</td>
+                    <td className="py-3 px-4 whitespace-nowrap"><span className="badge-status border text-accent bg-accent/10 border-accent/30">{p.method}</span></td>
+                    <td className="py-3 px-4 font-mono text-text-secondary text-xs whitespace-nowrap">{p.reference}</td>
+                    <td className="py-3 px-4 text-text-secondary text-xs whitespace-nowrap">{p.notes || "-"}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {modal?.type === "add" && (
         <Modal open title="Record Payment" onClose={() => setModal(null)}>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="text-text-secondary text-xs mb-1.5 block">Invoice</label>
               <select className="select" value={form.invoiceId ?? ""} onChange={e => setForm({ ...form, invoiceId: e.target.value })}>

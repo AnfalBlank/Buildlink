@@ -58,7 +58,7 @@ export default function NCRPage() {
         actions={<button className="btn-primary flex items-center gap-2" onClick={() => { setForm({ severity: "Minor", disposition: "Rework", status: "Open" }); setModal({ type: "add" }); }}><Plus size={16} />New NCR</button>}
       />
 
-      <div className="grid grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-6">
         {[
           { label: "Open", val: data.filter(n => n.status === "Open").length, cls: "text-accent-alert" },
           { label: "In Progress", val: data.filter(n => n.status === "In Progress").length, cls: "text-accent-warning" },
@@ -83,27 +83,27 @@ export default function NCRPage() {
             {["Open","In Progress","Closed"].map(s => <option key={s}>{s}</option>)}
           </select>
         </div>
-        <div className="overflow-x-auto"><table className="w-full text-sm">
+        <div className="overflow-x-auto w-full"><table className="w-full text-sm min-w-[900px]">
           <thead><tr className="border-b border-border">
             {["Code","Serial","Title","Category","Severity","Disposition","PIC","Due Date","Status",""].map(h => (
-              <th key={h} className="text-left py-3 px-3 text-text-secondary font-medium text-xs">{h}</th>
+              <th key={h} className="text-left py-3 px-3 text-text-secondary font-medium text-xs whitespace-nowrap">{h}</th>
             ))}
           </tr></thead>
           <tbody>
             {filtered.map(n => (
               <tr key={n.id} className="table-row-hover">
-                <td className="py-3 px-3 font-mono text-accent-alert text-xs">{n.code}</td>
-                <td className="py-3 px-3 font-mono text-text-secondary text-xs">{n.serial}</td>
-                <td className="py-3 px-3 text-text-primary font-medium max-w-[160px]"><div className="truncate">{n.title}</div></td>
-                <td className="py-3 px-3 text-text-secondary text-xs">{n.category}</td>
-                <td className="py-3 px-3">
+                <td className="py-3 px-3 font-mono text-accent-alert text-xs whitespace-nowrap">{n.code}</td>
+                <td className="py-3 px-3 font-mono text-text-secondary text-xs whitespace-nowrap">{n.serial}</td>
+                <td className="py-3 px-3 text-text-primary font-medium max-w-[160px] whitespace-nowrap"><div className="truncate">{n.title}</div></td>
+                <td className="py-3 px-3 text-text-secondary text-xs whitespace-nowrap">{n.category}</td>
+                <td className="py-3 px-3 whitespace-nowrap">
                   <span className={`badge-status border ${n.severity === "Major" || n.severity === "Critical" ? "text-accent-alert bg-accent-alert/10 border-accent-alert/30" : "text-accent-warning bg-accent-warning/10 border-accent-warning/30"}`}>{n.severity}</span>
                 </td>
-                <td className="py-3 px-3"><span className="badge-status border text-accent bg-accent/10 border-accent/30">{n.disposition}</span></td>
-                <td className="py-3 px-3 text-text-secondary text-xs">{n.pic}</td>
-                <td className="py-3 px-3 text-text-secondary text-xs">{n.dueDate}</td>
-                <td className="py-3 px-3"><StatusBadge status={n.status} /></td>
-                <td className="py-3 px-3">
+                <td className="py-3 px-3 whitespace-nowrap"><span className="badge-status border text-accent bg-accent/10 border-accent/30">{n.disposition}</span></td>
+                <td className="py-3 px-3 text-text-secondary text-xs whitespace-nowrap">{n.pic}</td>
+                <td className="py-3 px-3 text-text-secondary text-xs whitespace-nowrap">{n.dueDate}</td>
+                <td className="py-3 px-3 whitespace-nowrap"><StatusBadge status={n.status} /></td>
+                <td className="py-3 px-3 whitespace-nowrap">
                   <div className="flex gap-2">
                     <button className="text-text-secondary hover:text-accent" onClick={() => setModal({ type: "view", item: n })}><Eye size={14} /></button>
                     <button className="text-text-secondary hover:text-accent" onClick={() => { setForm({ ...n }); setModal({ type: "edit", item: n }); }}><Pencil size={14} /></button>
@@ -117,7 +117,7 @@ export default function NCRPage() {
 
       {modal?.type === "view" && modal.item && (
         <Modal open title={`NCR — ${modal.item.code}`} onClose={() => setModal(null)} size="lg">
-          <div className="grid grid-cols-2 gap-3 mb-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
             {[
               ["Code",modal.item.code],["Serial",modal.item.serial],["Category",modal.item.category],
               ["Severity",modal.item.severity],["Disposition",modal.item.disposition],["Status",modal.item.status],
@@ -149,7 +149,7 @@ export default function NCRPage() {
 
       {(modal?.type === "add" || modal?.type === "edit") && (
         <Modal open title={modal.type === "add" ? "New NCR" : "Edit NCR"} onClose={() => setModal(null)} size="lg">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="text-text-secondary text-xs mb-1.5 block">Serial Number</label>
               <input className="input" value={form.serial ?? ""} onChange={e => setForm({ ...form, serial: e.target.value })} />
@@ -191,7 +191,7 @@ export default function NCRPage() {
               </select>
             </div>
             {[["Description","description"],["Root Cause","rootCause"],["Corrective Action","correctiveAction"]].map(([l,k]) => (
-              <div key={k} className="col-span-2">
+              <div key={k} className="sm:col-span-2">
                 <label className="text-text-secondary text-xs mb-1.5 block">{l}</label>
                 <textarea className="input min-h-[60px] resize-none" value={(form as Record<string,string>)[k] ?? ""} onChange={e => setForm({ ...form, [k]: e.target.value })} />
               </div>

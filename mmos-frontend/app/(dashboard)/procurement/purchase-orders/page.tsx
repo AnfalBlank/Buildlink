@@ -399,29 +399,29 @@ export default function PurchaseOrdersPage() {
               <h4 className="text-xs font-bold text-[#0F172A] uppercase tracking-wider mb-2">
                 Rincian Barang & Spesifikasi Pengadaan
               </h4>
-              <div className="overflow-x-auto rounded-xl border border-[#E2E8F0]">
-                <table className="table">
+              <div className="overflow-x-auto rounded-xl border border-[#E2E8F0] w-full">
+                <table className="table min-w-[650px]">
                   <thead>
                     <tr>
-                      <th>MATERIAL</th>
-                      <th>QTY</th>
-                      <th>UOM</th>
-                      <th>HARGA SATUAN</th>
-                      <th>SUBTOTAL</th>
-                      <th>DITERIMA</th>
-                      <th>STATUS</th>
+                      <th className="whitespace-nowrap">MATERIAL</th>
+                      <th className="whitespace-nowrap">QTY</th>
+                      <th className="whitespace-nowrap">UOM</th>
+                      <th className="whitespace-nowrap">HARGA SATUAN</th>
+                      <th className="whitespace-nowrap">SUBTOTAL</th>
+                      <th className="whitespace-nowrap">DITERIMA</th>
+                      <th className="whitespace-nowrap">STATUS</th>
                     </tr>
                   </thead>
                   <tbody>
                     {modal.item.items.map((item, i) => (
                       <tr key={i} className="hover:bg-[#F8FAFC]">
-                        <td className="font-semibold text-[#0F172A]">{item.material}</td>
-                        <td className="font-mono font-bold">{item.qty}</td>
-                        <td className="text-xs text-[#64748B]">{item.uom}</td>
-                        <td className="font-mono text-xs">{formatCurrency(item.unitPrice)}</td>
-                        <td className="font-mono font-bold text-[#2563EB]">{formatCurrency(item.total)}</td>
-                        <td className="font-mono text-[#16A34A]">{item.qtyReceived}</td>
-                        <td>
+                        <td className="font-semibold text-[#0F172A] whitespace-nowrap">{item.material}</td>
+                        <td className="font-mono font-bold whitespace-nowrap">{item.qty}</td>
+                        <td className="text-xs text-[#64748B] whitespace-nowrap">{item.uom}</td>
+                        <td className="font-mono text-xs whitespace-nowrap">{formatCurrency(item.unitPrice)}</td>
+                        <td className="font-mono font-bold text-[#2563EB] whitespace-nowrap">{formatCurrency(item.total)}</td>
+                        <td className="font-mono text-[#16A34A] whitespace-nowrap">{item.qtyReceived}</td>
+                        <td className="whitespace-nowrap">
                           <span className={`text-xs font-semibold ${item.qtyReceived >= item.qty ? "text-[#16A34A]" : "text-[#D97706]"}`}>
                             {item.qtyReceived >= item.qty ? "Lengkap" : "Sebagian"}
                           </span>
@@ -439,7 +439,7 @@ export default function PurchaseOrdersPage() {
             </div>
 
             {/* Signatures */}
-            <div className="grid grid-cols-2 gap-4 text-center text-xs pt-3 border-t border-[#F1F5F9]">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-center text-xs pt-3 border-t border-[#F1F5F9]">
               <div className="p-3 bg-[#F8FAFC] rounded-xl">
                 <p className="text-[#64748B]">Dibuat & Disetujui (MMOS)</p>
                 <div className="h-12 flex items-end justify-center font-bold text-[#0F172A]">

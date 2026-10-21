@@ -188,17 +188,17 @@ export function FinanceDashboard() {
             Lihat Analisis Detail <ChevronRight size={12} />
           </Link>
         </div>
-        <div className="overflow-x-auto">
-          <table className="w-full text-xs">
+        <div className="overflow-x-auto w-full">
+          <table className="w-full text-xs min-w-[750px]">
             <thead>
               <tr className="border-b border-[#F1F5F9] bg-[#F8FAFC]/50">
-                <th className="text-left py-2 px-3 text-[#64748B] font-semibold">Proyek</th>
-                <th className="text-left py-2 px-3 text-[#64748B] font-semibold">Pelanggan</th>
-                <th className="text-right py-2 px-3 text-[#64748B] font-semibold">Nilai Kontrak</th>
-                <th className="text-right py-2 px-3 text-[#64748B] font-semibold">Anggaran (RAB)</th>
-                <th className="text-right py-2 px-3 text-[#64748B] font-semibold">Biaya Aktual</th>
-                <th className="text-right py-2 px-3 text-[#64748B] font-semibold">Margin (%)</th>
-                <th className="text-center py-2 px-3 text-[#64748B] font-semibold">Status</th>
+                <th className="text-left py-2 px-3 text-[#64748B] font-semibold whitespace-nowrap">Proyek</th>
+                <th className="text-left py-2 px-3 text-[#64748B] font-semibold whitespace-nowrap">Pelanggan</th>
+                <th className="text-right py-2 px-3 text-[#64748B] font-semibold whitespace-nowrap">Nilai Kontrak</th>
+                <th className="text-right py-2 px-3 text-[#64748B] font-semibold whitespace-nowrap">Anggaran (RAB)</th>
+                <th className="text-right py-2 px-3 text-[#64748B] font-semibold whitespace-nowrap">Biaya Aktual</th>
+                <th className="text-right py-2 px-3 text-[#64748B] font-semibold whitespace-nowrap">Margin (%)</th>
+                <th className="text-center py-2 px-3 text-[#64748B] font-semibold whitespace-nowrap">Status</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[#F1F5F9]">
@@ -207,26 +207,26 @@ export function FinanceDashboard() {
                 const isHealthy = Number(margin) >= 20;
                 return (
                   <tr key={p.id} className="hover:bg-[#F8FAFC]">
-                    <td className="py-2.5 px-3">
+                    <td className="py-2.5 px-3 whitespace-nowrap">
                       <p className="font-semibold text-[#0F172A]">{p.name}</p>
                       <p className="text-[10px] font-mono text-[#64748B]">{p.code}</p>
                     </td>
-                    <td className="py-2.5 px-3 text-[#475569]">{p.customer}</td>
-                    <td className="py-2.5 px-3 text-right font-mono font-medium text-[#0F172A]">
+                    <td className="py-2.5 px-3 text-[#475569] whitespace-nowrap">{p.customer}</td>
+                    <td className="py-2.5 px-3 text-right font-mono font-medium text-[#0F172A] whitespace-nowrap">
                       {formatCurrency(p.contractValue)}
                     </td>
-                    <td className="py-2.5 px-3 text-right font-mono text-[#64748B]">
+                    <td className="py-2.5 px-3 text-right font-mono text-[#64748B] whitespace-nowrap">
                       {formatCurrency(p.budget)}
                     </td>
-                    <td className="py-2.5 px-3 text-right font-mono font-medium text-[#2563EB]">
+                    <td className="py-2.5 px-3 text-right font-mono font-medium text-[#2563EB] whitespace-nowrap">
                       {formatCurrency(p.actualCost)}
                     </td>
-                    <td className="py-2.5 px-3 text-right">
+                    <td className="py-2.5 px-3 text-right whitespace-nowrap">
                       <span className={`font-mono font-bold px-2 py-0.5 rounded text-[11px] ${isHealthy ? 'bg-[#F0FDF4] text-[#16A34A]' : 'bg-[#FFFBEB] text-[#D97706]'}`}>
                         {margin}%
                       </span>
                     </td>
-                    <td className="py-2.5 px-3 text-center">
+                    <td className="py-2.5 px-3 text-center whitespace-nowrap">
                       <StatusBadge status={p.status} />
                     </td>
                   </tr>

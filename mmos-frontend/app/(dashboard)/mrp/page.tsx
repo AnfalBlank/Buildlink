@@ -275,30 +275,30 @@ export default function MRPPage() {
         </div>
 
         {/* Responsive Table */}
-        <div className="overflow-x-auto -mx-5 px-5">
+        <div className="overflow-x-auto w-full">
           <table className="table min-w-[1100px]">
             <thead>
               <tr>
-                <th onClick={() => handleSort("material")} className="cursor-pointer hover:text-[#2563EB]">
+                <th onClick={() => handleSort("material")} className="cursor-pointer hover:text-[#2563EB] whitespace-nowrap">
                   MATERIAL & SPESIFIKASI
                 </th>
-                <th>PROYEK / PO</th>
-                <th onClick={() => handleSort("grossRequirement")} className="cursor-pointer hover:text-[#2563EB]">
+                <th className="whitespace-nowrap">PROYEK / PO</th>
+                <th onClick={() => handleSort("grossRequirement")} className="cursor-pointer hover:text-[#2563EB] whitespace-nowrap">
                   GROSS REQ
                 </th>
-                <th>STOK GUDANG</th>
-                <th>TERALOKASI</th>
-                <th>PO BERJALAN</th>
-                <th onClick={() => handleSort("netRequirement")} className="cursor-pointer hover:text-[#2563EB]">
+                <th className="whitespace-nowrap">STOK GUDANG</th>
+                <th className="whitespace-nowrap">TERALOKASI</th>
+                <th className="whitespace-nowrap">PO BERJALAN</th>
+                <th onClick={() => handleSort("netRequirement")} className="cursor-pointer hover:text-[#2563EB] whitespace-nowrap">
                   NET REQUIREMENT
                 </th>
-                <th onClick={() => handleSort("requiredDate")} className="cursor-pointer hover:text-[#2563EB]">
+                <th onClick={() => handleSort("requiredDate")} className="cursor-pointer hover:text-[#2563EB] whitespace-nowrap">
                   TARGET TANGGAL
                 </th>
-                <th>LEAD TIME</th>
-                <th>REKOMENDASI PO</th>
-                <th>STATUS</th>
-                <th className="text-right">AKSI</th>
+                <th className="whitespace-nowrap">LEAD TIME</th>
+                <th className="whitespace-nowrap">REKOMENDASI PO</th>
+                <th className="whitespace-nowrap">STATUS</th>
+                <th className="text-right whitespace-nowrap">AKSI</th>
               </tr>
             </thead>
             <tbody>
@@ -316,19 +316,19 @@ export default function MRPPage() {
                       m.status === "Shortage" ? "bg-[#FEF2F2]/30" : ""
                     }`}
                   >
-                    <td className="font-semibold text-[#0F172A]">
+                    <td className="font-semibold text-[#0F172A] whitespace-nowrap">
                       <div>{m.material}</div>
                       <span className="text-[10px] text-[#64748B] font-mono">{m.materialId}</span>
                     </td>
-                    <td className="text-xs font-mono">
+                    <td className="text-xs font-mono whitespace-nowrap">
                       <div className="font-semibold text-[#2563EB]">{m.projectId}</div>
                       <div className="text-[#64748B]">{m.productionOrderId}</div>
                     </td>
-                    <td className="font-mono font-medium text-[#0F172A]">{m.grossRequirement}</td>
-                    <td className="font-mono text-[#059669] font-medium">{m.onHand}</td>
-                    <td className="font-mono text-[#D97706]">{m.reserved}</td>
-                    <td className="font-mono text-[#2563EB]">{m.scheduledReceipt}</td>
-                    <td>
+                    <td className="font-mono font-medium text-[#0F172A] whitespace-nowrap">{m.grossRequirement}</td>
+                    <td className="font-mono text-[#059669] font-medium whitespace-nowrap">{m.onHand}</td>
+                    <td className="font-mono text-[#D97706] whitespace-nowrap">{m.reserved}</td>
+                    <td className="font-mono text-[#2563EB] whitespace-nowrap">{m.scheduledReceipt}</td>
+                    <td className="whitespace-nowrap">
                       <span
                         className={`font-mono font-bold text-sm ${
                           m.netRequirement > 0 ? "text-[#DC2626]" : "text-[#16A34A]"
@@ -337,9 +337,9 @@ export default function MRPPage() {
                         {m.netRequirement}
                       </span>
                     </td>
-                    <td className="text-xs text-[#475569] font-mono">{m.requiredDate}</td>
-                    <td className="font-mono text-xs text-[#64748B]">{m.leadTime} hari</td>
-                    <td>
+                    <td className="text-xs text-[#475569] font-mono whitespace-nowrap">{m.requiredDate}</td>
+                    <td className="font-mono text-xs text-[#64748B] whitespace-nowrap">{m.leadTime} hari</td>
+                    <td className="whitespace-nowrap">
                       {m.recommendedPO > 0 ? (
                         <span className="font-mono font-bold text-[#D97706] bg-[#FFFBEB] px-2 py-0.5 rounded border border-[#FDE68A]">
                           +{m.recommendedPO}
@@ -348,7 +348,7 @@ export default function MRPPage() {
                         <span className="text-[#94A3B8]">—</span>
                       )}
                     </td>
-                    <td>
+                    <td className="whitespace-nowrap">
                       <span
                         className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold border ${
                           m.status === "Shortage"

@@ -47,7 +47,7 @@ export default function GoodsReceiptPage() {
         actions={<button className="btn-primary flex items-center gap-2" onClick={() => { setForm({}); setModal({ type: "add" }); }}><Plus size={16} />New GR</button>}
       />
 
-      <div className="grid grid-cols-3 gap-4 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-6">
         {[
           { label: "Total GR", val: data.length, cls: "text-accent" },
           { label: "Accepted", val: data.filter(g => g.status === "Accepted").length, cls: "text-accent-success" },
@@ -71,23 +71,23 @@ export default function GoodsReceiptPage() {
             {["Draft","Received","Partially Received","Inspecting","Accepted","Rejected"].map(s => <option key={s}>{s}</option>)}
           </select>
         </div>
-        <div className="overflow-x-auto"><table className="w-full text-sm">
+        <div className="overflow-x-auto w-full"><table className="w-full text-sm min-w-[850px]">
           <thead><tr className="border-b border-border">
             {["GR Code","Ref PO","Vendor","Received Date","Received By","Status","Items",""].map(h => (
-              <th key={h} className="text-left py-3 px-3 text-text-secondary font-medium text-xs">{h}</th>
+              <th key={h} className="text-left py-3 px-3 text-text-secondary font-medium text-xs whitespace-nowrap">{h}</th>
             ))}
           </tr></thead>
           <tbody>
             {filtered.map(gr => (
               <tr key={gr.id} className="table-row-hover">
-                <td className="py-3 px-3 font-mono text-accent text-xs">{gr.code}</td>
-                <td className="py-3 px-3 font-mono text-text-secondary text-xs">{gr.poId}</td>
-                <td className="py-3 px-3 text-text-primary font-medium">{gr.vendor}</td>
-                <td className="py-3 px-3 text-text-secondary text-xs">{gr.receivedDate}</td>
-                <td className="py-3 px-3 text-text-secondary text-xs">{gr.receivedBy}</td>
-                <td className="py-3 px-3"><StatusBadge status={gr.status} /></td>
-                <td className="py-3 px-3 font-mono text-text-secondary">{gr.items.length}</td>
-                <td className="py-3 px-3">
+                <td className="py-3 px-3 font-mono text-accent text-xs whitespace-nowrap">{gr.code}</td>
+                <td className="py-3 px-3 font-mono text-text-secondary text-xs whitespace-nowrap">{gr.poId}</td>
+                <td className="py-3 px-3 text-text-primary font-medium whitespace-nowrap">{gr.vendor}</td>
+                <td className="py-3 px-3 text-text-secondary text-xs whitespace-nowrap">{gr.receivedDate}</td>
+                <td className="py-3 px-3 text-text-secondary text-xs whitespace-nowrap">{gr.receivedBy}</td>
+                <td className="py-3 px-3 whitespace-nowrap"><StatusBadge status={gr.status} /></td>
+                <td className="py-3 px-3 font-mono text-text-secondary whitespace-nowrap">{gr.items.length}</td>
+                <td className="py-3 px-3 whitespace-nowrap">
                   <button className="text-text-secondary hover:text-accent" onClick={() => setModal({ type: "view", item: gr })}><Eye size={14} /></button>
                 </td>
               </tr>
@@ -98,7 +98,7 @@ export default function GoodsReceiptPage() {
 
       {modal?.type === "view" && modal.item && (
         <Modal open title={`Goods Receipt — ${modal.item.code}`} onClose={() => setModal(null)} size="lg">
-          <div className="grid grid-cols-3 gap-3 mb-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
             {[["GR Code",modal.item.code],["Ref PO",modal.item.poId],["Vendor",modal.item.vendor],
               ["Received Date",modal.item.receivedDate],["Received By",modal.item.receivedBy],["Status",modal.item.status]
             ].map(([l,v]) => (
@@ -109,22 +109,22 @@ export default function GoodsReceiptPage() {
             ))}
           </div>
           <h4 className="text-sm font-semibold text-text-primary mb-3">Received Items</h4>
-          <div className="overflow-x-auto"><table className="w-full text-sm">
+          <div className="overflow-x-auto w-full"><table className="w-full text-sm min-w-[550px]">
             <thead><tr className="border-b border-border">
               {["Material","Qty Received","UOM","QC Status","Notes"].map(h => (
-                <th key={h} className="text-left py-2 px-3 text-text-secondary text-xs">{h}</th>
+                <th key={h} className="text-left py-2 px-3 text-text-secondary text-xs whitespace-nowrap">{h}</th>
               ))}
             </tr></thead>
             <tbody>
               {modal.item.items.map((item, i) => (
                 <tr key={i} className="border-b border-border/50">
-                  <td className="py-2 px-3 text-text-primary">{item.material}</td>
-                  <td className="py-2 px-3 font-mono text-text-secondary">{item.qty}</td>
-                  <td className="py-2 px-3 text-text-secondary text-xs">{item.uom}</td>
-                  <td className="py-2 px-3">
+                  <td className="py-2 px-3 text-text-primary whitespace-nowrap">{item.material}</td>
+                  <td className="py-2 px-3 font-mono text-text-secondary whitespace-nowrap">{item.qty}</td>
+                  <td className="py-2 px-3 text-text-secondary text-xs whitespace-nowrap">{item.uom}</td>
+                  <td className="py-2 px-3 whitespace-nowrap">
                     <span className={`badge-status border ${item.qcStatus==="Pass"?"text-accent-success bg-accent-success/10 border-accent-success/30":item.qcStatus==="Fail"?"text-accent-alert bg-accent-alert/10 border-accent-alert/30":"text-accent-warning bg-accent-warning/10 border-accent-warning/30"}`}>{item.qcStatus}</span>
                   </td>
-                  <td className="py-2 px-3 text-text-secondary text-xs">{item.notes || "-"}</td>
+                  <td className="py-2 px-3 text-text-secondary text-xs whitespace-nowrap">{item.notes || "-"}</td>
                 </tr>
               ))}
             </tbody>
@@ -142,7 +142,7 @@ export default function GoodsReceiptPage() {
 
       {modal?.type === "add" && (
         <Modal open title="New Goods Receipt" onClose={() => setModal(null)}>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="text-text-secondary text-xs mb-1.5 block">Reference PO</label>
               <select className="select" value={form.poId ?? ""} onChange={e => setForm({ ...form, poId: e.target.value })}>
@@ -154,7 +154,7 @@ export default function GoodsReceiptPage() {
               <label className="text-text-secondary text-xs mb-1.5 block">Received Date</label>
               <input type="date" className="input" value={form.receivedDate ?? ""} onChange={e => setForm({ ...form, receivedDate: e.target.value })} />
             </div>
-            <div className="col-span-2">
+            <div className="sm:col-span-2">
               <label className="text-text-secondary text-xs mb-1.5 block">Received By</label>
               <input className="input" value={form.receivedBy ?? ""} onChange={e => setForm({ ...form, receivedBy: e.target.value })} />
             </div>

@@ -139,26 +139,26 @@ export function WarehouseDashboard() {
             Lihat semua <ChevronRight size={12} />
           </Link>
         </div>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+        <div className="overflow-x-auto w-full">
+          <table className="w-full text-sm min-w-[750px]">
             <thead>
               <tr className="border-b border-[#F1F5F9]">
                 {["Kode", "Material", "Tersedia", "Dipesan", "Total", "Satuan", "Gudang", "Status"].map(h => (
-                  <th key={h} className="text-left py-2 px-3 text-[#6B7280] font-medium text-xs">{h}</th>
+                  <th key={h} className="text-left py-2 px-3 text-[#6B7280] font-medium text-xs whitespace-nowrap">{h}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
               {inventory.slice(0, 6).map(item => (
                 <tr key={item.id} className="table-row-hover">
-                  <td className="py-2.5 px-3 font-mono text-xs text-[#2563EB]">{item.materialId}</td>
-                  <td className="py-2.5 px-3 text-[#111827] font-medium text-xs">{item.material}</td>
-                  <td className="py-2.5 px-3 font-mono text-[#111827]">{item.available}</td>
-                  <td className="py-2.5 px-3 font-mono text-[#6B7280]">{item.reserved}</td>
-                  <td className="py-2.5 px-3 font-mono font-semibold text-[#111827]">{item.total}</td>
-                  <td className="py-2.5 px-3 text-[#6B7280] text-xs">{item.uom}</td>
-                  <td className="py-2.5 px-3 text-[#6B7280] text-xs">{item.warehouse}</td>
-                  <td className="py-2.5 px-3">
+                  <td className="py-2.5 px-3 font-mono text-xs text-[#2563EB] whitespace-nowrap">{item.materialId}</td>
+                  <td className="py-2.5 px-3 text-[#111827] font-medium text-xs whitespace-nowrap">{item.material}</td>
+                  <td className="py-2.5 px-3 font-mono text-[#111827] whitespace-nowrap">{item.available}</td>
+                  <td className="py-2.5 px-3 font-mono text-[#6B7280] whitespace-nowrap">{item.reserved}</td>
+                  <td className="py-2.5 px-3 font-mono font-semibold text-[#111827] whitespace-nowrap">{item.total}</td>
+                  <td className="py-2.5 px-3 text-[#6B7280] text-xs whitespace-nowrap">{item.uom}</td>
+                  <td className="py-2.5 px-3 text-[#6B7280] text-xs whitespace-nowrap">{item.warehouse}</td>
+                  <td className="py-2.5 px-3 whitespace-nowrap">
                     <StatusBadge status={item.available <= 10 ? "Low Stock" : "In Stock"} />
                   </td>
                 </tr>

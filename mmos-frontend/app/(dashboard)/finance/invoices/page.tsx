@@ -286,7 +286,7 @@ export default function InvoicesPage() {
         </div>
 
         {/* Responsive Table */}
-        <div className="overflow-x-auto -mx-5 px-5">
+        <div className="overflow-x-auto w-full border border-border rounded-lg">
           <table className="table min-w-[1050px]">
             <thead>
               <tr>
@@ -413,8 +413,8 @@ export default function InvoicesPage() {
             </div>
 
             {/* Billing Items Card */}
-            <div className="overflow-hidden rounded-xl border border-[#E2E8F0]">
-              <table className="table">
+            <div className="overflow-x-auto w-full rounded-xl border border-[#E2E8F0]">
+              <table className="table min-w-[500px]">
                 <thead>
                   <tr>
                     <th>DESKRIPSI TERMIN PENAGIHAN</th>

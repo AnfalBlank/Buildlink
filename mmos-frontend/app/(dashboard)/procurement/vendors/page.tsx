@@ -55,7 +55,7 @@ export default function VendorsPage() {
         actions={<button className="btn-primary flex items-center gap-2" onClick={() => { setForm({ status: "Active" }); setModal({ type: "add" }); }}><Plus size={16} />Add Vendor</button>}
       />
 
-      <div className="grid grid-cols-3 gap-4 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-6">
         <div className="card"><p className="text-text-secondary text-xs mb-1">Total Vendors</p><p className="font-mono font-bold text-2xl text-accent">{data.length}</p></div>
         <div className="card"><p className="text-text-secondary text-xs mb-1">Active</p><p className="font-mono font-bold text-2xl text-accent-success">{data.filter(v=>v.status==="Active").length}</p></div>
         <div className="card"><p className="text-text-secondary text-xs mb-1">Avg Rating</p><p className="font-mono font-bold text-2xl text-accent-warning">{(data.reduce((s,v)=>s+v.rating,0)/data.length).toFixed(1)}</p></div>
@@ -68,25 +68,25 @@ export default function VendorsPage() {
             <input className="input pl-9" placeholder="Search vendors..." value={search} onChange={e => setSearch(e.target.value)} />
           </div>
         </div>
-        <div className="overflow-x-auto"><table className="w-full text-sm">
+        <div className="overflow-x-auto w-full"><table className="w-full text-sm min-w-[850px]">
           <thead><tr className="border-b border-border">
             {["Code","Vendor Name","Contact","Email","City","Category","Lead Time","Rating","Status",""].map(h => (
-              <th key={h} className="text-left py-3 px-3 text-text-secondary font-medium text-xs">{h}</th>
+              <th key={h} className="text-left py-3 px-3 text-text-secondary font-medium text-xs whitespace-nowrap">{h}</th>
             ))}
           </tr></thead>
           <tbody>
             {filtered.map(v => (
               <tr key={v.id} className="table-row-hover">
-                <td className="py-3 px-3 font-mono text-accent text-xs">{v.code}</td>
-                <td className="py-3 px-3 text-text-primary font-medium">{v.name}</td>
-                <td className="py-3 px-3 text-text-secondary text-xs">{v.contact}</td>
-                <td className="py-3 px-3 text-text-secondary text-xs">{v.email}</td>
-                <td className="py-3 px-3 text-text-secondary text-xs">{v.city}</td>
-                <td className="py-3 px-3"><span className="badge-status border text-accent bg-accent/10 border-accent/30">{v.category}</span></td>
-                <td className="py-3 px-3 font-mono text-text-secondary text-xs">{v.leadTime}d</td>
-                <td className="py-3 px-3"><StarRating val={v.rating} /></td>
-                <td className="py-3 px-3"><StatusBadge status={v.status} /></td>
-                <td className="py-3 px-3">
+                <td className="py-3 px-3 font-mono text-accent text-xs whitespace-nowrap">{v.code}</td>
+                <td className="py-3 px-3 text-text-primary font-medium whitespace-nowrap">{v.name}</td>
+                <td className="py-3 px-3 text-text-secondary text-xs whitespace-nowrap">{v.contact}</td>
+                <td className="py-3 px-3 text-text-secondary text-xs whitespace-nowrap">{v.email}</td>
+                <td className="py-3 px-3 text-text-secondary text-xs whitespace-nowrap">{v.city}</td>
+                <td className="py-3 px-3 whitespace-nowrap"><span className="badge-status border text-accent bg-accent/10 border-accent/30">{v.category}</span></td>
+                <td className="py-3 px-3 font-mono text-text-secondary text-xs whitespace-nowrap">{v.leadTime}d</td>
+                <td className="py-3 px-3 whitespace-nowrap"><StarRating val={v.rating} /></td>
+                <td className="py-3 px-3 whitespace-nowrap"><StatusBadge status={v.status} /></td>
+                <td className="py-3 px-3 whitespace-nowrap">
                   <div className="flex gap-2">
                     <button className="text-text-secondary hover:text-accent" onClick={() => { setForm({ ...v }); setModal({ type: "edit", item: v }); }}><Pencil size={14} /></button>
                     <button className="text-text-secondary hover:text-accent-alert" onClick={() => setData(data.filter(x => x.id !== v.id))}><Trash2 size={14} /></button>
@@ -100,7 +100,7 @@ export default function VendorsPage() {
 
       {(modal?.type === "add" || modal?.type === "edit") && (
         <Modal open title={modal.type === "add" ? "Add Vendor" : "Edit Vendor"} onClose={() => setModal(null)}>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {[
               { label: "Vendor Name", key: "name" }, { label: "Contact Person", key: "contact" },
               { label: "Email", key: "email" }, { label: "Phone", key: "phone" },

@@ -1234,30 +1234,32 @@ export default function CostingPage() {
                       <span>A. BIAYA MATERIAL &amp; KOMPONEN UTAMA</span>
                       <span className="font-mono text-blue-900">Subtotal: {formatCurrency(m.matTotal)}</span>
                     </p>
-                    <table className="w-full text-left border-collapse border border-slate-200 text-[11px]">
-                      <thead>
-                        <tr className="bg-slate-100 text-slate-700 font-semibold">
-                          <th className="py-1.5 px-2.5 border border-slate-200 w-8 text-center">No</th>
-                          <th className="py-1.5 px-2.5 border border-slate-200">Nama Material / Komponen</th>
-                          <th className="py-1.5 px-2.5 border border-slate-200 text-center w-16">Qty</th>
-                          <th className="py-1.5 px-2.5 border border-slate-200 text-center w-16">Satuan</th>
-                          <th className="py-1.5 px-2.5 border border-slate-200 text-right w-32">Harga Satuan</th>
-                          <th className="py-1.5 px-2.5 border border-slate-200 text-right w-32">Subtotal (IDR)</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {rab.materials.map((it, idx) => (
-                          <tr key={it.id || idx}>
-                            <td className="py-1.5 px-2.5 border border-slate-200 text-center font-mono">{idx + 1}</td>
-                            <td className="py-1.5 px-2.5 border border-slate-200">{it.name}</td>
-                            <td className="py-1.5 px-2.5 border border-slate-200 text-center font-mono">{it.qty}</td>
-                            <td className="py-1.5 px-2.5 border border-slate-200 text-center">{it.unit}</td>
-                            <td className="py-1.5 px-2.5 border border-slate-200 text-right font-mono">{formatCurrency(it.unitPrice)}</td>
-                            <td className="py-1.5 px-2.5 border border-slate-200 text-right font-mono font-semibold">{formatCurrency(it.total)}</td>
+                    <div className="overflow-x-auto w-full">
+                      <table className="w-full min-w-[550px] text-left border-collapse border border-slate-200 text-[11px]">
+                        <thead>
+                          <tr className="bg-slate-100 text-slate-700 font-semibold">
+                            <th className="py-1.5 px-2.5 border border-slate-200 w-8 text-center whitespace-nowrap">No</th>
+                            <th className="py-1.5 px-2.5 border border-slate-200 whitespace-nowrap">Nama Material / Komponen</th>
+                            <th className="py-1.5 px-2.5 border border-slate-200 text-center w-16 whitespace-nowrap">Qty</th>
+                            <th className="py-1.5 px-2.5 border border-slate-200 text-center w-16 whitespace-nowrap">Satuan</th>
+                            <th className="py-1.5 px-2.5 border border-slate-200 text-right w-32 whitespace-nowrap">Harga Satuan</th>
+                            <th className="py-1.5 px-2.5 border border-slate-200 text-right w-32 whitespace-nowrap">Subtotal (IDR)</th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                        </thead>
+                        <tbody>
+                          {rab.materials.map((it, idx) => (
+                            <tr key={it.id || idx}>
+                              <td className="py-1.5 px-2.5 border border-slate-200 text-center font-mono whitespace-nowrap">{idx + 1}</td>
+                              <td className="py-1.5 px-2.5 border border-slate-200 whitespace-nowrap">{it.name}</td>
+                              <td className="py-1.5 px-2.5 border border-slate-200 text-center font-mono whitespace-nowrap">{it.qty}</td>
+                              <td className="py-1.5 px-2.5 border border-slate-200 text-center whitespace-nowrap">{it.unit}</td>
+                              <td className="py-1.5 px-2.5 border border-slate-200 text-right font-mono whitespace-nowrap">{formatCurrency(it.unitPrice)}</td>
+                              <td className="py-1.5 px-2.5 border border-slate-200 text-right font-mono font-semibold whitespace-nowrap">{formatCurrency(it.total)}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
 
                   {/* Category B */}
@@ -1266,49 +1268,53 @@ export default function CostingPage() {
                       <span>B. BIAYA UPAH TENAGA KERJA LANGSUNG (MANPOWER)</span>
                       <span className="font-mono text-blue-900">Subtotal: {formatCurrency(m.laborTotal)}</span>
                     </p>
-                    <table className="w-full text-left border-collapse border border-slate-200 text-[11px]">
-                      <thead>
-                        <tr className="bg-slate-100 text-slate-700 font-semibold">
-                          <th className="py-1.5 px-2.5 border border-slate-200 w-8 text-center">No</th>
-                          <th className="py-1.5 px-2.5 border border-slate-200">Kategori Keahlian Tenaga Kerja</th>
-                          <th className="py-1.5 px-2.5 border border-slate-200 text-center w-16">Alokasi</th>
-                          <th className="py-1.5 px-2.5 border border-slate-200 text-center w-16">Satuan</th>
-                          <th className="py-1.5 px-2.5 border border-slate-200 text-right w-32">Rate per Jam</th>
-                          <th className="py-1.5 px-2.5 border border-slate-200 text-right w-32">Subtotal (IDR)</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {rab.labor.map((it, idx) => (
-                          <tr key={it.id || idx}>
-                            <td className="py-1.5 px-2.5 border border-slate-200 text-center font-mono">{idx + 1}</td>
-                            <td className="py-1.5 px-2.5 border border-slate-200">{it.name}</td>
-                            <td className="py-1.5 px-2.5 border border-slate-200 text-center font-mono">{it.qty}</td>
-                            <td className="py-1.5 px-2.5 border border-slate-200 text-center">{it.unit}</td>
-                            <td className="py-1.5 px-2.5 border border-slate-200 text-right font-mono">{formatCurrency(it.unitPrice)}</td>
-                            <td className="py-1.5 px-2.5 border border-slate-200 text-right font-mono font-semibold">{formatCurrency(it.total)}</td>
+                    <div className="overflow-x-auto w-full">
+                      <table className="w-full min-w-[550px] text-left border-collapse border border-slate-200 text-[11px]">
+                        <thead>
+                          <tr className="bg-slate-100 text-slate-700 font-semibold">
+                            <th className="py-1.5 px-2.5 border border-slate-200 w-8 text-center whitespace-nowrap">No</th>
+                            <th className="py-1.5 px-2.5 border border-slate-200 whitespace-nowrap">Kategori Keahlian Tenaga Kerja</th>
+                            <th className="py-1.5 px-2.5 border border-slate-200 text-center w-16 whitespace-nowrap">Alokasi</th>
+                            <th className="py-1.5 px-2.5 border border-slate-200 text-center w-16 whitespace-nowrap">Satuan</th>
+                            <th className="py-1.5 px-2.5 border border-slate-200 text-right w-32 whitespace-nowrap">Rate per Jam</th>
+                            <th className="py-1.5 px-2.5 border border-slate-200 text-right w-32 whitespace-nowrap">Subtotal (IDR)</th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                        </thead>
+                        <tbody>
+                          {rab.labor.map((it, idx) => (
+                            <tr key={it.id || idx}>
+                              <td className="py-1.5 px-2.5 border border-slate-200 text-center font-mono whitespace-nowrap">{idx + 1}</td>
+                              <td className="py-1.5 px-2.5 border border-slate-200 whitespace-nowrap">{it.name}</td>
+                              <td className="py-1.5 px-2.5 border border-slate-200 text-center font-mono whitespace-nowrap">{it.qty}</td>
+                              <td className="py-1.5 px-2.5 border border-slate-200 text-center whitespace-nowrap">{it.unit}</td>
+                              <td className="py-1.5 px-2.5 border border-slate-200 text-right font-mono whitespace-nowrap">{formatCurrency(it.unitPrice)}</td>
+                              <td className="py-1.5 px-2.5 border border-slate-200 text-right font-mono font-semibold whitespace-nowrap">{formatCurrency(it.total)}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
 
                   {/* Category C & D Grid */}
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <p className="font-bold text-slate-900 text-[11px] mb-1 flex items-center justify-between">
                         <span>C. MESIN &amp; SUBKON</span>
                         <span className="font-mono">{formatCurrency(m.machTotal)}</span>
                       </p>
-                      <table className="w-full text-left border-collapse border border-slate-200 text-[10px]">
-                        <tbody>
-                          {rab.machining.map((it, idx) => (
-                            <tr key={it.id || idx}>
-                              <td className="py-1 px-2 border border-slate-200">{it.name}</td>
-                              <td className="py-1 px-2 border border-slate-200 text-right font-mono font-semibold">{formatCurrency(it.total)}</td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
+                      <div className="overflow-x-auto w-full">
+                        <table className="w-full text-left border-collapse border border-slate-200 text-[10px] min-w-[280px]">
+                          <tbody>
+                            {rab.machining.map((it, idx) => (
+                              <tr key={it.id || idx}>
+                                <td className="py-1 px-2 border border-slate-200 whitespace-nowrap">{it.name}</td>
+                                <td className="py-1 px-2 border border-slate-200 text-right font-mono font-semibold whitespace-nowrap">{formatCurrency(it.total)}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
 
                     <div>
@@ -1316,16 +1322,18 @@ export default function CostingPage() {
                         <span>D. OVERHEAD &amp; TESTING QC</span>
                         <span className="font-mono">{formatCurrency(m.ovhTotal)}</span>
                       </p>
-                      <table className="w-full text-left border-collapse border border-slate-200 text-[10px]">
-                        <tbody>
-                          {rab.overhead.map((it, idx) => (
-                            <tr key={it.id || idx}>
-                              <td className="py-1 px-2 border border-slate-200">{it.name}</td>
-                              <td className="py-1 px-2 border border-slate-200 text-right font-mono font-semibold">{formatCurrency(it.total)}</td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
+                      <div className="overflow-x-auto w-full">
+                        <table className="w-full text-left border-collapse border border-slate-200 text-[10px] min-w-[280px]">
+                          <tbody>
+                            {rab.overhead.map((it, idx) => (
+                              <tr key={it.id || idx}>
+                                <td className="py-1 px-2 border border-slate-200 whitespace-nowrap">{it.name}</td>
+                                <td className="py-1 px-2 border border-slate-200 text-right font-mono font-semibold whitespace-nowrap">{formatCurrency(it.total)}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
                   </div>
                 </div>

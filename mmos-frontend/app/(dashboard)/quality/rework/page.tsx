@@ -55,7 +55,7 @@ export default function ReworkPage() {
         actions={<button className="btn-primary flex items-center gap-2" onClick={() => { setForm({ status: "In Progress" }); setModal({ type: "add" }); }}><Plus size={16} />New Rework Order</button>}
       />
 
-      <div className="grid grid-cols-3 gap-4 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-6">
         {[
           { label: "In Progress", val: data.filter(r => r.status === "In Progress").length, cls: "text-accent-warning" },
           { label: "Completed", val: data.filter(r => r.status === "Completed").length, cls: "text-accent-success" },
@@ -79,26 +79,26 @@ export default function ReworkPage() {
             {["In Progress","Completed","Pending"].map(s => <option key={s}>{s}</option>)}
           </select>
         </div>
-        <div className="overflow-x-auto"><table className="w-full text-sm">
+        <div className="overflow-x-auto w-full"><table className="w-full text-sm min-w-[900px]">
           <thead><tr className="border-b border-border">
             {["Code","NCR Ref","Serial","Operation","Assigned To","Start","Completed","Labor Hrs","Status","Result",""].map(h => (
-              <th key={h} className="text-left py-3 px-3 text-text-secondary font-medium text-xs">{h}</th>
+              <th key={h} className="text-left py-3 px-3 text-text-secondary font-medium text-xs whitespace-nowrap">{h}</th>
             ))}
           </tr></thead>
           <tbody>
             {filtered.map(r => (
               <tr key={r.id} className="table-row-hover">
-                <td className="py-3 px-3 font-mono text-accent text-xs">{r.code}</td>
-                <td className="py-3 px-3 font-mono text-accent-alert text-xs">{r.ncrId}</td>
-                <td className="py-3 px-3 font-mono text-text-secondary text-xs">{r.serial}</td>
-                <td className="py-3 px-3 text-text-primary font-medium max-w-[160px]"><div className="truncate">{r.operation}</div></td>
-                <td className="py-3 px-3 text-text-secondary text-xs">{r.assignedTo}</td>
-                <td className="py-3 px-3 text-text-secondary text-xs">{r.startDate}</td>
-                <td className="py-3 px-3 text-text-secondary text-xs">{r.completedDate ?? "—"}</td>
-                <td className="py-3 px-3 font-mono text-text-secondary">{r.laborHours}h</td>
-                <td className="py-3 px-3"><StatusBadge status={r.status} /></td>
-                <td className="py-3 px-3 text-text-secondary text-xs max-w-[120px]"><div className="truncate">{r.result ?? "—"}</div></td>
-                <td className="py-3 px-3">
+                <td className="py-3 px-3 font-mono text-accent text-xs whitespace-nowrap">{r.code}</td>
+                <td className="py-3 px-3 font-mono text-accent-alert text-xs whitespace-nowrap">{r.ncrId}</td>
+                <td className="py-3 px-3 font-mono text-text-secondary text-xs whitespace-nowrap">{r.serial}</td>
+                <td className="py-3 px-3 text-text-primary font-medium max-w-[160px] whitespace-nowrap"><div className="truncate">{r.operation}</div></td>
+                <td className="py-3 px-3 text-text-secondary text-xs whitespace-nowrap">{r.assignedTo}</td>
+                <td className="py-3 px-3 text-text-secondary text-xs whitespace-nowrap">{r.startDate}</td>
+                <td className="py-3 px-3 text-text-secondary text-xs whitespace-nowrap">{r.completedDate ?? "—"}</td>
+                <td className="py-3 px-3 font-mono text-text-secondary whitespace-nowrap">{r.laborHours}h</td>
+                <td className="py-3 px-3 whitespace-nowrap"><StatusBadge status={r.status} /></td>
+                <td className="py-3 px-3 text-text-secondary text-xs max-w-[120px] whitespace-nowrap"><div className="truncate">{r.result ?? "—"}</div></td>
+                <td className="py-3 px-3 whitespace-nowrap">
                   <div className="flex gap-2">
                     <button className="text-text-secondary hover:text-accent" onClick={() => setModal({ type: "view", item: r })}><Eye size={14} /></button>
                     <button className="text-text-secondary hover:text-accent" onClick={() => { setForm({ ...r }); setModal({ type: "edit", item: r }); }}><Pencil size={14} /></button>
@@ -112,7 +112,7 @@ export default function ReworkPage() {
 
       {modal?.type === "view" && modal.item && (
         <Modal open title={`Rework Order — ${modal.item.code}`} onClose={() => setModal(null)}>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {[["Code",modal.item.code],["NCR Ref",modal.item.ncrId],["Serial",modal.item.serial],
               ["Operation",modal.item.operation],["Assigned To",modal.item.assignedTo],["Start Date",modal.item.startDate],
               ["Completed",modal.item.completedDate??"-"],["Labor Hours",`${modal.item.laborHours}h`],["Status",modal.item.status],
@@ -144,7 +144,7 @@ export default function ReworkPage() {
 
       {(modal?.type === "add" || modal?.type === "edit") && (
         <Modal open title={modal.type === "add" ? "New Rework Order" : "Edit Rework Order"} onClose={() => setModal(null)}>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="text-text-secondary text-xs mb-1.5 block">NCR Reference</label>
               <select className="select" value={form.ncrId ?? ""} onChange={e => setForm({ ...form, ncrId: e.target.value })}>
@@ -174,7 +174,7 @@ export default function ReworkPage() {
                 {["In Progress","Completed","On Hold"].map(s => <option key={s}>{s}</option>)}
               </select>
             </div>
-            <div className="col-span-2">
+            <div className="sm:col-span-2">
               <label className="text-text-secondary text-xs mb-1.5 block">Notes</label>
               <textarea className="input min-h-[60px] resize-none" value={form.notes ?? ""} onChange={e => setForm({ ...form, notes: e.target.value })} />
             </div>

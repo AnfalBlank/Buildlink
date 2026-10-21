@@ -241,24 +241,24 @@ export default function InventoryPage() {
           <table className="w-full min-w-[850px] text-sm">
             <thead>
               <tr className="border-b border-border bg-surface-2 text-text-secondary text-xs">
-                <th className="text-left py-3 px-3.5 font-semibold cursor-pointer hover:text-accent transition-colors" onClick={() => toggleSort("materialId")}>
+                <th className="text-left py-3 px-3.5 font-semibold cursor-pointer hover:text-accent transition-colors whitespace-nowrap" onClick={() => toggleSort("materialId")}>
                   <div className="flex items-center gap-1.5">Kode Material <ArrowUpDown size={12} /></div>
                 </th>
-                <th className="text-left py-3 px-3.5 font-semibold cursor-pointer hover:text-accent transition-colors" onClick={() => toggleSort("material")}>
+                <th className="text-left py-3 px-3.5 font-semibold cursor-pointer hover:text-accent transition-colors whitespace-nowrap" onClick={() => toggleSort("material")}>
                   <div className="flex items-center gap-1.5">Nama & Spesifikasi Material <ArrowUpDown size={12} /></div>
                 </th>
-                <th className="text-left py-3 px-3.5 font-semibold">Gudang / Rak</th>
-                <th className="text-right py-3 px-3.5 font-semibold cursor-pointer hover:text-accent transition-colors" onClick={() => toggleSort("available")}>
+                <th className="text-left py-3 px-3.5 font-semibold whitespace-nowrap">Gudang / Rak</th>
+                <th className="text-right py-3 px-3.5 font-semibold cursor-pointer hover:text-accent transition-colors whitespace-nowrap" onClick={() => toggleSort("available")}>
                   <div className="flex items-center justify-end gap-1.5">Available <ArrowUpDown size={12} /></div>
                 </th>
-                <th className="text-right py-3 px-3.5 font-semibold">Reserved (SPK)</th>
-                <th className="text-right py-3 px-3.5 font-semibold">QC Hold</th>
-                <th className="text-right py-3 px-3.5 font-semibold cursor-pointer hover:text-accent transition-colors" onClick={() => toggleSort("total")}>
+                <th className="text-right py-3 px-3.5 font-semibold whitespace-nowrap">Reserved (SPK)</th>
+                <th className="text-right py-3 px-3.5 font-semibold whitespace-nowrap">QC Hold</th>
+                <th className="text-right py-3 px-3.5 font-semibold cursor-pointer hover:text-accent transition-colors whitespace-nowrap" onClick={() => toggleSort("total")}>
                   <div className="flex items-center justify-end gap-1.5">Total Stok <ArrowUpDown size={12} /></div>
                 </th>
-                <th className="text-center py-3 px-3.5 font-semibold">Satuan</th>
-                <th className="text-left py-3 px-3.5 font-semibold">Update Terakhir</th>
-                <th className="text-right py-3 px-3.5 font-semibold">Aksi</th>
+                <th className="text-center py-3 px-3.5 font-semibold whitespace-nowrap">Satuan</th>
+                <th className="text-left py-3 px-3.5 font-semibold whitespace-nowrap">Update Terakhir</th>
+                <th className="text-right py-3 px-3.5 font-semibold whitespace-nowrap">Aksi</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
@@ -431,55 +431,57 @@ export default function InventoryPage() {
               </div>
 
               {/* Table */}
-              <table className="w-full text-left border-collapse text-xs">
-                <thead>
-                  <tr className="bg-slate-900 text-white text-[10px] uppercase font-semibold">
-                    <th className="py-2 px-2.5 border border-slate-900 text-center w-8">No</th>
-                    <th className="py-2 px-2.5 border border-slate-900">Kode Material</th>
-                    <th className="py-2 px-2.5 border border-slate-900">Nama Material</th>
-                    <th className="py-2 px-2.5 border border-slate-900">Lokasi Gudang</th>
-                    <th className="py-2 px-2.5 border border-slate-900 text-right">Available</th>
-                    <th className="py-2 px-2.5 border border-slate-900 text-right">Reserved</th>
-                    <th className="py-2 px-2.5 border border-slate-900 text-right">QC Hold</th>
-                    <th className="py-2 px-2.5 border border-slate-900 text-right">Total Fisik</th>
-                    <th className="py-2 px-2.5 border border-slate-900 text-center">Sat</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-200">
-                  {filteredAndSorted.map((inv, idx) => (
-                    <tr key={inv.id}>
-                      <td className="py-2 px-2.5 border border-slate-200 text-center font-mono">{idx + 1}</td>
-                      <td className="py-2 px-2.5 border border-slate-200 font-mono font-semibold">{inv.materialId}</td>
-                      <td className="py-2 px-2.5 border border-slate-200">{inv.material}</td>
-                      <td className="py-2 px-2.5 border border-slate-200 text-slate-600">{inv.warehouse}</td>
-                      <td className="py-2 px-2.5 border border-slate-200 text-right font-mono font-bold">{inv.available}</td>
-                      <td className="py-2 px-2.5 border border-slate-200 text-right font-mono text-slate-600">{inv.reserved}</td>
-                      <td className="py-2 px-2.5 border border-slate-200 text-right font-mono text-slate-600">{inv.qualityHold}</td>
-                      <td className="py-2 px-2.5 border border-slate-200 text-right font-mono font-black">{inv.total}</td>
-                      <td className="py-2 px-2.5 border border-slate-200 text-center">{inv.uom}</td>
+              <div className="overflow-x-auto w-full">
+                <table className="w-full min-w-[650px] text-left border-collapse text-xs">
+                  <thead>
+                    <tr className="bg-slate-900 text-white text-[10px] uppercase font-semibold">
+                      <th className="py-2 px-2.5 border border-slate-900 text-center w-8 whitespace-nowrap">No</th>
+                      <th className="py-2 px-2.5 border border-slate-900 whitespace-nowrap">Kode Material</th>
+                      <th className="py-2 px-2.5 border border-slate-900 whitespace-nowrap">Nama Material</th>
+                      <th className="py-2 px-2.5 border border-slate-900 whitespace-nowrap">Lokasi Gudang</th>
+                      <th className="py-2 px-2.5 border border-slate-900 text-right whitespace-nowrap">Available</th>
+                      <th className="py-2 px-2.5 border border-slate-900 text-right whitespace-nowrap">Reserved</th>
+                      <th className="py-2 px-2.5 border border-slate-900 text-right whitespace-nowrap">QC Hold</th>
+                      <th className="py-2 px-2.5 border border-slate-900 text-right whitespace-nowrap">Total Fisik</th>
+                      <th className="py-2 px-2.5 border border-slate-900 text-center whitespace-nowrap">Sat</th>
                     </tr>
-                  ))}
-                  <tr className="bg-slate-100 font-bold">
-                    <td colSpan={4} className="py-2 px-2.5 border border-slate-300 text-right uppercase">Total Akumulasi Fisik</td>
-                    <td className="py-2 px-2.5 border border-slate-300 text-right font-mono">
-                      {filteredAndSorted.reduce((s, i) => s + i.available, 0)}
-                    </td>
-                    <td className="py-2 px-2.5 border border-slate-300 text-right font-mono">
-                      {filteredAndSorted.reduce((s, i) => s + i.reserved, 0)}
-                    </td>
-                    <td className="py-2 px-2.5 border border-slate-300 text-right font-mono">
-                      {filteredAndSorted.reduce((s, i) => s + i.qualityHold, 0)}
-                    </td>
-                    <td className="py-2 px-2.5 border border-slate-300 text-right font-mono text-blue-900 font-black">
-                      {filteredAndSorted.reduce((s, i) => s + i.total, 0)}
-                    </td>
-                    <td className="py-2 px-2.5 border border-slate-300 text-center">-</td>
-                  </tr>
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody className="divide-y divide-slate-200">
+                    {filteredAndSorted.map((inv, idx) => (
+                      <tr key={inv.id}>
+                        <td className="py-2 px-2.5 border border-slate-200 text-center font-mono whitespace-nowrap">{idx + 1}</td>
+                        <td className="py-2 px-2.5 border border-slate-200 font-mono font-semibold whitespace-nowrap">{inv.materialId}</td>
+                        <td className="py-2 px-2.5 border border-slate-200 whitespace-nowrap">{inv.material}</td>
+                        <td className="py-2 px-2.5 border border-slate-200 text-slate-600 whitespace-nowrap">{inv.warehouse}</td>
+                        <td className="py-2 px-2.5 border border-slate-200 text-right font-mono font-bold whitespace-nowrap">{inv.available}</td>
+                        <td className="py-2 px-2.5 border border-slate-200 text-right font-mono text-slate-600 whitespace-nowrap">{inv.reserved}</td>
+                        <td className="py-2 px-2.5 border border-slate-200 text-right font-mono text-slate-600 whitespace-nowrap">{inv.qualityHold}</td>
+                        <td className="py-2 px-2.5 border border-slate-200 text-right font-mono font-black whitespace-nowrap">{inv.total}</td>
+                        <td className="py-2 px-2.5 border border-slate-200 text-center whitespace-nowrap">{inv.uom}</td>
+                      </tr>
+                    ))}
+                    <tr className="bg-slate-100 font-bold">
+                      <td colSpan={4} className="py-2 px-2.5 border border-slate-300 text-right uppercase whitespace-nowrap">Total Akumulasi Fisik</td>
+                      <td className="py-2 px-2.5 border border-slate-300 text-right font-mono whitespace-nowrap">
+                        {filteredAndSorted.reduce((s, i) => s + i.available, 0)}
+                      </td>
+                      <td className="py-2 px-2.5 border border-slate-300 text-right font-mono whitespace-nowrap">
+                        {filteredAndSorted.reduce((s, i) => s + i.reserved, 0)}
+                      </td>
+                      <td className="py-2 px-2.5 border border-slate-300 text-right font-mono whitespace-nowrap">
+                        {filteredAndSorted.reduce((s, i) => s + i.qualityHold, 0)}
+                      </td>
+                      <td className="py-2 px-2.5 border border-slate-300 text-right font-mono text-blue-900 font-black whitespace-nowrap">
+                        {filteredAndSorted.reduce((s, i) => s + i.total, 0)}
+                      </td>
+                      <td className="py-2 px-2.5 border border-slate-300 text-center whitespace-nowrap">-</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
 
               {/* Signatures */}
-              <div className="grid grid-cols-3 gap-6 pt-6 text-center text-xs">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-6 text-center text-xs">
                 <div>
                   <p className="text-slate-500 text-[10px]">Petugas Gudang (Stock Keeper),</p>
                   <div className="h-12"></div>
