@@ -279,7 +279,7 @@ export default function QuotationsPage() {
       />
 
       {/* Summary KPI Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {[
           { label: "Draft Penawaran", status: "Draft", cls: "text-amber-500", border: "border-amber-500/20" },
           { label: "Terkirim (Review)", status: "Sent", cls: "text-blue-500", border: "border-blue-500/20" },

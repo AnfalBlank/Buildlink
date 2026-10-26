@@ -58,7 +58,7 @@ export default function UsersPage() {
         actions={<button className="btn-primary flex items-center gap-2" onClick={() => { setForm({ status: "Active" }); setModal({ type: "add" }); }}><Plus size={16} />Add User</button>}
       />
 
-      <div className="grid grid-cols-3 gap-4 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-6">
         <div className="card"><p className="text-text-secondary text-xs mb-1">Total Users</p><p className="font-mono font-bold text-2xl text-accent">{data.length}</p></div>
         <div className="card"><p className="text-text-secondary text-xs mb-1">Active</p><p className="font-mono font-bold text-2xl text-accent-success">{data.filter(u=>u.status==="Active").length}</p></div>
         <div className="card"><p className="text-text-secondary text-xs mb-1">Roles Used</p><p className="font-mono font-bold text-2xl text-accent">{new Set(data.map(u=>u.role)).size}</p></div>

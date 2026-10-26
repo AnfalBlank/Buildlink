@@ -32,7 +32,7 @@ export default function AuditLogPage() {
         subtitle="Riwayat semua perubahan transaksi penting"
       />
 
-      <div className="grid grid-cols-3 gap-4 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-6">
         <div className="card"><p className="text-text-secondary text-xs mb-1">Total Events</p><p className="font-mono font-bold text-2xl text-accent">{auditLogs.length}</p></div>
         <div className="card"><p className="text-text-secondary text-xs mb-1">Unique Users</p><p className="font-mono font-bold text-2xl text-accent">{new Set(auditLogs.map(l=>l.user)).size}</p></div>
         <div className="card"><p className="text-text-secondary text-xs mb-1">Entity Types</p><p className="font-mono font-bold text-2xl text-accent">{new Set(auditLogs.map(l=>l.entity)).size}</p></div>

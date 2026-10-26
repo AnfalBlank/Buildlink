@@ -3,18 +3,18 @@ import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { TopBar } from "@/components/layout/TopBar";
+import { BottomNav } from "@/components/layout/BottomNav";
+import { RoleSwitcher } from "@/components/layout/RoleSwitcher";
 import { cn } from "@/lib/utils";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const [desktopCollapsed, setDesktopCollapsed] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const pathname = usePathname();
 
-  // Route transition & auto-close drawer on mobile navigation
+  // Route transition animation
   useEffect(() => {
     setIsTransitioning(true);
-    setMobileOpen(false);
     const timer = setTimeout(() => {
       setIsTransitioning(false);
     }, 350);
@@ -50,10 +50,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         />
       </div>
 
-      {/* ── Desktop In-flow Sidebar (Screen >= 1024px) ── */}
-      <div
+      {/* ── Desktop In-flow Sidebar Aside (Screen >= md 768px, Hidden on Mobile: hidden md:block) ── */}
+      <aside
         className={cn(
-          "hidden lg:block relative shrink-0 overflow-hidden select-none",
+          "hidden md:block relative shrink-0 overflow-hidden select-none",
           "transition-[width] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
         )}
         style={{ width: desktopCollapsed ? 0 : 260 }}
@@ -71,42 +71,37 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             onToggle={() => setDesktopCollapsed((c) => !c)}
           />
         </div>
-      </div>
+      </aside>
 
-      {/* ── Mobile / Tablet Overlay Drawer (Screen < 1024px) ── */}
-      {/* Backdrop */}
-      <div
-        className={cn(
-          "fixed inset-0 z-40 bg-slate-900/40 backdrop-blur-xs transition-opacity duration-300 lg:hidden",
-          mobileOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-        )}
-        onClick={() => setMobileOpen(false)}
-        aria-hidden="true"
-      />
-
-      {/* Drawer Panel */}
-      <div
-        className={cn(
-          "fixed top-0 bottom-0 left-0 z-50 w-[270px] max-w-[85vw] bg-white shadow-2xl transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] lg:hidden",
-          mobileOpen ? "translate-x-0" : "-translate-x-full pointer-events-none"
-        )}
-      >
-        <Sidebar
-          collapsed={false}
-          onToggle={() => setMobileOpen(false)}
-          onNavigate={() => setMobileOpen(false)}
-        />
-      </div>
-
-      {/* Main content area */}
+      {/* Main content wrapper */}
       <div className="flex-1 flex flex-col overflow-hidden min-w-0 w-full">
-        <TopBar
-          onToggleSidebar={() => setDesktopCollapsed((c) => !c)}
-          onOpenMobile={() => setMobileOpen(true)}
-          sidebarCollapsed={desktopCollapsed}
-        />
+        {/* ── Desktop Top Navbar Utama (Screen >= md 768px, Hidden on Mobile: hidden md:block) ── */}
+        <div className="hidden md:block">
+          <TopBar
+            onToggleSidebar={() => setDesktopCollapsed((c) => !c)}
+            sidebarCollapsed={desktopCollapsed}
+          />
+        </div>
 
-        <main className="flex-1 overflow-y-auto overflow-x-hidden p-3.5 sm:p-5 lg:p-6 min-w-0 flex flex-col justify-between">
+        {/* ── Mobile Compact Header (Screen < md 768px: md:hidden) ── */}
+        <header className="md:hidden h-14 bg-white border-b border-[#E2E8F0] px-3.5 flex items-center justify-between sticky top-0 z-30 shrink-0 select-none shadow-xs">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#2563EB] to-[#1D4ED8] flex items-center justify-center text-white font-black text-xs shadow-xs">
+              M
+            </div>
+            <div>
+              <span className="font-bold text-sm tracking-tight text-[#0F172A] block leading-tight">MMOS</span>
+              <span className="text-[10px] text-[#64748B] block leading-tight font-medium">Manggala Operations</span>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <RoleSwitcher />
+          </div>
+        </header>
+
+        {/* Main Content Area (pb-24 on mobile so nothing is covered by the fixed BottomNav) */}
+        <main className="flex-1 overflow-y-auto overflow-x-hidden p-3.5 sm:p-5 lg:p-6 pb-24 md:pb-6 min-w-0 flex flex-col justify-between">
           {/* Animated page transition container */}
           <div
             key={pathname}
@@ -116,7 +111,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           </div>
 
           {/* Footer */}
-          <footer className="mt-8 pt-6 pb-2 text-center border-t border-[#E2E8F0] select-none">
+          <footer className="mt-8 pt-6 pb-2 text-center border-t border-[#E2E8F0] select-none mb-2 md:mb-0">
             <div className="flex flex-col sm:flex-row items-center justify-center gap-1.5 sm:gap-2 text-xs text-[#6B7280]">
               <span className="flex items-center gap-1.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#2563EB]" />
@@ -128,6 +123,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           </footer>
         </main>
       </div>
+
+      {/* ── Fixed Mobile Bottom Navbar (Screen < md 768px: md:hidden) ── */}
+      <BottomNav />
     </div>
   );
 }

@@ -55,7 +55,7 @@ export default function RisksPage() {
         actions={<button className="btn-primary flex items-center gap-2" onClick={()=>{setForm({probability:"Medium",impact:"Medium",status:"Open"});setModal({type:"add"});}}><Plus size={16}/>Add Risk</button>}
       />
 
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
         {[
           {label:"Critical",count:data.filter(r=>{const l=riskLevel(r.probability,r.impact);return l.label==="Critical";}).length,cls:"text-accent-alert"},
           {label:"High",count:data.filter(r=>riskLevel(r.probability,r.impact).label==="High").length,cls:"text-orange-400"},

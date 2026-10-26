@@ -42,7 +42,7 @@ export default function WorkCentersPage() {
         subtitle="Pusat kerja: mesin dan tenaga kerja"
         actions={<button className="btn-primary flex items-center gap-2" onClick={()=>{setForm({type:"Labor",status:"Active"});setModal({type:"add"});}}><Plus size={16}/>Add Work Center</button>}
       />
-      <div className="grid grid-cols-3 gap-4 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-6">
         {[
           {label:"Total",val:data.length,cls:"text-accent"},
           {label:"Machine",val:data.filter(w=>w.type==="Machine").length,cls:"text-accent-warning"},

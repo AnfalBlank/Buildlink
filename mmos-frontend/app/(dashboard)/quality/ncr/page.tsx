@@ -100,7 +100,7 @@ export default function NCRPage() {
         }
       />
 
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
         {[
           { label: "Open", val: data.filter(n => n.status === "Open").length, cls: "text-accent-alert" },
           { label: "In Progress", val: data.filter(n => n.status === "In Progress").length, cls: "text-accent-warning" },

@@ -203,7 +203,7 @@ export default function ProductionOrdersPage() {
       />
 
       {/* KPI Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
         {[
           { label: "Total Orders", val: data.length, cls: "text-[#2563EB]" },
           { label: "In Progress", val: data.filter(p => p.status === "In Progress").length, cls: "text-[#D97706]" },

@@ -35,7 +35,7 @@ export default function TransactionsPage() {
         subtitle="Riwayat semua pergerakan stok"
       />
 
-      <div className="grid grid-cols-3 gap-3 sm:gap-4 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-6">
         {[
           { label: "Receipt", val: data.filter(t => t.type === "Receipt").length, cls: "text-accent-success" },
           { label: "Issue", val: data.filter(t => t.type === "Issue").length, cls: "text-accent-warning" },

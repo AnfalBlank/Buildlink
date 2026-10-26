@@ -148,7 +148,7 @@ export default function InventoryPage() {
       />
 
       {/* KPI Summary Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
         <div className="card">
           <p className="text-text-secondary text-xs mb-1 font-medium">Total SKU Material</p>
           <p className="font-mono font-bold text-2xl text-accent">{data.length}</p>

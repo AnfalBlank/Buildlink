@@ -191,7 +191,7 @@ export default function PurchaseOrdersPage() {
       />
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
         {["Draft", "Sent", "Partially Received", "Received"].map(s => {
           const count = data.filter(p => p.status === s).length;
           const sum = data.filter(p => p.status === s).reduce((a, p) => a + p.total, 0);

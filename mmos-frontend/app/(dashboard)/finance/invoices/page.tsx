@@ -207,8 +207,8 @@ export default function InvoicesPage() {
         }
       />
 
-      {/* KPI Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+      {/* KPI Cards (Fluid: 1 column on mobile, 2 on sm, 4 on lg) */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
         {[
           { label: "Total Difakturkan", val: formatCurrency(data.reduce((s, i) => s + i.totalAmount, 0)), cls: "text-[#2563EB]" },
           { label: "Telah Dibayar (Lunas)", val: formatCurrency(totalPaid), cls: "text-[#16A34A]" },
@@ -223,50 +223,51 @@ export default function InvoicesPage() {
       </div>
 
       <div className="card">
-        {/* Toolbar: Search, Period Filter, Status Filter, Sorting */}
-        <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
-          <div className="flex flex-wrap items-center gap-3 flex-1 min-w-[280px]">
-            <div className="relative flex-1 max-w-xs">
+        {/* Toolbar: Search, Period Filter, Status Filter, Sorting (Fluid Stack on Mobile) */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-5">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-2.5 flex-1 w-full">
+            <div className="relative w-full sm:max-w-xs">
               <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#94A3B8]" />
               <input
-                className="input !pl-10"
+                className="input !pl-10 w-full"
                 placeholder="Cari kode invoice atau pelanggan..."
                 value={search}
                 onChange={e => setSearch(e.target.value)}
               />
             </div>
 
-            <div className="flex items-center gap-2">
-              <Calendar size={15} className="text-[#64748B] shrink-0" />
+            <div className="grid grid-cols-2 sm:flex sm:items-center gap-2 w-full sm:w-auto">
+              <div className="flex items-center gap-1.5 w-full">
+                <select
+                  className="select w-full sm:w-44 text-xs"
+                  value={periodFilter}
+                  onChange={e => setPeriodFilter(e.target.value)}
+                >
+                  <option value="All">Semua Periode</option>
+                  <option value="October">Bulan Ini (Okt 2026)</option>
+                  <option value="August">Agustus 2026</option>
+                  <option value="UnpaidOnly">Hanya Belum Lunas</option>
+                </select>
+              </div>
+
               <select
-                className="select w-44"
-                value={periodFilter}
-                onChange={e => setPeriodFilter(e.target.value)}
+                className="select w-full sm:w-40 text-xs"
+                value={statusFilter}
+                onChange={e => setStatusFilter(e.target.value)}
               >
-                <option value="All">Semua Periode</option>
-                <option value="October">Bulan Ini (Okt 2026)</option>
-                <option value="August">Agustus 2026</option>
-                <option value="UnpaidOnly">Hanya Belum Lunas</option>
+                <option value="All">Semua Status</option>
+                {["Unpaid", "Partially Paid", "Paid", "Overdue"].map(s => (
+                  <option key={s} value={s}>{s}</option>
+                ))}
               </select>
             </div>
-
-            <select
-              className="select w-40"
-              value={statusFilter}
-              onChange={e => setStatusFilter(e.target.value)}
-            >
-              <option value="All">Semua Status</option>
-              {["Unpaid", "Partially Paid", "Paid", "Overdue"].map(s => (
-                <option key={s} value={s}>{s}</option>
-              ))}
-            </select>
           </div>
 
-          <div className="flex items-center gap-2 text-xs text-[#64748B]">
+          <div className="flex items-center justify-between sm:justify-end gap-2 text-xs text-[#64748B] pt-2 sm:pt-0 border-t sm:border-t-0 border-[#F1F5F9]">
             <span>Urutkan:</span>
             <button
               onClick={() => handleSort("date")}
-              className={`px-2.5 py-1.5 rounded-lg border flex items-center gap-1 cursor-pointer ${
+              className={`px-2.5 py-1.5 rounded-lg border flex items-center gap-1 cursor-pointer text-xs ${
                 sortField === "date" ? "bg-[#EFF6FF] text-[#2563EB] border-[#BFDBFE] font-bold" : "bg-white border-[#E2E8F0]"
               }`}
             >
@@ -275,7 +276,7 @@ export default function InvoicesPage() {
             </button>
             <button
               onClick={() => handleSort("totalAmount")}
-              className={`px-2.5 py-1.5 rounded-lg border flex items-center gap-1 cursor-pointer ${
+              className={`px-2.5 py-1.5 rounded-lg border flex items-center gap-1 cursor-pointer text-xs ${
                 sortField === "totalAmount" ? "bg-[#EFF6FF] text-[#2563EB] border-[#BFDBFE] font-bold" : "bg-white border-[#E2E8F0]"
               }`}
             >
@@ -285,8 +286,75 @@ export default function InvoicesPage() {
           </div>
         </div>
 
-        {/* Responsive Table */}
-        <div className="overflow-x-auto w-full border border-border rounded-lg">
+        {/* ── Mobile Fluid Cards View (< md) ── */}
+        <div className="md:hidden space-y-3">
+          {filtered.length === 0 ? (
+            <div className="text-center py-8 text-[#94A3B8] text-xs">
+              Tidak ada faktur tagihan yang sesuai.
+            </div>
+          ) : (
+            filtered.map(inv => (
+              <div key={inv.id} className="p-3.5 bg-white border border-[#E2E8F0] rounded-xl shadow-xs space-y-2.5">
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-1.5">
+                    <span className="font-mono font-bold text-xs text-[#2563EB]">{inv.code}</span>
+                    <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-[#F1F5F9] text-[#475569] border border-[#E2E8F0]">
+                      {inv.type}
+                    </span>
+                  </div>
+                  <StatusBadge status={inv.status} />
+                </div>
+
+                <div>
+                  <h4 className="font-bold text-sm text-[#0F172A] leading-tight">{inv.customer}</h4>
+                  <p className="text-xs text-[#64748B] mt-0.5">Ref Proyek: {inv.projectId}</p>
+                </div>
+
+                <div className="grid grid-cols-2 gap-2 p-2.5 bg-[#F8FAFC] rounded-lg border border-[#F1F5F9] text-xs font-mono">
+                  <div>
+                    <span className="text-[10px] text-[#64748B] block font-sans">Total Tagihan</span>
+                    <strong className="text-[#0F172A]">{formatCurrency(inv.totalAmount)}</strong>
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-[#64748B] block font-sans">Sisa Saldo</span>
+                    <strong className={inv.totalAmount - inv.paidAmount > 0 ? "text-[#D97706]" : "text-[#16A34A]"}>
+                      {formatCurrency(inv.totalAmount - inv.paidAmount)}
+                    </strong>
+                  </div>
+                  <div className="pt-1 border-t border-[#E2E8F0]/60">
+                    <span className="text-[10px] text-[#64748B] block font-sans">Tanggal</span>
+                    <span className="text-[#475569]">{inv.date}</span>
+                  </div>
+                  <div className="pt-1 border-t border-[#E2E8F0]/60">
+                    <span className="text-[10px] text-[#64748B] block font-sans">Jatuh Tempo</span>
+                    <span className="text-[#475569]">{inv.dueDate}</span>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-end gap-2 pt-1 border-t border-[#F1F5F9]">
+                  <button
+                    className="btn-secondary !py-1.5 !px-3 text-xs flex items-center gap-1.5 cursor-pointer"
+                    onClick={() => setModal({ type: "view", item: inv })}
+                  >
+                    <Eye size={13} /> Detail & Cetak
+                  </button>
+                  <button
+                    className="btn-secondary !py-1.5 !px-3 text-xs flex items-center gap-1.5 cursor-pointer text-[#2563EB] border-[#BFDBFE] bg-[#EFF6FF]"
+                    onClick={() => {
+                      setForm({ ...inv });
+                      setModal({ type: "edit", item: inv });
+                    }}
+                  >
+                    <Pencil size={13} /> Edit
+                  </button>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+
+        {/* ── Desktop Table View (>= md) ── */}
+        <div className="hidden md:block overflow-x-auto w-full border border-border rounded-lg">
           <table className="table min-w-[1050px]">
             <thead>
               <tr>

@@ -264,7 +264,7 @@ export default function MaterialTraceabilityPage() {
       />
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         <div className="card p-3.5 border-blue-500/20">
           <div className="flex items-center gap-2 text-text-secondary text-xs mb-1">
             <FileCheck2 size={16} className="text-blue-500" />
