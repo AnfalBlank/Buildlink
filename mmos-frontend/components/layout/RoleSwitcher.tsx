@@ -35,10 +35,10 @@ export function RoleSwitcher() {
         }}
         title="Ganti Role / User (Demo)"
       >
-        <ArrowLeftRight size={13} className="transition-transform duration-200 group-hover:rotate-180 shrink-0" />
-        <span className="hidden md:inline-flex items-center gap-1.5">
+        <ArrowLeftRight size={12} className="transition-transform duration-200 group-hover:rotate-180 shrink-0 opacity-70" />
+        <span className="inline-flex items-center gap-1">
           <RoleIcon roleKey={roleDef.key} size={13} />
-          {roleDef.shortLabel}
+          <span className="hidden min-[400px]:inline text-[11px] font-semibold">{roleDef.shortLabel}</span>
         </span>
         <ChevronDown size={11} className={`transition-transform duration-200 shrink-0 ${open ? "rotate-180" : ""}`} />
       </button>

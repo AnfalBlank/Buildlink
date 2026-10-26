@@ -24,10 +24,12 @@ export function TopBar({ onToggleSidebar, onOpenMobile, sidebarCollapsed }: TopB
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showChat, setShowChat] = useState(false);
 
-  // Live real-time clock state
+  // Live real-time clock state with mounted flag to prevent hydration mismatch
+  const [mounted, setMounted] = useState(false);
   const [now, setNow] = useState<Date | null>(null);
 
   useEffect(() => {
+    setMounted(true);
     setNow(new Date());
     const interval = setInterval(() => {
       setNow(new Date());
@@ -113,15 +115,15 @@ export function TopBar({ onToggleSidebar, onOpenMobile, sidebarCollapsed }: TopB
         {/* Center/Right section: Realtime Clock, Status, Chat, Notifications, User Profile */}
         <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
           {/* Live Clock & Date Badge */}
-          {now && (
-            <div className="hidden xl:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] text-xs">
-              <div className="flex items-center gap-1.5 text-[#475569] font-medium border-r border-[#E2E8F0] pr-2.5">
+          {mounted && now && (
+            <div className="hidden xl:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] text-xs" suppressHydrationWarning>
+              <div className="flex items-center gap-1.5 text-[#475569] font-medium border-r border-[#E2E8F0] pr-2.5" suppressHydrationWarning>
                 <Calendar size={13} className="text-[#2563EB]" />
-                <span className="capitalize">{formattedDay}</span>, {formattedDate}
+                <span className="capitalize" suppressHydrationWarning>{formattedDay}</span>, <span suppressHydrationWarning>{formattedDate}</span>
               </div>
-              <div className="flex items-center gap-1.5 text-[#0F172A] font-mono font-bold tabular-nums">
+              <div className="flex items-center gap-1.5 text-[#0F172A] font-mono font-bold tabular-nums" suppressHydrationWarning>
                 <Clock size={13} className="text-[#16A34A] animate-pulse" />
-                <span>{formattedTime}</span>
+                <span suppressHydrationWarning>{formattedTime}</span>
                 <span className="text-[10px] text-[#64748B] font-sans font-normal">WIB</span>
               </div>
             </div>

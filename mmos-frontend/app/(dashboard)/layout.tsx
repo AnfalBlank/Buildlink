@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { TopBar } from "@/components/layout/TopBar";
 import { BottomNav } from "@/components/layout/BottomNav";
-import { RoleSwitcher } from "@/components/layout/RoleSwitcher";
+import { MobileHeader } from "@/components/layout/MobileHeader";
 import { cn } from "@/lib/utils";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -83,22 +83,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           />
         </div>
 
-        {/* ── Mobile Compact Header (Screen < md 768px: md:hidden) ── */}
-        <header className="md:hidden h-14 bg-white border-b border-[#E2E8F0] px-3.5 flex items-center justify-between sticky top-0 z-30 shrink-0 select-none shadow-xs">
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#2563EB] to-[#1D4ED8] flex items-center justify-center text-white font-black text-xs shadow-xs">
-              M
-            </div>
-            <div>
-              <span className="font-bold text-sm tracking-tight text-[#0F172A] block leading-tight">MMOS</span>
-              <span className="text-[10px] text-[#64748B] block leading-tight font-medium">Manggala Operations</span>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <RoleSwitcher />
-          </div>
-        </header>
+        {/* ── Mobile Compact Header with Logo, Clock, Chat, Notif, RoleSwitcher (Screen < md 768px: md:hidden) ── */}
+        <MobileHeader />
 
         {/* Main Content Area (pb-24 on mobile so nothing is covered by the fixed BottomNav) */}
         <main className="flex-1 overflow-y-auto overflow-x-hidden p-3.5 sm:p-5 lg:p-6 pb-24 md:pb-6 min-w-0 flex flex-col justify-between">
